@@ -1,3 +1,6 @@
+///<reference path="Scripts/typings/jquery/jquery.d.ts" />
+///<reference path="Scripts/typings/webgl/webgl.d.ts" />
+
 class Greeter {
     element: HTMLElement;
     span: HTMLElement;

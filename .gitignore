@@ -221,3 +221,4 @@ pip-log.txt
 *.js
 *.js.map
 !**/lib/*.js
+!**/Scripts/*.js
