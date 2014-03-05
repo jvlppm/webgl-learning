@@ -49,8 +49,7 @@ module Jv.Games.WebGL {
     }
 
     export class WebGL {
-        public static fromCanvasId(id: string) {
-            var canvas = <HTMLCanvasElement>document.getElementById(id);
+        public static fromCanvas(canvas: HTMLCanvasElement) {
             var context = WebGL.getWebGLContext(canvas);
             return new WebGL(context);
         }

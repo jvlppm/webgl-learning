@@ -1,24 +1,36 @@
 ///<reference path="Scripts/typings/jquery/jquery.d.ts" />
+import WebGL = Jv.Games.WebGL;
+
+function matchWindowSize(canvas: HTMLCanvasElement) {
+    window.addEventListener('resize', resizeCanvas, false);
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+}
 
 function setup() {
-    var result = $.Deferred<Jv.Games.WebGL.WebGL>();
+    var result = $.Deferred<WebGL.WebGL>();
 
     $(document).ready(function () {
-        var webgl = Jv.Games.WebGL.WebGL.fromCanvasId("canvas-element-id");
+        var canvas = <HTMLCanvasElement>document.getElementById("canvas-element-id");
+        matchWindowSize(canvas);
+            
+        var webgl = WebGL.WebGL.fromCanvas(canvas);
         var shaderProgram = webgl.createShaderProgram();
 
-        var loadShader = function (url: string, type: Jv.Games.WebGL.ShaderType) {
-            return $.ajax(url, <JQueryAjaxSettings>{ dataType: "text" })
-                .then(source => shaderProgram.addShader(type, source));
+        var loadShader = function (url: string, type: WebGL.ShaderType) {
+            return $.ajax(url).then(source => shaderProgram.addShader(type, source));
         };
 
         return $.when(
-            loadShader("vertexShader.glsl.txt", Jv.Games.WebGL.ShaderType.Vertex),
-            loadShader("fragmentShader.glsl.txt", Jv.Games.WebGL.ShaderType.Fragment)
+            loadShader("vertexShader.glsl.txt", WebGL.ShaderType.Vertex),
+            loadShader("fragmentShader.glsl.txt", WebGL.ShaderType.Fragment)
         ).then(() => {
             shaderProgram.link();
             result.resolve(webgl);
-            return webgl;
         }).fail(result.reject);
     });
 
@@ -27,7 +39,7 @@ function setup() {
 
 window.onload = () => {
     var loadWebgl = setup().then(webgl => {
-        alert("setup completed: " + webgl);
+        
     }).fail(e => {
         alert("Error during setup");
     });
