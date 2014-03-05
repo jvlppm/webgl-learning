@@ -1,31 +1,34 @@
 ///<reference path="Scripts/typings/jquery/jquery.d.ts" />
-///<reference path="Scripts/typings/webgl/webgl.d.ts" />
 
-class Greeter {
-    element: HTMLElement;
-    span: HTMLElement;
-    timerToken: number;
+function setup() {
+    var result = $.Deferred<Jv.Games.WebGL.WebGL>();
 
-    constructor(element: HTMLElement) {
-        this.element = element;
-        this.element.innerHTML += "The time is: ";
-        this.span = document.createElement('span');
-        this.element.appendChild(this.span);
-        this.span.innerText = new Date().toUTCString();
-    }
+    $(document).ready(function () {
+        var webgl = Jv.Games.WebGL.WebGL.fromCanvasId("canvas-element-id");
+        var shaderProgram = webgl.createShaderProgram();
 
-    start() {
-        this.timerToken = setInterval(() => this.span.innerHTML = new Date().toUTCString(), 500);
-    }
+        var loadShader = function (url: string, type: Jv.Games.WebGL.ShaderType) {
+            return $.ajax(url, <JQueryAjaxSettings>{ dataType: "text" })
+                .then(source => shaderProgram.addShader(type, source));
+        };
 
-    stop() {
-        clearTimeout(this.timerToken);
-    }
+        return $.when(
+            loadShader("vertexShader.glsl.txt", Jv.Games.WebGL.ShaderType.Vertex),
+            loadShader("fragmentShader.glsl.txt", Jv.Games.WebGL.ShaderType.Fragment)
+        ).then(() => {
+            shaderProgram.link();
+            result.resolve(webgl);
+            return webgl;
+        }).fail(result.reject);
+    });
 
+    return result.promise();
 }
 
 window.onload = () => {
-    var el = document.getElementById('content');
-    var greeter = new Greeter(el);
-    greeter.start();
+    var loadWebgl = setup().then(webgl => {
+        alert("setup completed: " + webgl);
+    }).fail(e => {
+        alert("Error during setup");
+    });
 };

@@ -20,6 +20,7 @@
     <Content Include="app.css" />
     <Content Include="default.htm" />
     <Content Include="packages.config" />
+    <TypeScriptCompile Include="webgl.ts" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />
@@ -32,6 +33,8 @@
     <TypeScriptCompile Include="Scripts\typings\webgl\webgl.d.ts" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="vertexShader.glsl.txt" />
+    <Content Include="fragmentShader.glsl.txt" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
