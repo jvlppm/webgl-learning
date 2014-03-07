@@ -10,6 +10,8 @@
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <TypeScriptToolsVersion>0.9</TypeScriptToolsVersion>
+    <TypeScriptModuleKind>commonjs</TypeScriptModuleKind>
+    <TypeScriptOutFile>app.js</TypeScriptOutFile>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -20,7 +22,8 @@
     <Content Include="app.css" />
     <Content Include="default.htm" />
     <Content Include="packages.config" />
-    <TypeScriptCompile Include="webgl.ts" />
+    <TypeScriptCompile Include="Jv.Games.WebGL\ShaderProgram.ts" />
+    <TypeScriptCompile Include="Jv.Games.WebGL\WebGL.ts" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />
@@ -30,11 +33,10 @@
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\webgl\webgl.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="vertexShader.glsl.txt" />
-    <Content Include="fragmentShader.glsl.txt" />
+    <Content Include="Shaders\vertexShader.glsl.txt" />
+    <Content Include="Shaders\fragmentShader.glsl.txt" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -42,6 +44,7 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -1,6 +1,4 @@
-﻿///<reference path="Scripts/typings/webgl/webgl.d.ts" />
-
-module Jv.Games.WebGL {
+﻿module Jv.Games.WebGL {
     export enum ShaderType {
         Vertex,
         Fragment
@@ -49,6 +47,8 @@ module Jv.Games.WebGL {
             return gl.getAttribLocation(this.program, name);
         }
 
+        //get uniform struct{ ... setvalueMatrix() };
+
         private createShader(type: ShaderType, source: string): WebGLShader {
             var gl = this.webgl.context;
 
@@ -73,28 +73,6 @@ module Jv.Games.WebGL {
                 default:
                     throw new Error("Unknown shader type " + type);
             }
-        }
-    }
-
-    export class WebGL {
-        public static fromCanvas(canvas: HTMLCanvasElement) {
-            var context = WebGL.getWebGLContext(canvas);
-            return new WebGL(context);
-        }
-
-        constructor(public context: WebGLRenderingContext) { }
-
-        public createShaderProgram(): ShaderProgram {
-            var gl = this.context;
-            return new ShaderProgram(this, gl.createProgram());
-        }
-
-        static getWebGLContext(canvas: HTMLCanvasElement) {
-            var context: WebGLRenderingContext;
-            var contextName = ["experimental-webgl"];
-            for (var i = 0; i < contextName.length && context == null; i++)
-                context = <WebGLRenderingContext>canvas.getContext(contextName[i], { antialias: false });
-            return context;
         }
     }
 }

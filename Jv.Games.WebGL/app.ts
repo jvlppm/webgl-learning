@@ -11,7 +11,7 @@ function matchWindowSize(canvas: HTMLCanvasElement) {
     resizeCanvas();
 }
 
-function setup() {
+function loadWebGL() {
     var result = $.Deferred<WebGL.WebGL>();
 
     $(document).ready(function () {
@@ -21,13 +21,13 @@ function setup() {
         var webgl = WebGL.WebGL.fromCanvas(canvas);
         var shaderProgram = webgl.createShaderProgram();
 
-        var loadShader = function (url: string, type: WebGL.ShaderType) {
-            return $.ajax(url).then(source => shaderProgram.addShader(type, source));
+        var loadShader = function (name: string, type: WebGL.ShaderType) {
+            return $.ajax("Shaders/" + name + ".glsl.txt").then(source => shaderProgram.addShader(type, source));
         };
 
         return $.when(
-            loadShader("vertexShader.glsl.txt", WebGL.ShaderType.Vertex),
-            loadShader("fragmentShader.glsl.txt", WebGL.ShaderType.Fragment)
+            loadShader("vertexShader", WebGL.ShaderType.Vertex),
+            loadShader("fragmentShader", WebGL.ShaderType.Fragment)
         ).then(() => {
             shaderProgram.link();
 
@@ -44,8 +44,8 @@ function setup() {
 }
 
 window.onload = () => {
-    var loadWebgl = setup().then(webgl => {
-        
+    loadWebGL().then(webgl => {
+        alert("success");
     }).fail(e => {
         alert("Error during setup");
     });
