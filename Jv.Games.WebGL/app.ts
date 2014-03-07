@@ -30,6 +30,12 @@ function setup() {
             loadShader("fragmentShader.glsl.txt", WebGL.ShaderType.Fragment)
         ).then(() => {
             shaderProgram.link();
+
+            shaderProgram.enableVertexAttribArray("color");
+            shaderProgram.enableVertexAttribArray("position");
+
+            shaderProgram.use();
+
             result.resolve(webgl);
         }).fail(result.reject);
     });

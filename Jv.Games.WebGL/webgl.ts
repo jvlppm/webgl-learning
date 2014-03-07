@@ -17,8 +17,36 @@ module Jv.Games.WebGL {
             gl.attachShader(this.program, shader);
         }
 
-        public link() {
-            this.webgl.context.linkProgram(this.program);
+        link() {
+            var gl = this.webgl.context;
+            gl.linkProgram(this.program);
+            if (!gl.getProgramParameter(this.program, gl.LINK_STATUS))
+                throw new Error("ShaderProgram could not be linked");
+        }
+
+        use() {
+            var gl = this.webgl.context;
+            gl.useProgram(this.program);
+        }
+
+        enableVertexAttribArray(stringParameter: string): void;
+        enableVertexAttribArray(numberParameter: number): void;
+
+        enableVertexAttribArray(indexOrName: any): void {
+            var gl = this.webgl.context;
+
+            var index: number;
+            if (indexOrName && typeof indexOrName == "number")
+                index = <number>indexOrName;
+            else
+                index = this.getAttribLocation(<string>indexOrName);
+
+            gl.enableVertexAttribArray(index);
+        }
+
+        getAttribLocation(name: string) {
+            var gl = this.webgl.context;
+            return gl.getAttribLocation(this.program, name);
         }
 
         private createShader(type: ShaderType, source: string): WebGLShader {
