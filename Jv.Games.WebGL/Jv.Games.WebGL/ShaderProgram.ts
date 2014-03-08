@@ -1,11 +1,13 @@
 ﻿module Jv.Games.WebGL {
+    import Uniform = Jv.Games.WebGL.Uniform;
+
     export enum ShaderType {
         Vertex,
         Fragment
     }
 
     export class ShaderProgram {
-        constructor(private webgl: WebGL, private program: WebGLProgram) {
+        constructor(public webgl: WebGL, public program: WebGLProgram) {
         }
 
         addShader(type: ShaderType, source: string) {
@@ -34,10 +36,12 @@
             var gl = this.webgl.context;
 
             var index: number;
-            if (indexOrName && typeof indexOrName == "number")
+            if (typeof indexOrName === "number")
                 index = <number>indexOrName;
-            else
+            else if (typeof indexOrName === "string")
                 index = this.getAttribLocation(<string>indexOrName);
+            else
+                throw new Error("enableVertexAttribArray must be called with a string or a number");
 
             gl.enableVertexAttribArray(index);
         }
@@ -47,7 +51,14 @@
             return gl.getAttribLocation(this.program, name);
         }
 
-        //get uniform struct{ ... setvalueMatrix() };
+        getUniform(name: string): Uniform {
+            var gl = this.webgl.context;
+            var location = gl.getUniformLocation(this.program, name);
+            if (location === null)
+                throw new Error("Uniform location not found: " + name);
+
+            return new Uniform(this, location);
+        }
 
         private createShader(type: ShaderType, source: string): WebGLShader {
             var gl = this.webgl.context;

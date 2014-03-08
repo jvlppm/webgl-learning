@@ -1,6 +1,11 @@
 ///<reference path="Scripts/typings/jquery/jquery.d.ts" />
 import WebGL = Jv.Games.WebGL;
 
+var webgl: WebGL.WebGL;
+var pMatrix: WebGL.Uniform;
+var vMatrix: WebGL.Uniform;
+var mMatrix: WebGL.Uniform;
+
 function matchWindowSize(canvas: HTMLCanvasElement) {
     window.addEventListener('resize', resizeCanvas, false);
 
@@ -12,13 +17,13 @@ function matchWindowSize(canvas: HTMLCanvasElement) {
 }
 
 function loadWebGL() {
-    var result = $.Deferred<WebGL.WebGL>();
+    var result = $.Deferred();
 
     $(document).ready(function () {
         var canvas = <HTMLCanvasElement>document.getElementById("canvas-element-id");
         matchWindowSize(canvas);
             
-        var webgl = WebGL.WebGL.fromCanvas(canvas);
+        webgl = WebGL.WebGL.fromCanvas(canvas);
         var shaderProgram = webgl.createShaderProgram();
 
         var loadShader = function (name: string, type: WebGL.ShaderType) {
@@ -34,9 +39,13 @@ function loadWebGL() {
             shaderProgram.enableVertexAttribArray("color");
             shaderProgram.enableVertexAttribArray("position");
 
+            pMatrix = shaderProgram.getUniform("Pmatrix");
+            vMatrix = shaderProgram.getUniform("Vmatrix");
+            mMatrix = shaderProgram.getUniform("Mmatrix");
+
             shaderProgram.use();
 
-            result.resolve(webgl);
+            result.resolve();
         }).fail(result.reject);
     });
 
@@ -44,7 +53,7 @@ function loadWebGL() {
 }
 
 window.onload = () => {
-    loadWebGL().then(webgl => {
+    loadWebGL().then(() => {
         alert("success");
     }).fail(e => {
         alert("Error during setup");
