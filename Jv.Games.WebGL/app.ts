@@ -2,6 +2,10 @@
 import WebGL = Jv.Games.WebGL;
 
 var webgl: WebGL.WebGL;
+
+var color: WebGL.VertexAttribute;
+var position: WebGL.VertexAttribute;
+
 var pMatrix: WebGL.Uniform;
 var vMatrix: WebGL.Uniform;
 var mMatrix: WebGL.Uniform;
@@ -36,8 +40,8 @@ function loadWebGL() {
         ).then(() => {
             shaderProgram.link();
 
-            shaderProgram.enableVertexAttribArray("color");
-            shaderProgram.enableVertexAttribArray("position");
+            color = shaderProgram.getVertexAttribute("color");
+            position = shaderProgram.getVertexAttribute("position");
 
             pMatrix = shaderProgram.getUniform("Pmatrix");
             vMatrix = shaderProgram.getUniform("Vmatrix");

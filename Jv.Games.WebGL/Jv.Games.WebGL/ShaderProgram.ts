@@ -1,5 +1,6 @@
 ﻿module Jv.Games.WebGL {
     import Uniform = Jv.Games.WebGL.Uniform;
+    import VertexAttribute = Jv.Games.WebGL.VertexAttribute;
 
     export enum ShaderType {
         Vertex,
@@ -29,37 +30,39 @@
             gl.useProgram(this.program);
         }
 
-        enableVertexAttribArray(stringParameter: string): void;
-        enableVertexAttribArray(numberParameter: number): void;
-
-        enableVertexAttribArray(indexOrName: any): void {
+        getVertexAttribute(name: string, enable: boolean = true): VertexAttribute {
             var gl = this.webgl.context;
 
-            var index: number;
-            if (typeof indexOrName === "number")
-                index = <number>indexOrName;
-            else if (typeof indexOrName === "string")
-                index = this.getAttribLocation(<string>indexOrName);
-            else
-                throw new Error("enableVertexAttribArray must be called with a string or a number");
-
-            gl.enableVertexAttribArray(index);
-        }
-
-        getAttribLocation(name: string) {
-            var gl = this.webgl.context;
-            return gl.getAttribLocation(this.program, name);
+            var index = this.getAttribLocation(name);
+            var vertexAttribute = new VertexAttribute(this, index);
+            if (enable)
+                vertexAttribute.enable();
+            return vertexAttribute;
         }
 
         getUniform(name: string): Uniform {
             var gl = this.webgl.context;
-            var location = gl.getUniformLocation(this.program, name);
+            var location = this.getUniformLocation(name);
             if (location === null)
                 throw new Error("Uniform location not found: " + name);
 
             return new Uniform(this, location);
         }
 
+        //////////
+        // Helpers
+        getAttribLocation(name: string) {
+            var gl = this.webgl.context;
+            return gl.getAttribLocation(this.program, name);
+        }
+
+        getUniformLocation(name: string) {
+            var gl = this.webgl.context;
+            return gl.getUniformLocation(this.program, name);
+        }
+
+        //////////
+        // Private
         private createShader(type: ShaderType, source: string): WebGLShader {
             var gl = this.webgl.context;
 
