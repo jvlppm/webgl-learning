@@ -16,7 +16,7 @@
 
         private static getWebGLContext(canvas: HTMLCanvasElement) {
             var context: WebGLRenderingContext;
-            var contextName = ["experimental-webgl"];
+            var contextName = ["webgl", "experimental-webgl", "webkit-3d", "moz-webgl"];
             for (var i = 0; i < contextName.length && context == null; i++)
                 context = <WebGLRenderingContext>canvas.getContext(contextName[i], { antialias: false });
             return context;
