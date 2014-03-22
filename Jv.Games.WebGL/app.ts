@@ -71,7 +71,7 @@ function loadWebGL() {
 
 // -- Game --
 
-var triangle: Mesh;
+var cube: Mesh;
 viewMatrixData.translateZ(-5);
 
 function init() {
@@ -81,16 +81,36 @@ function init() {
     gl.depthFunc(gl.LEQUAL);
     gl.clearDepth(1.0);
 
-    triangle = new Mesh(webgl.context, MeshRenderMode.Triangles);
-    triangle.vertex = [
-        -1, -1, 0,
+    cube = new Mesh(webgl.context);
+    //x -> direita
+    //y -> cima
+    //z -> perto
+    cube.vertex = [
+        -1.0, -1.0, 1.0,
         0, 0, 1,
-        1, -1, 0,
-        1, 1, 0,
-        1, 1, 0,
-        1, 0, 0
+
+        1.0, -1.0, 1.0,
+        1, 0, 1,
+
+        -1.0, 1.0, 1.0,
+        0, 1, 1,
+
+        1.0, 1.0, 1.0,
+        1, 1, 1,
+
+        -1.0, -1.0, -1.0,
+        0, 0, 0,
+
+        1.0, -1.0, -1.0,
+        1, 0, 0,
+
+        -1.0, 1.0, -1.0,
+        0, 1, 0,
+
+        1.0, 1.0, -1.0,
+        1, 1, 0
     ];
-    triangle.index = [0, 1, 2];
+    cube.index = [0, 1, 2, 3, 7, 1, 5, 4, 7, 6, 2, 4, 0, 1];
 
     var oldTime = 0;
     var drawLoop = (time) => {
@@ -106,9 +126,9 @@ function init() {
 function draw(dt: number) {
     var gl = webgl.context;
 
-    moveMatrixData.rotateZ(dt * 0.005);
-    moveMatrixData.rotateY(dt * 0.004);
-    moveMatrixData.rotateX(dt * 0.003);
+    moveMatrixData.rotateX(dt * 0.0003);
+    moveMatrixData.rotateY(dt * 0.0004);
+    moveMatrixData.rotateZ(dt * 0.0005);
 
     webgl.clear();
     shaderProjectionMatrix.setMatrix4(projMatrixData.data);
@@ -118,7 +138,7 @@ function draw(dt: number) {
     position.setPointer(3, DataType.Float, false, 4 * (3 + 3), 0);
     color.setPointer(3, DataType.Float, false, 4 * (3 + 3), 3 * 4);
 
-    triangle.draw();
+    cube.draw();
 
     gl.flush();
 }
