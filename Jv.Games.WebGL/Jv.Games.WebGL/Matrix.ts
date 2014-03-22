@@ -19,6 +19,13 @@
             ]);
         }
 
+        static Identity() {
+            return new Matrix([1, 0, 0, 0,
+                               0, 1, 0, 0,
+                               0, 0, 1, 0,
+                               0, 0, 0, 1]);
+        }
+
         rotateX(angle: number) {
             var m = this.data;
             var c = Math.cos(angle);
@@ -59,6 +66,10 @@
             m[1] = c * m[1] + s * mv0;
             m[5] = c * m[5] + s * mv4;
             m[9] = c * m[9] + s * mv8;
+        }
+
+        translateZ(t: number) {
+            this.data[14] += t;
         }
     }
 }

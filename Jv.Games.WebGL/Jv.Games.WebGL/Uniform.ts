@@ -25,15 +25,15 @@
         }
 
         setMatrix2(value: number[], transpose: boolean = false) {
-            this.context.uniformMatrix2fv(this.location, transpose, new Float32Array(value));
+            this.context.uniformMatrix2fv(this.location, transpose, <any>value);
         }
 
         setMatrix3(value: number[], transpose: boolean = false) {
-            this.context.uniformMatrix3fv(this.location, transpose, new Float32Array(value));
+            this.context.uniformMatrix3fv(this.location, transpose, <any>value);
         }
 
         setMatrix4(value: number[], transpose: boolean = false) {
-            this.context.uniformMatrix4fv(this.location, transpose, new Float32Array(value));
+            this.context.uniformMatrix4fv(this.location, transpose, <any>value);
         }
     }
 }

@@ -1,8 +1,10 @@
 ///<reference path="Scripts/typings/jquery/jquery.d.ts" />
+
 import WebGL = Jv.Games.WebGL;
 import Matrix = Jv.Games.WebGL.Matrix;
 import Mesh = Jv.Games.WebGL.Mesh;
 import MeshRenderMode = Jv.Games.WebGL.MeshRenderMode;
+import DataType = Jv.Games.WebGL.DataType;
 
 // -- Setup --
 
@@ -15,37 +17,53 @@ var shaderProjectionMatrix: WebGL.Uniform;
 var shaderViewMatrix: WebGL.Uniform;
 var shaderMoveMatrix: WebGL.Uniform;
 
+var projMatrixData = Matrix.Identity();
+var moveMatrixData = Matrix.Identity();
+var viewMatrixData = Matrix.Identity();
+
+function matchWindowSize(canvas: HTMLCanvasElement) {
+    window.addEventListener('resize', resizeCanvas, false);
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        projMatrixData = Matrix.Projection(40, canvas.width / canvas.height, 1, 100);
+    }
+    resizeCanvas();
+}
+
 function loadWebGL() {
     var result = $.Deferred();
 
     $(document).ready(function () {
         var canvas = <HTMLCanvasElement>document.getElementById("canvas-element-id");
-            
+        matchWindowSize(canvas);
+
         webgl = WebGL.WebGL.fromCanvas(canvas);
         var shaderProgram = webgl.createShaderProgram();
 
         var loadShader = function (name: string, type: WebGL.ShaderType) {
             return $.ajax("Shaders/" + name + ".glsl.txt", { dataType: "text" })
-                    .then(source => shaderProgram.addShader(type, source));
+                .then(source => shaderProgram.addShader(type, source));
         };
 
         return $.when(
             loadShader("vertexShader", WebGL.ShaderType.Vertex),
             loadShader("fragmentShader", WebGL.ShaderType.Fragment)
-        ).then(() => {
-            shaderProgram.link();
+            ).then(() => {
+                shaderProgram.link();
 
-            color = shaderProgram.getVertexAttribute("color");
-            position = shaderProgram.getVertexAttribute("position");
+                color = shaderProgram.getVertexAttribute("color");
+                position = shaderProgram.getVertexAttribute("position");
 
-            shaderProjectionMatrix = shaderProgram.getUniform("Pmatrix");
-            shaderViewMatrix = shaderProgram.getUniform("Vmatrix");
-            shaderMoveMatrix = shaderProgram.getUniform("Mmatrix");
+                shaderProjectionMatrix = shaderProgram.getUniform("Pmatrix");
+                shaderViewMatrix = shaderProgram.getUniform("Vmatrix");
+                shaderMoveMatrix = shaderProgram.getUniform("Mmatrix");
 
-            shaderProgram.use();
+                shaderProgram.use();
 
-            result.resolve();
-        }).fail(result.reject);
+                result.resolve();
+            }).fail(result.reject);
     });
 
     return result.promise();
@@ -54,14 +72,16 @@ function loadWebGL() {
 // -- Game --
 
 var triangle: Mesh;
-var moveMatrixData : Matrix;
-var projMatrixData: Matrix;
-var viewMatrixData: Matrix;
+viewMatrixData.translateZ(-5);
 
 function init() {
-    webgl.context.clearColor(0, 0, 0, 1);
+    var gl = webgl.context;
+    gl.clearColor(0, 0, 0, 1);
+    gl.enable(gl.DEPTH_TEST);
+    gl.depthFunc(gl.LEQUAL);
+    gl.clearDepth(1.0);
 
-    triangle = new Mesh(webgl.context);
+    triangle = new Mesh(webgl.context, MeshRenderMode.Triangles);
     triangle.vertex = [
         -1, -1, 0,
         0, 0, 1,
@@ -76,6 +96,7 @@ function init() {
     var drawLoop = (time) => {
         var deltaTime = time - oldTime;
         oldTime = time;
+
         draw(deltaTime);
         window.requestAnimationFrame(drawLoop);
     };
@@ -94,28 +115,22 @@ function draw(dt: number) {
     shaderViewMatrix.setMatrix4(viewMatrixData.data);
     shaderMoveMatrix.setMatrix4(moveMatrixData.data);
 
-    position.setPointer(3, gl.FLOAT, false, 4 * (3 + 3), 0);
-    color.setPointer(3, gl.FLOAT, false, 4 * (3 + 3), 3 * 4);
+    position.setPointer(3, DataType.Float, false, 4 * (3 + 3), 0);
+    color.setPointer(3, DataType.Float, false, 4 * (3 + 3), 3 * 4);
 
     triangle.draw();
 
     gl.flush();
 }
 
-$(() => {
-    var loadWebGL = loadWebGL();
-    loadWebGL.fail(e => {
+$(document).ready(() => {
+    var loadWebGLTask = loadWebGL();
+    loadWebGLTask.fail(e => {
         alert("Error during loadWebGL " + e);
     });
 
-    var init = loadWebGL.then(init);
-    init.fail(e => {
+    var initTask = loadWebGLTask.then(init);
+    initTask.fail(e => {
         alert("Error during init " + e);
     });
 });
-
-
-// cada objeto terá um index buffer, um vertex buffer e o moveMatrix
-// indexBuffer -> ELEMENT_ARRAY_BUFFER
-// vertexBuffer -> ARRAY_BUFFER
-// [children]

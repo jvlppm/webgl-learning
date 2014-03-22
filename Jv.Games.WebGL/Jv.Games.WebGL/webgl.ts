@@ -16,8 +16,8 @@
 
         clear() {
             var gl = this.context;
-            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
             gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         }
 
         private static getWebGLContext(canvas: HTMLCanvasElement) {
