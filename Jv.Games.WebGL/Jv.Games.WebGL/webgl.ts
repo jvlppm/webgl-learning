@@ -4,14 +4,20 @@
     export class WebGL {
         static fromCanvas(canvas: HTMLCanvasElement) {
             var context = WebGL.getWebGLContext(canvas);
-            return new WebGL(context);
+            return new WebGL(context, canvas);
         }
 
-        constructor(public context: WebGLRenderingContext) { }
+        constructor(public context: WebGLRenderingContext, private canvas : HTMLCanvasElement) { }
 
         createShaderProgram(): ShaderProgram {
             var gl = this.context;
             return new ShaderProgram(this, gl.createProgram());
+        }
+
+        clear(red: number, green: number, blue: number, alpha: number = 1) {
+            this.context.clearColor(red, green, blue, alpha);
+            this.context.clear(this.context.COLOR_BUFFER_BIT);
+            this.context.viewport(0, 0, this.canvas.width, this.canvas.height);
         }
 
         private static getWebGLContext(canvas: HTMLCanvasElement) {

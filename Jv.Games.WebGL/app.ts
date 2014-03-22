@@ -48,7 +48,7 @@ function loadWebGL() {
 
 window.onload = () => {
     loadWebGL().then(() => {
-        alert("success");
+        webgl.clear(1, 0, 0);
     }).fail(e => {
         alert("Error during setup " + e);
     });
