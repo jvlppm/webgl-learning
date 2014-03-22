@@ -22,6 +22,7 @@
     <Content Include="app.css" />
     <Content Include="default.htm" />
     <Content Include="packages.config" />
+    <TypeScriptCompile Include="Jv.Games.WebGL\VertexAttribute.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Uniform.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\ShaderProgram.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\WebGL.ts" />

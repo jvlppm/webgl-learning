@@ -10,28 +10,18 @@ var pMatrix: WebGL.Uniform;
 var vMatrix: WebGL.Uniform;
 var mMatrix: WebGL.Uniform;
 
-function matchWindowSize(canvas: HTMLCanvasElement) {
-    window.addEventListener('resize', resizeCanvas, false);
-
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    resizeCanvas();
-}
-
 function loadWebGL() {
     var result = $.Deferred();
 
     $(document).ready(function () {
         var canvas = <HTMLCanvasElement>document.getElementById("canvas-element-id");
-        matchWindowSize(canvas);
             
         webgl = WebGL.WebGL.fromCanvas(canvas);
         var shaderProgram = webgl.createShaderProgram();
 
         var loadShader = function (name: string, type: WebGL.ShaderType) {
-            return $.ajax("Shaders/" + name + ".glsl.txt").then(source => shaderProgram.addShader(type, source));
+            return $.ajax("Shaders/" + name + ".glsl.txt", { dataType: "text" })
+                    .then(source => shaderProgram.addShader(type, source));
         };
 
         return $.when(
@@ -60,6 +50,6 @@ window.onload = () => {
     loadWebGL().then(() => {
         alert("success");
     }).fail(e => {
-        alert("Error during setup");
+        alert("Error during setup " + e);
     });
 };
