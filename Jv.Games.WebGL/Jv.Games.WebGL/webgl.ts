@@ -7,17 +7,17 @@
             return new WebGL(context, canvas);
         }
 
-        constructor(public context: WebGLRenderingContext, private canvas : HTMLCanvasElement) { }
+        constructor(public context: WebGLRenderingContext, public canvas : HTMLCanvasElement) { }
 
         createShaderProgram(): ShaderProgram {
             var gl = this.context;
             return new ShaderProgram(this, gl.createProgram());
         }
 
-        clear(red: number, green: number, blue: number, alpha: number = 1) {
-            this.context.clearColor(red, green, blue, alpha);
-            this.context.clear(this.context.COLOR_BUFFER_BIT);
-            this.context.viewport(0, 0, this.canvas.width, this.canvas.height);
+        clear() {
+            var gl = this.context;
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+            gl.viewport(0, 0, this.canvas.width, this.canvas.height);
         }
 
         private static getWebGLContext(canvas: HTMLCanvasElement) {

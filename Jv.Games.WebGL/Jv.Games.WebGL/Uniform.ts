@@ -24,16 +24,16 @@
             this.context.uniform1i(this.location, value);
         }
 
-        setMatrix2(value: Float32Array, transpose: boolean = false) {
-            this.context.uniformMatrix2fv(this.location, transpose, value);
+        setMatrix2(value: number[], transpose: boolean = false) {
+            this.context.uniformMatrix2fv(this.location, transpose, new Float32Array(value));
         }
 
-        setMatrix3(value: Float32Array, transpose: boolean = false) {
-            this.context.uniformMatrix3fv(this.location, transpose, value);
+        setMatrix3(value: number[], transpose: boolean = false) {
+            this.context.uniformMatrix3fv(this.location, transpose, new Float32Array(value));
         }
 
-        setMatrix4(value: Float32Array, transpose: boolean = false) {
-            this.context.uniformMatrix4fv(this.location, transpose, value);
+        setMatrix4(value: number[], transpose: boolean = false) {
+            this.context.uniformMatrix4fv(this.location, transpose, new Float32Array(value));
         }
     }
 }
