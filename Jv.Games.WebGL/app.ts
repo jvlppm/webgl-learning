@@ -71,7 +71,7 @@ function loadWebGL() {
 
 // -- Game --
 
-var cube: Mesh;
+var cube: JumperCube.CubeMesh;
 viewMatrixData.translateZ(-40);
 viewMatrixData.translateX(-15);
 
@@ -91,67 +91,36 @@ function init() {
     gl.enable(gl.DEPTH_TEST);
     gl.depthFunc(gl.LEQUAL);
     gl.clearDepth(1.0);
+
     window.onkeydown = handleKeyDown;
     window.onkeyup = handleKeyUp;
 
-    cube = new Mesh(webgl.context);
-    //x -> direita
-    //y -> cima
-    //z -> perto
-    cube.vertex = [
-        -1.0, -1.0, 1.0,
-        0, 0, 1,
-
-        1.0, -1.0, 1.0,
-        1, 0, 1,
-
-        -1.0, 1.0, 1.0,
-        0, 1, 1,
-
-        1.0, 1.0, 1.0,
-        1, 1, 1,
-
-        -1.0, -1.0, -1.0,
-        0, 0, 0,
-
-        1.0, -1.0, -1.0,
-        1, 0, 0,
-
-        -1.0, 1.0, -1.0,
-        0, 1, 0,
-
-        1.0, 1.0, -1.0,
-        1, 1, 0
-    ];
-    cube.index = [0, 1, 2, 3, 7, 1, 5, 4, 7, 6, 2, 4, 0, 1];
+    cube = new JumperCube.CubeMesh(1, 1, 1, webgl.context);
+    position.setPointer(3, DataType.Float, false, 4 * (3 + 3), 0);
+    color.setPointer(3, DataType.Float, false, 4 * (3 + 3), 3 * 4);
 
     var oldTime = 0;
-    var drawLoop = (time) => {
+    var tickLoop = (time) => {
         var deltaTime = time - oldTime;
         oldTime = time;
 
-        draw(deltaTime);
-        window.requestAnimationFrame(drawLoop);
+        tick(deltaTime);
+        window.requestAnimationFrame(tickLoop);
     };
-    drawLoop(0);
+    tickLoop(0);
 }
 
-function draw(dt: number) {
+function tick(dt: number) {
     var gl = webgl.context;
 
-    //moveMatrixData.rotateX(dt * 0.0003);
-    //moveMatrixData.rotateY(dt * 0.0004);
     moveMatrixData.rotateZ(dt * -0.005);
-    //if (currentlyPressedKeys[32])
-        moveMatrixData.translateX(dt * 0.01);
+    moveMatrixData.translateX(dt * 0.001);
 
     webgl.clear();
+
     shaderProjectionMatrix.setMatrix4(projMatrixData.data);
     shaderViewMatrix.setMatrix4(viewMatrixData.data);
     shaderMoveMatrix.setMatrix4(moveMatrixData.data);
-
-    position.setPointer(3, DataType.Float, false, 4 * (3 + 3), 0);
-    color.setPointer(3, DataType.Float, false, 4 * (3 + 3), 3 * 4);
 
     cube.draw();
 
