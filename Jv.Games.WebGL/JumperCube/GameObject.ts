@@ -7,7 +7,7 @@ module JumperCube {
     import Matrix = Jv.Games.WebGL.Matrix;
     import Vector3 = Jv.Games.WebGL.Vector3;
 
-    export var MeterSize = 2;
+    export var MeterSize = 3;
 
     export class GameObject {
         transform: Matrix;

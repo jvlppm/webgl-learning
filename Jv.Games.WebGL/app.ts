@@ -80,8 +80,7 @@ function loadWebGL() {
 // -- Game --
 
 var objects: JumperCube.GameObject[];
-viewMatrixData.translateZ(-40);
-viewMatrixData.translateX(-15);
+viewMatrixData.translateZ(-20);
 
 function init() {
     var gl = webgl.context;
@@ -113,8 +112,17 @@ function tick(dt: number): void {
             obj.transform.y = -10;
 
             if (Keyboard.isKeyDown(Key.Up))
-                obj.push(new Vector3(0, 10, 0), true, true);
+                obj.push(new Vector3(0, 5, 0), true, true);
         }
+
+        //if (Keyboard.isKeyDown(Key.Up))
+        //    obj.push(new Vector3(0, 10, 0));
+        //if (Keyboard.isKeyDown(Key.Down))
+        //    obj.push(new Vector3(0, -10, 0));
+        if (Keyboard.isKeyDown(Key.Right))
+            obj.push(new Vector3(10, 0, 0));
+        if (Keyboard.isKeyDown(Key.Left))
+            obj.push(new Vector3(-10, 0, 0));
 
         document.title = "" + obj.transform.x + ", " + obj.transform.y + ", " + obj.transform.z;
 
