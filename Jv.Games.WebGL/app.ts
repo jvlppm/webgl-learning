@@ -5,6 +5,7 @@ import Matrix = Jv.Games.WebGL.Matrix;
 import Mesh = Jv.Games.WebGL.Mesh;
 import MeshRenderMode = Jv.Games.WebGL.MeshRenderMode;
 import DataType = Jv.Games.WebGL.DataType;
+import Utils = JumperCube.Utils;
 
 // -- Setup --
 
@@ -49,8 +50,10 @@ function loadWebGL() {
 
         return $.when(
             loadShader("vertexShader", WebGL.ShaderType.Vertex),
-            loadShader("fragmentShader", WebGL.ShaderType.Fragment)
-            ).then(() => {
+            loadShader("fragmentShader", WebGL.ShaderType.Fragment))
+        .fail(result.reject)
+        .done(() => {
+            try {
                 shaderProgram.link();
 
                 color = shaderProgram.getVertexAttribute("color");
@@ -63,7 +66,9 @@ function loadWebGL() {
                 shaderProgram.use();
 
                 result.resolve();
-            }).fail(result.reject);
+            }
+            catch (E) { result.reject(E); }
+        });
     });
 
     return result.promise();
@@ -98,19 +103,9 @@ function init() {
     cube = new JumperCube.CubeMesh(1, 1, 1, webgl.context);
     position.setPointer(3, DataType.Float, false, 4 * (3 + 3), 0);
     color.setPointer(3, DataType.Float, false, 4 * (3 + 3), 3 * 4);
-
-    var oldTime = 0;
-    var tickLoop = (time) => {
-        var deltaTime = time - oldTime;
-        oldTime = time;
-
-        tick(deltaTime);
-        window.requestAnimationFrame(tickLoop);
-    };
-    tickLoop(0);
 }
 
-function tick(dt: number) {
+function tick(dt: number): void {
     var gl = webgl.context;
 
     moveMatrixData.rotateZ(dt * -0.005);
@@ -127,14 +122,7 @@ function tick(dt: number) {
     gl.flush();
 }
 
-$(document).ready(() => {
-    var loadWebGLTask = loadWebGL();
-    loadWebGLTask.fail(e => {
-        alert("Error during loadWebGL " + e);
-    });
-
-    var initTask = loadWebGLTask.then(init);
-    initTask.fail(e => {
-        alert("Error during init " + e);
-    });
-});
+loadWebGL()
+    .done(init)
+    .done(() => Utils.StartTick(tick))
+    .fail(e => alert("Error during setup " + e.message));

@@ -23,6 +23,7 @@
     <Content Include="default.htm" />
     <Content Include="packages.config" />
     <TypeScriptCompile Include="JumperCube\CubeMesh.ts" />
+    <TypeScriptCompile Include="JumperCube\Utils.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Math.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Matrix.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Mesh.ts" />
