@@ -24,6 +24,7 @@
     <Content Include="packages.config" />
     <TypeScriptCompile Include="JumperCube\CubeMesh.ts" />
     <TypeScriptCompile Include="JumperCube\GameObject.ts" />
+    <TypeScriptCompile Include="JumperCube\Keyboard.ts" />
     <TypeScriptCompile Include="JumperCube\Utils.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\MathHelper.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Matrix.ts" />

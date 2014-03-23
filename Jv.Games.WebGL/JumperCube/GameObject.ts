@@ -15,7 +15,8 @@ module JumperCube {
 
         update(deltaTime: number) {
             this.transform.rotateZ(deltaTime * -0.005);
-            this.transform.translateX(deltaTime * 0.001);
+            if(Keyboard.isKeyDown(Key.Right))
+                this.transform.translateX(deltaTime * 0.005);
         }
 
         draw(deltaTime: number) {

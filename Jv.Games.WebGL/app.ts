@@ -7,6 +7,7 @@ import Mesh = Jv.Games.WebGL.Mesh;
 import MeshRenderMode = Jv.Games.WebGL.MeshRenderMode;
 import DataType = Jv.Games.WebGL.DataType;
 import Utils = JumperCube.Utils;
+import Keyboard = JumperCube.Keyboard;
 
 // -- Setup --
 
@@ -80,16 +81,6 @@ var objects: JumperCube.GameObject[];
 viewMatrixData.translateZ(-40);
 viewMatrixData.translateX(-15);
 
-var currentlyPressedKeys = {};
-
-function handleKeyDown(event) {
-    currentlyPressedKeys[event.keyCode] = true;
-}
-
-function handleKeyUp(event) {
-    currentlyPressedKeys[event.keyCode] = false;
-}
-
 function init() {
     var gl = webgl.context;
     gl.clearColor(0, 0, 0, 1);
@@ -97,8 +88,7 @@ function init() {
     gl.depthFunc(gl.LEQUAL);
     gl.clearDepth(1.0);
 
-    window.onkeydown = handleKeyDown;
-    window.onkeyup = handleKeyUp;
+    Keyboard.init();
 
     objects = [new JumperCube.GameObject(new JumperCube.CubeMesh(1, 1, 1, webgl.context))];
     position.setPointer(3, DataType.Float, false, 4 * (3 + 3), 0);
