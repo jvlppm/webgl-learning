@@ -1,9 +1,15 @@
-﻿module Jv.Games.WebGL {
+﻿///<reference path="MathHelper.ts" />
+
+module Jv.Games.WebGL {
     import MathHelper = Jv.Games.WebGL.MathHelper;
 
     export class Matrix {
 
         constructor(public data: number[]) {
+            if (data === null)
+                throw new Error("Empty Matrix data");
+            if (data.length != 16)
+                throw new Error("Matrix data length must be 16, not " + data.length);
         }
 
         static Projection(angle: number, a: number, zMin: number, zMax: number): Matrix {

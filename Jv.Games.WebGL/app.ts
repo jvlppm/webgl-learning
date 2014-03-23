@@ -1,4 +1,5 @@
 ///<reference path="Scripts/typings/jquery/jquery.d.ts" />
+///<reference path="Jv.Games.WebGL/Matrix.ts" />
 
 import WebGL = Jv.Games.WebGL;
 import Matrix = Jv.Games.WebGL.Matrix;
@@ -19,7 +20,6 @@ var shaderViewMatrix: WebGL.Uniform;
 var shaderMoveMatrix: WebGL.Uniform;
 
 var projMatrixData = Matrix.Identity();
-var moveMatrixData = Matrix.Identity();
 var viewMatrixData = Matrix.Identity();
 
 function matchWindowSize(canvas: HTMLCanvasElement) {
@@ -76,7 +76,7 @@ function loadWebGL() {
 
 // -- Game --
 
-var cube: JumperCube.CubeMesh;
+var objects: JumperCube.GameObject[];
 viewMatrixData.translateZ(-40);
 viewMatrixData.translateX(-15);
 
@@ -100,7 +100,7 @@ function init() {
     window.onkeydown = handleKeyDown;
     window.onkeyup = handleKeyUp;
 
-    cube = new JumperCube.CubeMesh(1, 1, 1, webgl.context);
+    objects = [new JumperCube.GameObject(new JumperCube.CubeMesh(1, 1, 1, webgl.context))];
     position.setPointer(3, DataType.Float, false, 4 * (3 + 3), 0);
     color.setPointer(3, DataType.Float, false, 4 * (3 + 3), 3 * 4);
 }
@@ -108,16 +108,16 @@ function init() {
 function tick(dt: number): void {
     var gl = webgl.context;
 
-    moveMatrixData.rotateZ(dt * -0.005);
-    moveMatrixData.translateX(dt * 0.001);
-
     webgl.clear();
 
     shaderProjectionMatrix.setMatrix4(projMatrixData.data);
     shaderViewMatrix.setMatrix4(viewMatrixData.data);
-    shaderMoveMatrix.setMatrix4(moveMatrixData.data);
 
-    cube.draw();
+    objects.forEach(obj => {
+        obj.update(dt);
+        shaderMoveMatrix.setMatrix4(obj.transform.data);
+        obj.draw(dt);
+    });
 
     gl.flush();
 }
