@@ -6,8 +6,10 @@ import Matrix = Jv.Games.WebGL.Matrix;
 import Mesh = Jv.Games.WebGL.Mesh;
 import MeshRenderMode = Jv.Games.WebGL.MeshRenderMode;
 import DataType = Jv.Games.WebGL.DataType;
+import Vector3 = Jv.Games.WebGL.Vector3;
 import Utils = JumperCube.Utils;
 import Keyboard = JumperCube.Keyboard;
+import Key = JumperCube.Key;
 
 // -- Setup --
 
@@ -29,7 +31,7 @@ function matchWindowSize(canvas: HTMLCanvasElement) {
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        projMatrixData = Matrix.Projection(40, canvas.width / canvas.height, 1, 100);
+        projMatrixData = Matrix.Perspective(40, canvas.width / canvas.height, 1, 100);
     }
     resizeCanvas();
 }
@@ -104,6 +106,18 @@ function tick(dt: number): void {
     shaderViewMatrix.setMatrix4(viewMatrixData.data);
 
     objects.forEach(obj => {
+        if (obj.transform.y > -10)
+            obj.push(new Vector3(0, -9.8, 0));
+        else if (obj.momentum.y <= 0) {
+            obj.momentum.y = 0;
+            obj.transform.y = -10;
+
+            if (Keyboard.isKeyDown(Key.Up))
+                obj.push(new Vector3(0, 10, 0), true, true);
+        }
+
+        document.title = "" + obj.transform.x + ", " + obj.transform.y + ", " + obj.transform.z;
+
         obj.update(dt);
         shaderMoveMatrix.setMatrix4(obj.transform.data);
         obj.draw(dt);
@@ -115,4 +129,4 @@ function tick(dt: number): void {
 loadWebGL()
     .done(init)
     .done(() => Utils.StartTick(tick))
-    .fail(e => alert("Error during setup " + e.message));
+    .fail(e => alert("Error: " + e.message));

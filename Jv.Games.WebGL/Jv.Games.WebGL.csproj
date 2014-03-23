@@ -29,6 +29,7 @@
     <TypeScriptCompile Include="Jv.Games.WebGL\MathHelper.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Matrix.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Mesh.ts" />
+    <TypeScriptCompile Include="Jv.Games.WebGL\Vector3.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\VertexAttribute.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Uniform.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\ShaderProgram.ts" />

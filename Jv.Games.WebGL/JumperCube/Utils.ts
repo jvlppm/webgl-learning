@@ -6,7 +6,7 @@
                 var deltaTime = time - oldTime;
                 oldTime = time;
 
-                tickMethod(deltaTime);
+                tickMethod(deltaTime / 1000);
                 window.requestAnimationFrame(tickLoop);
             };
             tickLoop(0);

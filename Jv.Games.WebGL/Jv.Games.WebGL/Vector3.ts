@@ -1,5 +1,7 @@
 ﻿module Jv.Games.WebGL {
     export class Vector3 {
+        static Zero: Vector3 = new Vector3(0, 0, 0);
+
         private data: Float32Array;
 
         constructor(x: number, y: number, z: number) {
