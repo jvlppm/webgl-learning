@@ -72,7 +72,18 @@ function loadWebGL() {
 // -- Game --
 
 var cube: Mesh;
-viewMatrixData.translateZ(-5);
+viewMatrixData.translateZ(-40);
+viewMatrixData.translateX(-15);
+
+var currentlyPressedKeys = {};
+
+function handleKeyDown(event) {
+    currentlyPressedKeys[event.keyCode] = true;
+}
+
+function handleKeyUp(event) {
+    currentlyPressedKeys[event.keyCode] = false;
+}
 
 function init() {
     var gl = webgl.context;
@@ -80,6 +91,8 @@ function init() {
     gl.enable(gl.DEPTH_TEST);
     gl.depthFunc(gl.LEQUAL);
     gl.clearDepth(1.0);
+    window.onkeydown = handleKeyDown;
+    window.onkeyup = handleKeyUp;
 
     cube = new Mesh(webgl.context);
     //x -> direita
@@ -126,9 +139,11 @@ function init() {
 function draw(dt: number) {
     var gl = webgl.context;
 
-    moveMatrixData.rotateX(dt * 0.0003);
-    moveMatrixData.rotateY(dt * 0.0004);
-    moveMatrixData.rotateZ(dt * 0.0005);
+    //moveMatrixData.rotateX(dt * 0.0003);
+    //moveMatrixData.rotateY(dt * 0.0004);
+    moveMatrixData.rotateZ(dt * -0.005);
+    //if (currentlyPressedKeys[32])
+        moveMatrixData.translateX(dt * 0.01);
 
     webgl.clear();
     shaderProjectionMatrix.setMatrix4(projMatrixData.data);

@@ -68,6 +68,14 @@
             m[9] = c * m[9] + s * mv8;
         }
 
+        translateX(t: number) {
+            this.data[12] += t;
+        }
+
+        translateY(t: number) {
+            this.data[13] += t;
+        }
+
         translateZ(t: number) {
             this.data[14] += t;
         }
