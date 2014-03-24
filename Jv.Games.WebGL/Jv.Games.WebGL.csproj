@@ -22,6 +22,7 @@
     <Content Include="app.css" />
     <Content Include="default.htm" />
     <Content Include="packages.config" />
+    <TypeScriptCompile Include="JumperCube\Components\Mover.ts" />
     <TypeScriptCompile Include="JumperCube\CubeMesh.ts" />
     <TypeScriptCompile Include="JumperCube\GameObject.ts" />
     <TypeScriptCompile Include="JumperCube\Keyboard.ts" />

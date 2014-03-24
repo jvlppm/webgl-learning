@@ -10,6 +10,7 @@ import Vector3 = Jv.Games.WebGL.Vector3;
 import Utils = JumperCube.Utils;
 import Keyboard = JumperCube.Keyboard;
 import Key = JumperCube.Key;
+import Mover = JumperCube.Components.Mover;
 
 // -- Setup --
 
@@ -91,9 +92,13 @@ function init() {
 
     Keyboard.init();
 
-    objects = [new JumperCube.GameObject(new JumperCube.CubeMesh(1, 1, 1, webgl.context))];
-    position.setPointer(3, DataType.Float, false, 4 * (3 + 3), 0);
-    color.setPointer(3, DataType.Float, false, 4 * (3 + 3), 3 * 4);
+    objects = [];
+    objects.push(new JumperCube.GameObject(new JumperCube.CubeMesh(1, 1, 1, webgl.context)));
+        objects[0].components.push(new Mover(objects[0], new Vector3(0, -9.8, 0), true, true));
+    objects[0].components.push(new Mover(objects[0], new Vector3(1, 0, 0), true, false));
+
+    objects.push(new JumperCube.GameObject(new JumperCube.CubeMesh(30, 0.25, 1, webgl.context)));
+    objects[1].transform.translateY(-10.5 - 0.125);
 }
 
 function tick(dt: number): void {
@@ -104,34 +109,42 @@ function tick(dt: number): void {
     shaderProjectionMatrix.setMatrix4(projMatrixData.data);
     shaderViewMatrix.setMatrix4(viewMatrixData.data);
 
+    move(objects[0]);
+
     objects.forEach(obj => {
-        if (obj.transform.y > -10)
-            obj.push(new Vector3(0, -9.8, 0));
-        else if (obj.momentum.y <= 0) {
-            obj.momentum.y = 0;
-            obj.transform.y = -10;
-
-            if (Keyboard.isKeyDown(Key.Up))
-                obj.push(new Vector3(0, 5, 0), true, true);
-        }
-
-        //if (Keyboard.isKeyDown(Key.Up))
-        //    obj.push(new Vector3(0, 10, 0));
-        //if (Keyboard.isKeyDown(Key.Down))
-        //    obj.push(new Vector3(0, -10, 0));
-        if (Keyboard.isKeyDown(Key.Right))
-            obj.push(new Vector3(10, 0, 0));
-        if (Keyboard.isKeyDown(Key.Left))
-            obj.push(new Vector3(-10, 0, 0));
-
-        document.title = "" + obj.transform.x + ", " + obj.transform.y + ", " + obj.transform.z;
-
         obj.update(dt);
-        shaderMoveMatrix.setMatrix4(obj.transform.data);
-        obj.draw(dt);
+        draw(obj);
     });
 
     gl.flush();
+}
+
+function draw(gameObject: JumperCube.GameObject) {
+    var gl = webgl.context;
+
+    shaderMoveMatrix.setMatrix4(gameObject.transform.data);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, gameObject.mesh.vertexBuffer);
+    position.setPointer(3, DataType.Float, false, 4 * (3 + 3), 0);
+    color.setPointer(3, DataType.Float, false, 4 * (3 + 3), 3 * 4);
+
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gameObject.mesh.indexBuffer);
+    gl.drawElements(gameObject.mesh.renderModeId, gameObject.mesh.elementCount, gl.UNSIGNED_SHORT, 0);
+}
+
+function move(obj: JumperCube.GameObject) {
+    if (obj.momentum.y <= 0 && obj.transform.y <= -10) {
+        obj.momentum.y = 0;
+        obj.transform.y = -10;
+
+        if (Keyboard.isKeyDown(Key.Up))
+            obj.push(new Vector3(0, 5, 0), true, true);
+    }
+
+    if (Keyboard.isKeyDown(Key.Right))
+        obj.push(new Vector3(10, 0, 0));
+    if (Keyboard.isKeyDown(Key.Left))
+        obj.push(new Vector3(-10, 0, 0));
 }
 
 loadWebGL()

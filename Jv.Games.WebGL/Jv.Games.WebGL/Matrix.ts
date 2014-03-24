@@ -34,8 +34,8 @@ module Jv.Games.WebGL {
 
         static Zero() {
             return new Matrix([0, 0, 0, 0,
-                0, 1, 0, 0,
-                0, 0, 1, 0,
+                0, 0, 0, 0,
+                0, 0, 0, 0,
                 0, 0, 0, 0]);
         }
 
