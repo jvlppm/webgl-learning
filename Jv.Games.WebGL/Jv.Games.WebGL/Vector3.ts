@@ -3,36 +3,47 @@
         static Zero: Vector3 = new Vector3(0, 0, 0);
 
         private data: Float32Array;
+        private startIndex: number;
 
-        constructor(x: number, y: number, z: number) {
-            this.data = new Float32Array(3);
-            this.data[0] = x;
-            this.data[1] = y;
-            this.data[2] = z;
+        constructor(data: Float32Array, startIndex: number);
+        constructor(x: number, y: number, z: number);
+
+        constructor(a1, a2, a3?) {
+            if (typeof a1 === "number") {
+                this.data = new Float32Array(3);
+                this.data[0] = a1;
+                this.data[1] = a2;
+                this.data[2] = a3;
+                this.startIndex = 0;
+            }
+            else {
+                this.data = a1;
+                this.startIndex = a2;
+            }
         }
 
         get x() {
-            return this.data[0];
+            return this.data[this.startIndex + 0];
         }
 
         get y() {
-            return this.data[1];
+            return this.data[this.startIndex + 1];
         }
 
         get z() {
-            return this.data[2];
+            return this.data[this.startIndex + 2];
         }
 
         set x(value: number) {
-            this.data[0] = value;
+            this.data[this.startIndex + 0] = value;
         }
 
         set y(value: number) {
-            this.data[1] = value;
+            this.data[this.startIndex + 1] = value;
         }
 
         set z(value: number) {
-            this.data[2] = value;
+            this.data[this.startIndex + 2] = value;
         }
 
         add(vector: Vector3): Vector3 {

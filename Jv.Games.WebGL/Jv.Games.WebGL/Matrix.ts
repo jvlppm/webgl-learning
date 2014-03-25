@@ -5,11 +5,14 @@ module Jv.Games.WebGL {
 
     export class Matrix {
 
-        constructor(public data: number[]) {
+        position: Vector3;
+
+        constructor(public data: Float32Array) {
             if (data === null)
                 throw new Error("Empty Matrix data");
             if (data.length != 16)
                 throw new Error("Matrix data length must be 16, not " + data.length);
+            this.position = new Vector3(this.data, 12);
         }
 
         static Perspective(fovy, aspect, near, far) : Matrix {
@@ -24,26 +27,34 @@ module Jv.Games.WebGL {
             var height = (top - bottom);
             var zNear2 = 2 * zNear;
 
-            return new Matrix([
+            return new Matrix(new Float32Array([
                 2 * zNear / dir, 0, (right + left) / dir, 0,
                 0, zNear2 / height, (top + bottom) / height, 0,
                 0, 0, -(zFar + zNear) / zDelta, -zNear2 * zFar / zDelta,
                 0, 0, -1, 0
-            ]);
+            ]));
         }
 
         static Zero() {
-            return new Matrix([0, 0, 0, 0,
+            return new Matrix(new Float32Array(
+                [0, 0, 0, 0,
                 0, 0, 0, 0,
                 0, 0, 0, 0,
-                0, 0, 0, 0]);
+                0, 0, 0, 0]));
         }
 
         static Identity() {
-            return new Matrix([1, 0, 0, 0,
-                               0, 1, 0, 0,
-                               0, 0, 1, 0,
-                               0, 0, 0, 1]);
+            return new Matrix(new Float32Array(
+                [1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1]));
+        }
+
+        clone(): Matrix {
+            var clonedBuffer = new Float32Array(this.data.length);
+            clonedBuffer.set(this.data);
+            return new Matrix(clonedBuffer);
         }
 
         get x() {

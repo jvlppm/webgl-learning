@@ -58,7 +58,12 @@ module JumperCube {
                 this.instantaneousAcceleration = this.instantaneousAcceleration.add(force);
         }
 
-        draw(shader: ShaderProgram) {
+        draw(shader: ShaderProgram, baseTransform?: Matrix) {
+            if (typeof baseTransform === "undefined")
+                baseTransform = Matrix.Identity();
+            else {
+                //TODO: multiply baseTransform * this.transform, and pass it down multiplied
+            }
             shader.getUniform("Mmatrix").setMatrix4(this.transform.data);
             this.mesh.draw(shader);
         }
