@@ -16,12 +16,9 @@ import Mover = JumperCube.Components.Mover;
 
 var webgl: WebGL.WebGL;
 
-var color: WebGL.VertexAttribute;
-var position: WebGL.VertexAttribute;
-
+var shaderProgram: WebGL.ShaderProgram;
 var shaderProjectionMatrix: WebGL.Uniform;
 var shaderViewMatrix: WebGL.Uniform;
-var shaderMoveMatrix: WebGL.Uniform;
 
 var projMatrixData = Matrix.Identity();
 var viewMatrixData = Matrix.Identity();
@@ -45,7 +42,7 @@ function loadWebGL() {
         matchWindowSize(canvas);
 
         webgl = WebGL.WebGL.fromCanvas(canvas);
-        var shaderProgram = webgl.createShaderProgram();
+        shaderProgram = webgl.createShaderProgram();
 
         var loadShader = function (name: string, type: WebGL.ShaderType) {
             return $.ajax("Shaders/" + name + ".glsl.txt", { dataType: "text" })
@@ -59,19 +56,18 @@ function loadWebGL() {
         .done(() => {
             try {
                 shaderProgram.link();
-
-                color = shaderProgram.getVertexAttribute("color");
-                position = shaderProgram.getVertexAttribute("position");
+                shaderProgram.enableVertexAttribute("color");
+                shaderProgram.enableVertexAttribute("position");
 
                 shaderProjectionMatrix = shaderProgram.getUniform("Pmatrix");
                 shaderViewMatrix = shaderProgram.getUniform("Vmatrix");
-                shaderMoveMatrix = shaderProgram.getUniform("Mmatrix");
-
                 shaderProgram.use();
 
                 result.resolve();
             }
-            catch (E) { result.reject(E); }
+            catch (E) {
+                result.reject(E);
+            }
         });
     });
 
@@ -99,6 +95,8 @@ function init() {
 
     objects.push(new JumperCube.GameObject(new JumperCube.CubeMesh(30, 0.25, 1, webgl.context)));
     objects[1].transform.translateY(-10.5 - 0.125);
+
+    Utils.StartTick(tick);
 }
 
 function tick(dt: number): void {
@@ -113,23 +111,10 @@ function tick(dt: number): void {
 
     objects.forEach(obj => {
         obj.update(dt);
-        draw(obj);
+        obj.draw(shaderProgram);
     });
 
     gl.flush();
-}
-
-function draw(gameObject: JumperCube.GameObject) {
-    var gl = webgl.context;
-
-    shaderMoveMatrix.setMatrix4(gameObject.transform.data);
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, gameObject.mesh.vertexBuffer);
-    position.setPointer(3, DataType.Float, false, 4 * (3 + 3), 0);
-    color.setPointer(3, DataType.Float, false, 4 * (3 + 3), 3 * 4);
-
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gameObject.mesh.indexBuffer);
-    gl.drawElements(gameObject.mesh.renderModeId, gameObject.mesh.elementCount, gl.UNSIGNED_SHORT, 0);
 }
 
 function move(obj: JumperCube.GameObject) {
@@ -147,7 +132,6 @@ function move(obj: JumperCube.GameObject) {
         obj.push(new Vector3(-10, 0, 0));
 }
 
-loadWebGL()
-    .done(init)
-    .done(() => Utils.StartTick(tick))
-    .fail(e => alert("Error: " + e.message));
+var loadTask = loadWebGL();
+loadTask.fail(e => alert("Error: " + e.message));
+loadTask.done(init);

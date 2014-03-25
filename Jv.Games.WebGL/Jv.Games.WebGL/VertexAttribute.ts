@@ -8,6 +8,11 @@
 		Float
     }
 
+    export class AttributeDefinition {
+        constructor(public size: number, public type: DataType, public normalized: boolean, public stride: number, public offset: number) {
+        }
+    }
+
     export class VertexAttribute {
         context: WebGLRenderingContext;
         program: WebGLProgram;

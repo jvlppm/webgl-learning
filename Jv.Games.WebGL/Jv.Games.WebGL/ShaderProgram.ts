@@ -30,13 +30,18 @@
             gl.useProgram(this.program);
         }
 
-        getVertexAttribute(name: string, enable: boolean = true): VertexAttribute {
+        enableVertexAttribute(name: string) {
+            var attribute = this.getVertexAttribute(name);
+            attribute.enable();
+        }
+
+        getVertexAttribute(name: string): VertexAttribute {
             var gl = this.webgl.context;
 
             var index = this.getAttribLocation(name);
+            if (index < 0)
+                throw new Error("Shader attributes named " + name + " not found");
             var vertexAttribute = new VertexAttribute(this, index);
-            if (enable)
-                vertexAttribute.enable();
             return vertexAttribute;
         }
 

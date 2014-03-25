@@ -9,9 +9,12 @@
         indexBuffer: WebGLBuffer;
         elementCount: number;
         renderModeId: number;
+        attributes: { [name: string]: AttributeDefinition };
+
 
         constructor(public context: WebGLRenderingContext, private mode: MeshRenderMode = MeshRenderMode.TriangleStrip) {
             this.renderModeId = this.getModeTypeId(mode);
+            this.attributes = {};
         }
 
         set vertex(data: number[]) {
@@ -19,7 +22,6 @@
             this.vertexBuffer = this.context.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
             gl.bufferData(gl.ARRAY_BUFFER, <any>new Float32Array(data), gl.STATIC_DRAW);
-            //gl.bufferSubData(gl.ARRAY_BUFFER, 0, new Float32Array(data));
         }
 
         set index(data: number[]) {
@@ -27,7 +29,6 @@
             this.indexBuffer = this.context.createBuffer();
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
             gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, <any>new Uint16Array(data), gl.STATIC_DRAW);
-            //gl.bufferSubData(gl.ELEMENT_ARRAY_BUFFER, 0, new Uint16Array(data));
             this.elementCount = data.length;
         }
 
@@ -42,6 +43,22 @@
                 default:
                     throw new Error("Unknown render mode " + mode);
             }
+        }
+
+        draw(shader: ShaderProgram) {
+            var gl = this.context;
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+
+            for (var name in this.attributes) {
+                var attrib = shader.getVertexAttribute(name);
+                if (attrib != null) {
+                    var info = this.attributes[name];
+                    attrib.setPointer(info.size, info.type, info.normalized, info.stride, info.offset);
+                }
+            }
+
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+            gl.drawElements(this.renderModeId, this.elementCount, gl.UNSIGNED_SHORT, 0);
         }
     }
 }

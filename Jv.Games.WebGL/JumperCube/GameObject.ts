@@ -6,6 +6,7 @@ module JumperCube {
     import Mesh = Jv.Games.WebGL.Mesh;
     import Matrix = Jv.Games.WebGL.Matrix;
     import Vector3 = Jv.Games.WebGL.Vector3;
+    import ShaderProgram = Jv.Games.WebGL.ShaderProgram;
 
     export var MeterSize = 3;
 
@@ -55,6 +56,11 @@ module JumperCube {
                 this.acceleration = this.acceleration.add(force);
             else
                 this.instantaneousAcceleration = this.instantaneousAcceleration.add(force);
+        }
+
+        draw(shader: ShaderProgram) {
+            shader.getUniform("Mmatrix").setMatrix4(this.transform.data);
+            this.mesh.draw(shader);
         }
     }
 }
