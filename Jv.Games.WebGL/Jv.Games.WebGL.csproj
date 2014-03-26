@@ -28,7 +28,7 @@
     <TypeScriptCompile Include="JumperCube\Keyboard.ts" />
     <TypeScriptCompile Include="JumperCube\Utils.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\MathHelper.ts" />
-    <TypeScriptCompile Include="Jv.Games.WebGL\Matrix.ts" />
+    <TypeScriptCompile Include="Jv.Games.WebGL\Matrix4.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Mesh.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Vector3.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\VertexAttribute.ts" />

@@ -1,8 +1,8 @@
 ///<reference path="Scripts/typings/jquery/jquery.d.ts" />
-///<reference path="Jv.Games.WebGL/Matrix.ts" />
+///<reference path="Jv.Games.WebGL/Matrix4.ts" />
 
 import WebGL = Jv.Games.WebGL;
-import Matrix = Jv.Games.WebGL.Matrix;
+import Matrix4 = Jv.Games.WebGL.Matrix4;
 import Mesh = Jv.Games.WebGL.Mesh;
 import MeshRenderMode = Jv.Games.WebGL.MeshRenderMode;
 import DataType = Jv.Games.WebGL.DataType;
@@ -20,8 +20,7 @@ var shaderProgram: WebGL.ShaderProgram;
 var shaderProjectionMatrix: WebGL.Uniform;
 var shaderViewMatrix: WebGL.Uniform;
 
-var projMatrixData = Matrix.Identity();
-var viewMatrixData = Matrix.Identity();
+var projMatrix= Matrix4.Identity();
 
 function matchWindowSize(canvas: HTMLCanvasElement) {
     window.addEventListener('resize', resizeCanvas, false);
@@ -29,7 +28,7 @@ function matchWindowSize(canvas: HTMLCanvasElement) {
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        projMatrixData = Matrix.Perspective(40, canvas.width / canvas.height, 1, 100);
+        projMatrix = Matrix4.Perspective(40, canvas.width / canvas.height, 1, 100);
     }
     resizeCanvas();
 }
@@ -77,7 +76,6 @@ function loadWebGL() {
 // -- Game --
 
 var objects: JumperCube.GameObject[];
-viewMatrixData.translateZ(-20);
 
 function init() {
     var gl = webgl.context;
@@ -88,13 +86,14 @@ function init() {
 
     Keyboard.init();
 
-    objects = [];
-    objects.push(new JumperCube.GameObject(new JumperCube.CubeMesh(1, 1, 1, webgl.context)));
-        objects[0].components.push(new Mover(objects[0], new Vector3(0, -9.8, 0), true, true));
-    objects[0].components.push(new Mover(objects[0], new Vector3(1, 0, 0), true, false));
+    var platform = new JumperCube.GameObject(new JumperCube.CubeMesh(30, 0.25, 5, webgl.context));
+    platform.transform = platform.transform.translate(new Vector3(0, -10.5 - 0.125, 0));
 
-    objects.push(new JumperCube.GameObject(new JumperCube.CubeMesh(30, 0.25, 1, webgl.context)));
-    objects[1].transform.translateY(-10.5 - 0.125);
+    var jumperCube = new JumperCube.GameObject(new JumperCube.CubeMesh(1, 1, 1, webgl.context));
+    jumperCube.components.push(new Mover(jumperCube, new Vector3(0, -9.8, 0), true, true));
+    jumperCube.components.push(new Mover(jumperCube, new Vector3(1, 0, 0), true, false));
+
+    objects = [jumperCube, platform];
 
     Utils.StartTick(tick);
 }
@@ -104,8 +103,9 @@ function tick(dt: number): void {
 
     webgl.clear();
 
-    shaderProjectionMatrix.setMatrix4(projMatrixData.data);
-    shaderViewMatrix.setMatrix4(viewMatrixData.data);
+    shaderProjectionMatrix.setMatrix4(projMatrix.data);
+    var cam = Matrix4.LookAt(new Vector3(0, 0, 20), objects[0].transform.position);
+    shaderViewMatrix.setMatrix4(cam.data);
 
     move(objects[0]);
 

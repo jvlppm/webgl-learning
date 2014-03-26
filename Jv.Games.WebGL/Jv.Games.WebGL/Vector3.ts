@@ -53,11 +53,47 @@
                 this.z + vector.z);
         }
 
-        scale(value: number) {
+        sub(vector: Vector3): Vector3 {
+            return new Vector3(
+                this.x - vector.x,
+                this.y - vector.y,
+                this.z - vector.z);
+        }
+
+        scale(value: number): Vector3 {
             return new Vector3(
                 this.x * value,
                 this.y * value,
                 this.z * value);
+        }
+
+        divide(value: number): Vector3 {
+            return new Vector3(
+                this.x / value,
+                this.y / value,
+                this.z / value);
+        }
+
+        length() {
+            return Math.sqrt(
+                this.x * this.x +
+                this.y * this.y +
+                this.z * this.z)
+        }
+
+        normalize(): Vector3 {
+            var len = this.length();
+            if (len == 0.0)
+                throw new Error("A vector with no direction can't be normalized");
+
+            return new Vector3(this.x / len, this.y / len, this.z / len);
+        }
+
+        cross(other: Vector3): Vector3 {
+            var xResult = this.y * other.z - this.z * other.y;
+            var yResult = this.z * other.x - this.x * other.z;
+            var zResult = this.x * other.y - this.y * other.x;
+            return new Vector3(xResult, yResult, zResult);
         }
     }
 } 
