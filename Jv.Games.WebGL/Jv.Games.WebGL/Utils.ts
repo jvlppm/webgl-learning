@@ -1,4 +1,4 @@
-﻿module JumperCube {
+﻿module Jv.Games.WebGL {
     export class Utils {
         static StartTick(tickMethod: (dt: number) => void) {
             var oldTime = 0;

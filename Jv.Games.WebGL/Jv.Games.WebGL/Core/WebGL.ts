@@ -1,5 +1,7 @@
-﻿module Jv.Games.WebGL {
-    import ShaderProgram = Jv.Games.WebGL.ShaderProgram;
+﻿///<reference path="ShaderProgram.ts" />
+
+module Jv.Games.WebGL.Core {
+    import ShaderProgram = Jv.Games.WebGL.Core.ShaderProgram;
 
     export class WebGL {
         static fromCanvas(canvas: HTMLCanvasElement) {

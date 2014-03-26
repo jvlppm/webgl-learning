@@ -1,9 +1,10 @@
 ﻿///<reference path="../Jv.Games.WebGL/Mesh.ts" />
-///<reference path="../Jv.Games.WebGL/VertexAttribute.ts" />
+///<reference path="../Jv.Games.WebGL/Core/VertexAttribute.ts" />
 
 module JumperCube {
     import WebGL = Jv.Games.WebGL;
     import AttributeDefinition = Jv.Games.WebGL.AttributeDefinition;
+    import DataType = Jv.Games.WebGL.Core.DataType;
 
     export class CubeMesh extends WebGL.Mesh {
         constructor(width: number, height: number, depth: number, context: WebGLRenderingContext) {

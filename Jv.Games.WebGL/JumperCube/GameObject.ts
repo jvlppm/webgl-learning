@@ -6,7 +6,7 @@ module JumperCube {
     import Mesh = Jv.Games.WebGL.Mesh;
     import Matrix4 = Jv.Games.WebGL.Matrix4;
     import Vector3 = Jv.Games.WebGL.Vector3;
-    import ShaderProgram = Jv.Games.WebGL.ShaderProgram;
+    import ShaderProgram = Jv.Games.WebGL.Core.ShaderProgram;
 
     export var MeterSize = 3;
 
@@ -46,6 +46,11 @@ module JumperCube {
             this.momentum = this.momentum.add(accellSecs);
 
             this.instantaneousAcceleration = this.acceleration = Vector3.Zero;
+        }
+
+        add<Arguments>(componentType: { new (gameObject: GameObject, args?: Arguments): Component }, args?: Arguments) {
+            var component = new componentType(this, args);
+            this.components.push(component);
         }
 
         push(force: Vector3, instantaneous: boolean = false, acceleration: boolean = false) {

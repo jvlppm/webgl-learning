@@ -1,6 +1,4 @@
-﻿module Jv.Games.WebGL {
-    import Uniform = Jv.Games.WebGL.Uniform;
-    import VertexAttribute = Jv.Games.WebGL.VertexAttribute;
+﻿module Jv.Games.WebGL.Core {
 
     export enum ShaderType {
         Vertex,

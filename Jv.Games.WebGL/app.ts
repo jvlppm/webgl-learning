@@ -1,24 +1,21 @@
 ///<reference path="Scripts/typings/jquery/jquery.d.ts" />
-///<reference path="Jv.Games.WebGL/Matrix4.ts" />
 
-import WebGL = Jv.Games.WebGL;
+import WebGL = Jv.Games.WebGL.Core.WebGL;
+import ShaderType = Jv.Games.WebGL.Core.ShaderType;
 import Matrix4 = Jv.Games.WebGL.Matrix4;
-import Mesh = Jv.Games.WebGL.Mesh;
-import MeshRenderMode = Jv.Games.WebGL.MeshRenderMode;
-import DataType = Jv.Games.WebGL.DataType;
 import Vector3 = Jv.Games.WebGL.Vector3;
-import Utils = JumperCube.Utils;
-import Keyboard = JumperCube.Keyboard;
-import Key = JumperCube.Key;
+import Utils = Jv.Games.WebGL.Utils;
+import Keyboard = Jv.Games.WebGL.Keyboard;
+import Key = Jv.Games.WebGL.Key;
 import Mover = JumperCube.Components.Mover;
 
 // -- Setup --
 
-var webgl: WebGL.WebGL;
+var webgl: WebGL;
 
-var shaderProgram: WebGL.ShaderProgram;
-var shaderProjectionMatrix: WebGL.Uniform;
-var shaderViewMatrix: WebGL.Uniform;
+var shaderProgram: WebGL.Core.ShaderProgram;
+var shaderProjectionMatrix: WebGL.Core.Uniform;
+var shaderViewMatrix: WebGL.Core.Uniform;
 
 var projMatrix= Matrix4.Identity();
 
@@ -40,17 +37,17 @@ function loadWebGL() {
         var canvas = <HTMLCanvasElement>document.getElementById("canvas-element-id");
         matchWindowSize(canvas);
 
-        webgl = WebGL.WebGL.fromCanvas(canvas);
+        webgl = WebGL.fromCanvas(canvas);
         shaderProgram = webgl.createShaderProgram();
 
-        var loadShader = function (name: string, type: WebGL.ShaderType) {
+        var loadShader = function (name: string, type: WebGL.Core.ShaderType) {
             return $.ajax("Shaders/" + name + ".glsl.txt", { dataType: "text" })
                 .then(source => shaderProgram.addShader(type, source));
         };
 
         return $.when(
-            loadShader("vertexShader", WebGL.ShaderType.Vertex),
-            loadShader("fragmentShader", WebGL.ShaderType.Fragment))
+            loadShader("vertexShader", ShaderType.Vertex),
+            loadShader("fragmentShader", ShaderType.Fragment))
         .fail(result.reject)
         .done(() => {
             try {
@@ -90,8 +87,8 @@ function init() {
     platform.transform = platform.transform.translate(new Vector3(0, -10.5 - 0.125, 0));
 
     var jumperCube = new JumperCube.GameObject(new JumperCube.CubeMesh(1, 1, 1, webgl.context));
-    jumperCube.components.push(new Mover(jumperCube, new Vector3(0, -9.8, 0), true, true));
-    jumperCube.components.push(new Mover(jumperCube, new Vector3(1, 0, 0), true, false));
+    jumperCube.add(Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
+    jumperCube.add(Mover, { direction: new Vector3(1, 0, 0), acceleration: true, continuous: false });
 
     objects = [jumperCube, platform];
 

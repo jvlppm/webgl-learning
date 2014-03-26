@@ -4,6 +4,11 @@
         TriangleStrip
     }
 
+    export class AttributeDefinition {
+        constructor(public size: number, public type: Jv.Games.WebGL.Core.DataType, public normalized: boolean, public stride: number, public offset: number) {
+        }
+    }
+
     export class Mesh {
         vertexBuffer: WebGLBuffer;
         indexBuffer: WebGLBuffer;
@@ -11,8 +16,7 @@
         renderModeId: number;
         attributes: { [name: string]: AttributeDefinition };
 
-
-        constructor(public context: WebGLRenderingContext, private mode: MeshRenderMode = MeshRenderMode.TriangleStrip) {
+        constructor(public context: WebGLRenderingContext, private mode: MeshRenderMode = MeshRenderMode.Triangles) {
             this.renderModeId = this.getModeTypeId(mode);
             this.attributes = {};
         }
@@ -45,7 +49,7 @@
             }
         }
 
-        draw(shader: ShaderProgram) {
+        draw(shader: Core.ShaderProgram) {
             var gl = this.context;
             gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
 

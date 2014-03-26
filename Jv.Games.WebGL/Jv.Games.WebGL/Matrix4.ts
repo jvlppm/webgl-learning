@@ -1,8 +1,4 @@
-﻿///<reference path="MathHelper.ts" />
-
-module Jv.Games.WebGL {
-    import MathHelper = Jv.Games.WebGL.MathHelper;
-
+﻿module Jv.Games.WebGL {
     export class Matrix4 {
 
         position: Vector3;

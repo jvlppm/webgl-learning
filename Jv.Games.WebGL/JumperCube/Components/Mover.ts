@@ -8,13 +8,13 @@ module JumperCube.Components {
     export class Mover extends Component {
         private apply: boolean = true;
 
-        constructor(gameObject: GameObject, public direction: Vector3, public acceleration: boolean = false, private continuous: boolean = false) {
+        constructor(gameObject: GameObject, public args: { direction: Vector3; acceleration: boolean; continuous: boolean }) {
             super(gameObject);
         }
 
         update(deltaTime: number) {
-            if (this.apply || this.continuous) {
-                this.gameObject.push(this.direction, !this.continuous, this.acceleration);
+            if (this.apply || this.args.continuous) {
+                this.gameObject.push(this.args.direction, !this.args.continuous, this.args.acceleration);
                 this.apply = false;
             }
         }

@@ -1,4 +1,4 @@
-﻿module Jv.Games.WebGL {
+﻿module Jv.Games.WebGL.Core {
     export class Uniform {
         context: WebGLRenderingContext;
         program: WebGLProgram;

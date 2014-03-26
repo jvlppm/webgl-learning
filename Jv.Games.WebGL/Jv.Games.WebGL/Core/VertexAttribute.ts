@@ -1,4 +1,4 @@
-﻿module Jv.Games.WebGL {
+﻿module Jv.Games.WebGL.Core {
     export enum DataType {
         Byte,
         UnsignedByte,
@@ -6,11 +6,6 @@
         UnsignedShort,
         Fixed,
 		Float
-    }
-
-    export class AttributeDefinition {
-        constructor(public size: number, public type: DataType, public normalized: boolean, public stride: number, public offset: number) {
-        }
     }
 
     export class VertexAttribute {

@@ -1,4 +1,4 @@
-﻿module JumperCube {
+﻿module Jv.Games.WebGL {
     export enum Key {
         Left = 37,
         Up = 38,
