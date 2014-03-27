@@ -9,6 +9,7 @@ import Utils = Jv.Games.WebGL.Utils;
 import Keyboard = Jv.Games.WebGL.Keyboard;
 import Key = Jv.Games.WebGL.Key;
 import Mover = JumperCube.Behaviors.Mover;
+import Camera = Jv.Games.WebGL.Camera;
 
 // -- Setup --
 
@@ -20,7 +21,8 @@ var shaderProgram: WebGL.Core.ShaderProgram;
 var shaderProjectionMatrix: WebGL.Core.Uniform;
 var shaderViewMatrix: WebGL.Core.Uniform;
 
-var projMatrix= Matrix4.Identity();
+//var projMatrix = Matrix4.Identity();
+
 
 function matchWindowSize(canvas: HTMLCanvasElement) {
     window.addEventListener('resize', resizeCanvas, false);
@@ -28,7 +30,8 @@ function matchWindowSize(canvas: HTMLCanvasElement) {
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        projMatrix = Matrix4.Perspective(40, canvas.width / canvas.height, 1, 100);
+        camera = Camera.Perspective(40, canvas.width / canvas.height, 1, 100);
+        //projMatrix = Matrix4.Perspective(40, canvas.width / canvas.height, 1, 100);
     }
     resizeCanvas();
 }
@@ -70,12 +73,13 @@ function loadWebGL() {
         });
     });
 
-    return result.promise();
+    return result;
 }
 
 // -- Game --
 
-var objects: Jv.Games.WebGL.GameObject[];
+var scene = new Jv.Games.WebGL.Scene();
+var camera: Camera;
 
 function init() {
     var gl = webgl.context;
@@ -93,7 +97,8 @@ function init() {
     jumperCube.add(Mover, { direction: new Vector3(0, -9.8 , 0), acceleration: true, continuous: true });
     jumperCube.add(Mover, { direction: new Vector3(1, 0, 0), acceleration: true, continuous: false });
 
-    objects = [jumperCube, platform];
+    scene.add(jumperCube);
+    scene.add(platform);
 
     Utils.StartTick(tick);
 }
@@ -103,16 +108,13 @@ function tick(dt: number): void {
 
     webgl.clear();
 
-    shaderProjectionMatrix.setMatrix4(projMatrix.data);
-    var cam = Matrix4.LookAt(new Vector3(0, 0, 20), objects[0].transform.position);
-    shaderViewMatrix.setMatrix4(cam.data);
+    shaderProjectionMatrix.setMatrix4(camera.projection.data);
+    shaderViewMatrix.setMatrix4(Matrix4.LookAt(new Vector3(0, 0, 20), scene.objects[0].transform.position).data);
 
-    move(objects[0]);
+    //move(scene.objects[0]);
 
-    objects.forEach(obj => {
-        obj.update(dt);
-        obj.draw(shaderProgram);
-    });
+    scene.update(dt);
+    scene.draw(shaderProgram);
 
     gl.flush();
 }

@@ -1,4 +1,5 @@
-﻿///<reference path="Mesh.ts" />
+﻿///<reference path="Behavior.ts" />
+///<reference path="Mesh.ts" />
 ///<reference path="Matrix4.ts" />
 ///<reference path="Vector3.ts" />
 
@@ -7,39 +8,17 @@ module Jv.Games.WebGL {
 
     export var MeterSize = 1;
 
-    export interface IUpdateable {
-        update(deltatime: number);
-    }
-
-    export class Behavior implements IUpdateable {
-        constructor(public gameObject: GameObject) { }
-
-        update(deltaTime: number) { }
-
-        static GetName<Type extends Behavior>(type: { new (o: GameObject, args?): Type }) {
-            var ret = type.toString();
-            ret = ret.substr('function '.length);
-            ret = ret.substr(0, ret.indexOf('('));
-            return ret;
-        }
-    }
-
-    class AttachedBehavior<Type extends Behavior> {
-        constructor(public type: { new (o: GameObject, args?): Type }, public instance: Type) { }
-    }
-
-    export class GameObject implements IUpdateable {
+    export class GameObject extends BehaviorCollection<GameObject> {
         transform: Matrix4;
         private acceleration: Vector3;
         private instantaneousAcceleration: Vector3;
         public momentum: Vector3;
-        private behaviors: AttachedBehavior<Behavior>[];
         public children: GameObject[];
 
         constructor(public mesh: Mesh, public mass: number = 1)
         {
+            super();
             this.children = [];
-            this.behaviors = [];
             this.transform = Matrix4.Identity();
             this.acceleration = Vector3.Zero;
             this.instantaneousAcceleration = Vector3.Zero;
@@ -47,7 +26,7 @@ module Jv.Games.WebGL {
         }
 
         update(deltaTime: number) {
-            this.behaviors.forEach(c => c.instance.update(deltaTime));
+            super.update(deltaTime);
 
             var accellSecs = this.acceleration.scale(deltaTime);
             this.momentum = this.momentum.add(this.instantaneousAcceleration);
@@ -61,31 +40,14 @@ module Jv.Games.WebGL {
         }
 
         add(child: GameObject);
-        add<Type extends Behavior, Arguments>(behaviorType: { new (gameObject: GameObject, args?: Arguments): Type }, args?: Arguments);
+        add<Type extends Behavior<GameObject>, Arguments>(behaviorType: { new (object: GameObject, args?: Arguments): Type }, args?: Arguments);
         add(item, args?) {
             if (typeof item === "function") {
-                var bh = new item(this, args);
-                this.behaviors.push(new AttachedBehavior(item, bh));
+                super.add(item, args);
             }
             else {
                 this.children.push(item);
             }
-        }
-
-        getBehavior<Type extends Behavior>(behaviorType: { new (gameObject: GameObject, args?): Type }): Type[]{
-            var bh = this.getBehaviors(behaviorType);
-            if (bh.length == 0)
-                throw new Error("No behavior of type " + Behavior.GetName(behaviorType) + " was found.");
-            if (bh.length > 1)
-                throw new Error("Multiple behaviors of type " + Behavior.GetName(behaviorType) + " were found.");
-
-            return <any>bh[0];
-        }
-
-        getBehaviors<Type extends Behavior>(behaviorType: { new (gameObject: GameObject, args?): Type }): Type[] {
-            return this.behaviors
-                .filter(e => e.type === behaviorType)
-                .map(e => <any>e.instance);
         }
 
         push(force: Vector3, instantaneous: boolean = false, acceleration: boolean = false) {
