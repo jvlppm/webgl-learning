@@ -46,7 +46,7 @@
         getUniform(name: string): Uniform {
             var gl = this.webgl.context;
             var location = this.getUniformLocation(name);
-            if (location === null)
+            if (typeof location === "undefined")
                 throw new Error("Uniform location not found: " + name);
 
             return new Uniform(this, location);
@@ -62,6 +62,13 @@
         getUniformLocation(name: string) {
             var gl = this.webgl.context;
             return gl.getUniformLocation(this.program, name);
+        }
+
+        setUniform(name: string, value: Matrix4) {
+            var gl = this.webgl.context;
+            var uniformLocation = gl.getUniformLocation(this.program, name);
+            if (typeof uniformLocation !== "undefined")
+                gl.uniformMatrix4fv(uniformLocation, false, value.data);
         }
 
         //////////
