@@ -10,9 +10,6 @@ module Jv.Games.WebGL {
 
     export class GameObject extends BehaviorCollection<GameObject> {
         transform: Matrix4;
-        private acceleration: Vector3;
-        private instantaneousAcceleration: Vector3;
-        public momentum: Vector3;
         public children: GameObject[];
 
         constructor(public mesh: Mesh, public mass: number = 1)
@@ -20,22 +17,10 @@ module Jv.Games.WebGL {
             super();
             this.children = [];
             this.transform = Matrix4.Identity();
-            this.acceleration = Vector3.Zero;
-            this.instantaneousAcceleration = Vector3.Zero;
-            this.momentum = Vector3.Zero;
         }
 
         update(deltaTime: number) {
             super.update(deltaTime);
-
-            var accellSecs = this.acceleration.scale(deltaTime);
-            this.momentum = this.momentum.add(this.instantaneousAcceleration);
-            var toMove = this.momentum.add(accellSecs.scale(0.5));
-            this.transform = this.transform.translate(toMove.scale(MeterSize * deltaTime));
-            this.momentum = this.momentum.add(accellSecs);
-
-            this.instantaneousAcceleration = this.acceleration = Vector3.Zero;
-
             this.children.forEach(c => c.update(deltaTime));
         }
 
@@ -48,16 +33,6 @@ module Jv.Games.WebGL {
             else {
                 this.children.push(item);
             }
-        }
-
-        push(force: Vector3, instantaneous: boolean = false, acceleration: boolean = false) {
-            if (!acceleration)
-                force = force.divide(this.mass);
-
-            if (!instantaneous)
-                this.acceleration = this.acceleration.add(force);
-            else
-                this.instantaneousAcceleration = this.instantaneousAcceleration.add(force);
         }
 
         draw(shader: ShaderProgram, baseTransform?: Matrix4) {

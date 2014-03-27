@@ -79,6 +79,7 @@ function init() {
     platform.transform = platform.transform.translate(new Vector3(0, -5.5 - 0.125, 0));
 
     var jumperCube = new Jv.Games.WebGL.GameObject(new JumperCube.CubeMesh(1, 1, 1, webgl.context));
+    jumperCube.add(Jv.Games.WebGL.Behaviors.Physics);
     jumperCube.add(Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
     jumperCube.add(Mover, { direction: new Vector3(1, 0, 0), acceleration: true, continuous: false });
     jumperCube.add(JumperCube.Behaviors.Controller, { minY: -5, jumpForce: 5, moveForce: 10 });
