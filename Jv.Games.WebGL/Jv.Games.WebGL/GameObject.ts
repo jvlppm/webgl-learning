@@ -15,6 +15,17 @@ module Jv.Games.WebGL {
         constructor(public gameObject: GameObject) { }
 
         update(deltaTime: number) { }
+
+        static GetName<Type extends Behavior>(type: { new (o: GameObject, args?): Type }) {
+            var ret = type.toString();
+            ret = ret.substr('function '.length);
+            ret = ret.substr(0, ret.indexOf('('));
+            return ret;
+        }
+    }
+
+    class AttachedBehavior<Type extends Behavior> {
+        constructor(public type: { new (o: GameObject, args?): Type }, public instance: Type) { }
     }
 
     export class GameObject implements IUpdateable {
@@ -22,7 +33,7 @@ module Jv.Games.WebGL {
         private acceleration: Vector3;
         private instantaneousAcceleration: Vector3;
         public momentum: Vector3;
-        public behaviors: Behavior[];
+        private behaviors: AttachedBehavior<Behavior>[];
         public children: GameObject[];
 
         constructor(public mesh: Mesh, public mass: number = 1)
@@ -36,7 +47,7 @@ module Jv.Games.WebGL {
         }
 
         update(deltaTime: number) {
-            this.behaviors.forEach(c => c.update(deltaTime));
+            this.behaviors.forEach(c => c.instance.update(deltaTime));
 
             var accellSecs = this.acceleration.scale(deltaTime);
             this.momentum = this.momentum.add(this.instantaneousAcceleration);
@@ -50,15 +61,31 @@ module Jv.Games.WebGL {
         }
 
         add(child: GameObject);
-        add<Arguments>(behaviorType: { new (gameObject: GameObject, args?: Arguments): Behavior }, args?: Arguments);
+        add<Type extends Behavior, Arguments>(behaviorType: { new (gameObject: GameObject, args?: Arguments): Type }, args?: Arguments);
         add(item, args?) {
             if (typeof item === "function") {
                 var bh = new item(this, args);
-                this.behaviors.push(bh);
+                this.behaviors.push(new AttachedBehavior(item, bh));
             }
             else {
                 this.children.push(item);
             }
+        }
+
+        getBehavior<Type extends Behavior>(behaviorType: { new (gameObject: GameObject, args?): Type }): Type[]{
+            var bh = this.getBehaviors(behaviorType);
+            if (bh.length == 0)
+                throw new Error("No behavior of type " + Behavior.GetName(behaviorType) + " was found.");
+            if (bh.length > 1)
+                throw new Error("Multiple behaviors of type " + Behavior.GetName(behaviorType) + " were found.");
+
+            return <any>bh[0];
+        }
+
+        getBehaviors<Type extends Behavior>(behaviorType: { new (gameObject: GameObject, args?): Type }): Type[] {
+            return this.behaviors
+                .filter(e => e.type === behaviorType)
+                .map(e => <any>e.instance);
         }
 
         push(force: Vector3, instantaneous: boolean = false, acceleration: boolean = false) {
