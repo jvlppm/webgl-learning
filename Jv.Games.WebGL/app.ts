@@ -1,4 +1,5 @@
 ///<reference path="Scripts/typings/jquery/jquery.d.ts" />
+///<reference path="Jv.Games.WebGL/Core/WebGL.ts" />
 
 import WebGL = Jv.Games.WebGL.Core.WebGL;
 import ShaderType = Jv.Games.WebGL.Core.ShaderType;
@@ -7,9 +8,11 @@ import Vector3 = Jv.Games.WebGL.Vector3;
 import Utils = Jv.Games.WebGL.Utils;
 import Keyboard = Jv.Games.WebGL.Keyboard;
 import Key = Jv.Games.WebGL.Key;
-import Mover = JumperCube.Components.Mover;
+import Mover = JumperCube.Behaviors.Mover;
 
 // -- Setup --
+
+Jv.Games.WebGL.MeterSize = 10;
 
 var webgl: WebGL;
 
@@ -72,7 +75,7 @@ function loadWebGL() {
 
 // -- Game --
 
-var objects: JumperCube.GameObject[];
+var objects: Jv.Games.WebGL.GameObject[];
 
 function init() {
     var gl = webgl.context;
@@ -83,11 +86,11 @@ function init() {
 
     Keyboard.init();
 
-    var platform = new JumperCube.GameObject(new JumperCube.CubeMesh(30, 0.25, 5, webgl.context));
+    var platform = new Jv.Games.WebGL.GameObject(new JumperCube.CubeMesh(30, 0.25, 5, webgl.context));
     platform.transform = platform.transform.translate(new Vector3(0, -10.5 - 0.125, 0));
 
-    var jumperCube = new JumperCube.GameObject(new JumperCube.CubeMesh(1, 1, 1, webgl.context));
-    jumperCube.add(Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
+    var jumperCube = new Jv.Games.WebGL.GameObject(new JumperCube.CubeMesh(1, 1, 1, webgl.context));
+    jumperCube.add(Mover, { direction: new Vector3(0, -9.8 , 0), acceleration: true, continuous: true });
     jumperCube.add(Mover, { direction: new Vector3(1, 0, 0), acceleration: true, continuous: false });
 
     objects = [jumperCube, platform];
@@ -114,7 +117,7 @@ function tick(dt: number): void {
     gl.flush();
 }
 
-function move(obj: JumperCube.GameObject) {
+function move(obj: Jv.Games.WebGL.GameObject) {
     if (obj.momentum.y <= 0 && obj.transform.y <= -10) {
         obj.momentum.y = 0;
         obj.transform.y = -10;

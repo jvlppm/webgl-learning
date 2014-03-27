@@ -1,20 +1,17 @@
-﻿///<reference path="../Jv.Games.WebGL/Mesh.ts" />
-///<reference path="../Jv.Games.WebGL/Matrix4.ts" />
-///<reference path="../Jv.Games.WebGL/Vector3.ts" />
+﻿///<reference path="Mesh.ts" />
+///<reference path="Matrix4.ts" />
+///<reference path="Vector3.ts" />
 
-module JumperCube {
-    import Mesh = Jv.Games.WebGL.Mesh;
-    import Matrix4 = Jv.Games.WebGL.Matrix4;
-    import Vector3 = Jv.Games.WebGL.Vector3;
-    import ShaderProgram = Jv.Games.WebGL.Core.ShaderProgram;
+module Jv.Games.WebGL {
+    import ShaderProgram = Core.ShaderProgram;
 
-    export var MeterSize = 3;
+    export var MeterSize = 1;
 
     export interface IUpdateable {
         update(deltatime: number);
     }
 
-    export class Component implements IUpdateable {
+    export class Behavior implements IUpdateable {
         constructor(public gameObject: GameObject) { }
 
         update(deltaTime: number) { }
@@ -25,11 +22,13 @@ module JumperCube {
         private acceleration: Vector3;
         private instantaneousAcceleration: Vector3;
         public momentum: Vector3;
-        public components: Component[];
+        public behaviors: Behavior[];
+        public children: GameObject[];
 
         constructor(public mesh: Mesh, public mass: number = 1)
         {
-            this.components = [];
+            this.children = [];
+            this.behaviors = [];
             this.transform = Matrix4.Identity();
             this.acceleration = Vector3.Zero;
             this.instantaneousAcceleration = Vector3.Zero;
@@ -37,7 +36,7 @@ module JumperCube {
         }
 
         update(deltaTime: number) {
-            this.components.forEach(c => c.update(deltaTime));
+            this.behaviors.forEach(c => c.update(deltaTime));
 
             var accellSecs = this.acceleration.scale(deltaTime);
             this.momentum = this.momentum.add(this.instantaneousAcceleration);
@@ -46,11 +45,20 @@ module JumperCube {
             this.momentum = this.momentum.add(accellSecs);
 
             this.instantaneousAcceleration = this.acceleration = Vector3.Zero;
+
+            this.children.forEach(c => c.update(deltaTime));
         }
 
-        add<Arguments>(componentType: { new (gameObject: GameObject, args?: Arguments): Component }, args?: Arguments) {
-            var component = new componentType(this, args);
-            this.components.push(component);
+        add(child: GameObject);
+        add<Arguments>(behaviorType: { new (gameObject: GameObject, args?: Arguments): Behavior }, args?: Arguments);
+        add(item, args?) {
+            if (typeof item === "function") {
+                var bh = new item(this, args);
+                this.behaviors.push(bh);
+            }
+            else {
+                this.children.push(item);
+            }
         }
 
         push(force: Vector3, instantaneous: boolean = false, acceleration: boolean = false) {
@@ -71,6 +79,8 @@ module JumperCube {
 
             shader.getUniform("Mmatrix").setMatrix4(baseTransform.data);
             this.mesh.draw(shader);
+
+            this.children.forEach(c => c.draw(shader, baseTransform));
         }
     }
 }

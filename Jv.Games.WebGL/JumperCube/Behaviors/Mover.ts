@@ -1,11 +1,11 @@
-﻿///<reference path="../GameObject.ts" />
+﻿///<reference path="../../Jv.Games.WebGL/GameObject.ts" />
 
-module JumperCube.Components {
-    import Component = JumperCube.Component;
-    import GameObject = JumperCube.GameObject;
+module JumperCube.Behaviors {
+    import Behavior = Jv.Games.WebGL.Behavior;
+    import GameObject = Jv.Games.WebGL.GameObject;
     import Vector3 = Jv.Games.WebGL.Vector3;
 
-    export class Mover extends Component {
+    export class Mover extends Behavior {
         private apply: boolean = true;
 
         constructor(gameObject: GameObject, public args: { direction: Vector3; acceleration: boolean; continuous: boolean }) {
