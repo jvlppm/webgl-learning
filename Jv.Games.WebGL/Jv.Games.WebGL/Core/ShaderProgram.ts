@@ -38,7 +38,7 @@
 
             var index = this.getAttribLocation(name);
             if (index < 0)
-                throw new Error("Shader attributes named " + name + " not found");
+                throw new Error("Vertex attribute not found: " + name);
             var vertexAttribute = new VertexAttribute(this, index);
             return vertexAttribute;
         }

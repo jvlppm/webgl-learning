@@ -101,6 +101,5 @@ function tick(dt: number): void {
     scene.draw(shaderProgram);
 }
 
-var loadTask = loadWebGL();
-loadTask.fail(e => alert("Error: " + e.message));
-loadTask.done(init);
+loadWebGL().done(init)
+           .fail(e => alert("Error: " + e.message));
