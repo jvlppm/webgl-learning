@@ -16,12 +16,6 @@ module Jv.Games.WebGL.Core {
             return new ShaderProgram(this, gl.createProgram());
         }
 
-        clear() {
-            var gl = this.context;
-            gl.viewport(0, 0, this.canvas.width, this.canvas.height);
-            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-        }
-
         private static getWebGLContext(canvas: HTMLCanvasElement) {
             var context: WebGLRenderingContext;
             var contextName = ["webgl", "experimental-webgl", "webkit-3d", "moz-webgl"];

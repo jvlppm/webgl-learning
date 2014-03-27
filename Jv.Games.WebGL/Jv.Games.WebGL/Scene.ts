@@ -1,11 +1,13 @@
 ﻿module Jv.Games.WebGL {
     export class Scene {
-        public objects: GameObject[];
-        public cameras: Camera[];
+        objects: GameObject[];
+        cameras: Camera[];
+        clearColor: Color;
 
-        constructor() {
+        constructor(public context: WebGLRenderingContext) {
             this.objects = [];
             this.cameras = [];
+            this.clearColor = Color.Rgb(0, 0, 0);
         }
 
         update(deltaTime: number) {
@@ -27,6 +29,14 @@
             else if (object instanceof GameObject) {
                 this.objects.push(object);
             }
+        }
+
+        init() {
+            var gl = this.context;
+            gl.clearColor(this.clearColor.red, this.clearColor.green, this.clearColor.blue, this.clearColor.alpha);
+            gl.enable(gl.DEPTH_TEST);
+            gl.depthFunc(gl.LEQUAL);
+            gl.clearDepth(1.0);
         }
 
         draw(shader: Jv.Games.WebGL.Core.ShaderProgram) {

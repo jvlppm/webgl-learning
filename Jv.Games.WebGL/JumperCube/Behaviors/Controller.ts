@@ -1,6 +1,9 @@
 ﻿///<reference path="../../Jv.Games.WebGL/GameObject.ts" />
+///<reference path="../../Jv.Games.WebGL/Keyboard.ts" />
 
 module JumperCube.Behaviors {
+    import Keyboard = Jv.Games.WebGL.Keyboard;
+
     export class Controller extends Jv.Games.WebGL.Behavior<Jv.Games.WebGL.GameObject> {
         constructor(public object: Jv.Games.WebGL.GameObject, public args: { minY: number; jumpForce: number; moveForce: number }) {
             super(object);

@@ -19,6 +19,9 @@
             else {
                 this.data = a1;
                 this.startIndex = a2;
+
+                if (this.startIndex + 3 > this.data.length)
+                    throw new Error("Invalid Vector3 data");
             }
         }
 
