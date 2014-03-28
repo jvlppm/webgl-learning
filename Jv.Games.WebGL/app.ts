@@ -18,7 +18,7 @@ Jv.Games.WebGL.MeterSize = 3;
 var webgl: WebGL;
 var shaderProgram: WebGL.Core.ShaderProgram;
 
-function loadWebGL() {
+function init() {
     var result = $.Deferred();
 
     $(document).ready(function () {
@@ -44,7 +44,7 @@ function loadWebGL() {
                 shaderProgram.enableVertexAttribute("position");
                 shaderProgram.use();
 
-                init();
+                initGame();
 
                 result.resolve();
             }
@@ -74,7 +74,7 @@ var scene: Jv.Games.WebGL.Scene;
 var camera: Camera;
 var jumperCube: Jv.Games.WebGL.GameObject;
 
-function init() {
+function initGame() {
     Jv.Games.WebGL.Keyboard.init();
 
     var platform = new Jv.Games.WebGL.GameObject();
@@ -103,4 +103,4 @@ function tick(dt: number): void {
     scene.draw();
 }
 
-loadWebGL().fail(e => alert("Error: " + e.message));
+init().fail(e => alert("Error: " + e.message));
