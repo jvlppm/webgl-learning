@@ -1,31 +1,30 @@
-﻿module Jv.Games.WebGL {
+﻿///<reference path="../Jv.Games.WebGL/Core/DataBuffer.ts" />
+
+module Jv.Games.WebGL {
+    import DataBuffer = Jv.Games.WebGL.Core.DataBuffer;
+
     export enum MeshRenderMode {
         Triangles,
         TriangleStrip
     }
 
-    export class AttributeDefinition {
-        constructor(public size: number, public type: Jv.Games.WebGL.Core.DataType, public normalized: boolean, public stride: number, public offset: number) {
-        }
-    }
-
     export class Mesh {
-        vertexBuffer: WebGLBuffer;
+        buffers: DataBuffer[];
+
         indexBuffer: WebGLBuffer;
-        elementCount: number;
-        renderModeId: number;
-        attributes: { [name: string]: AttributeDefinition };
+        private elementCount: number;
+        private renderModeId: number;
 
         constructor(public context: WebGLRenderingContext, private mode: MeshRenderMode = MeshRenderMode.Triangles) {
             this.renderModeId = this.getModeTypeId(mode);
-            this.attributes = {};
+            this.buffers = [];
         }
 
-        set vertex(data: number[]) {
-            var gl = this.context;
-            this.vertexBuffer = this.context.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-            gl.bufferData(gl.ARRAY_BUFFER, <any>new Float32Array(data), gl.STATIC_DRAW);
+        addBuffer(values: number[], dataType: Core.DataType, stride: number) {
+            var dataBuffer = new DataBuffer(this.context, stride, dataType);
+            dataBuffer.data = values;
+            this.buffers.push(dataBuffer);
+            return dataBuffer;
         }
 
         set index(data: number[]) {
@@ -51,15 +50,7 @@
 
         draw(shader: Core.ShaderProgram) {
             var gl = this.context;
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-
-            for (var name in this.attributes) {
-                var attrib = shader.getVertexAttribute(name);
-                if (attrib != null) {
-                    var info = this.attributes[name];
-                    attrib.setPointer(info.size, info.type, info.normalized, info.stride, info.offset);
-                }
-            }
+            this.buffers.forEach(buffer => buffer.setAttributes(shader));
 
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
             gl.drawElements(this.renderModeId, this.elementCount, gl.UNSIGNED_SHORT, 0);

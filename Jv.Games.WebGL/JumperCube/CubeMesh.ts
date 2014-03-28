@@ -3,7 +3,7 @@
 
 module JumperCube {
     import WebGL = Jv.Games.WebGL;
-    import AttributeDefinition = Jv.Games.WebGL.AttributeDefinition;
+    import BufferAttribute = Jv.Games.WebGL.Core.BufferAttribute;
     import DataType = Jv.Games.WebGL.Core.DataType;
 
     export class CubeMesh extends WebGL.Mesh {
@@ -14,7 +14,7 @@ module JumperCube {
             var h = height / 2;
             var d = depth / 2;
 
-            this.vertex = [
+            var data = this.addBuffer([
                 -w, -h, d,
                 0, 0, 1,
 
@@ -38,11 +38,12 @@ module JumperCube {
 
                 w, h, -d,
                 1, 1, 0
-            ];
-            this.index = [0, 1, 2, 3, 7, 1, 5, 4, 7, 6, 2, 4, 0, 1];
+            ], DataType.Float, 4 * (3 + 3));
 
-            this.attributes["position"] = new AttributeDefinition(3, DataType.Float, false, 4 * (3 + 3), 0);
-            this.attributes["color"] = new AttributeDefinition(3, DataType.Float, false, 4 * (3 + 3), 3 * 4);
+            data.attrib("position", 3, false, 0);
+            data.attrib("color", 3, false, 3 * 4);
+
+            this.index = [0, 1, 2, 3, 7, 1, 5, 4, 7, 6, 2, 4, 0, 1];
         }
     }
 }

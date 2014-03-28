@@ -31,6 +31,7 @@
     <TypeScriptCompile Include="Jv.Games.WebGL\Camera.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Collider.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Color.ts" />
+    <TypeScriptCompile Include="Jv.Games.WebGL\Core\DataBuffer.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\GameObject.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Keyboard.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Scene.ts" />
