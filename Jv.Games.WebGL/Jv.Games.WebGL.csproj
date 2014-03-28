@@ -25,9 +25,11 @@
     <TypeScriptCompile Include="JumperCube\Behaviors\Controller.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\Mover.ts" />
     <TypeScriptCompile Include="JumperCube\CubeMesh.ts" />
-    <TypeScriptCompile Include="Jv.Games.WebGL\Behavior.ts" />
-    <TypeScriptCompile Include="Jv.Games.WebGL\Behaviors\Physics.ts" />
+    <TypeScriptCompile Include="Jv.Games.WebGL\Components\Component.ts" />
+    <TypeScriptCompile Include="Jv.Games.WebGL\Components\MeshRenderer.ts" />
+    <TypeScriptCompile Include="Jv.Games.WebGL\Components\Physics.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Camera.ts" />
+    <TypeScriptCompile Include="Jv.Games.WebGL\Collider.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Color.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\GameObject.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Keyboard.ts" />
@@ -94,6 +96,7 @@
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptCompileOnSaveEnabled>False</TypeScriptCompileOnSaveEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptTarget>ES5</TypeScriptTarget>

@@ -1,18 +1,18 @@
 ﻿///<reference path="../../Jv.Games.WebGL/GameObject.ts" />
-///<reference path="../../Jv.Games.WebGL/Behaviors/Physics.ts" />
+///<reference path="../../Jv.Games.WebGL/Components/Physics.ts" />
 
 module JumperCube.Behaviors {
     import GameObject = Jv.Games.WebGL.GameObject;
     import Vector3 = Jv.Games.WebGL.Vector3;
-    import Physics = Jv.Games.WebGL.Behaviors.Physics;
+    import Physics = Jv.Games.WebGL.Components.Physics;
 
-    export class Mover extends Jv.Games.WebGL.Behavior<GameObject> {
+    export class Mover extends Jv.Games.WebGL.Components.Component<GameObject> {
         private apply: boolean = true;
         physics: Physics;
 
         constructor(object: GameObject, public args: { direction: Vector3; acceleration: boolean; continuous: boolean }) {
             super(object);
-            this.physics = <Physics>object.getBehavior(Physics);
+            this.physics = <Physics>object.getComponent(Physics);
             if (typeof this.physics === "undefined")
                 throw new Error("Attached object does not have a physics component");
         }

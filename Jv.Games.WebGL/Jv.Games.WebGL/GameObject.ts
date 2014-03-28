@@ -1,4 +1,4 @@
-﻿///<reference path="Behavior.ts" />
+﻿///<reference path="Components/Component.ts" />
 ///<reference path="Mesh.ts" />
 ///<reference path="Matrix4.ts" />
 ///<reference path="Vector3.ts" />
@@ -8,11 +8,11 @@ module Jv.Games.WebGL {
 
     export var MeterSize = 1;
 
-    export class GameObject extends BehaviorCollection<GameObject> {
+    export class GameObject extends Components.ComponentCollection<GameObject> {
         transform: Matrix4;
         public children: GameObject[];
 
-        constructor(public mesh: Mesh, public mass: number = 1)
+        constructor()
         {
             super();
             this.children = [];
@@ -25,7 +25,7 @@ module Jv.Games.WebGL {
         }
 
         add(child: GameObject);
-        add<Type extends Behavior<GameObject>, Arguments>(behaviorType: { new (object: GameObject, args?: Arguments): Type }, args?: Arguments);
+        add<Type extends Components.Component<GameObject>, Arguments>(behaviorType: { new (object: GameObject, args?: Arguments): Type }, args?: Arguments);
         add(item, args?) {
             if (typeof item === "function") {
                 super.add(item, args);
@@ -35,16 +35,30 @@ module Jv.Games.WebGL {
             }
         }
 
-        draw(shader: ShaderProgram, baseTransform?: Matrix4) {
+        draw(baseTransform?: Matrix4) {
             if (typeof baseTransform !== "undefined")
                 baseTransform = baseTransform.multiply(this.transform);
             else
                 baseTransform = this.transform;
+            
+            super.draw(baseTransform);
+            this.children.forEach(c => c.draw(baseTransform));
+        }
 
-            shader.getUniform("Mmatrix").setMatrix4(baseTransform.data);
-            this.mesh.draw(shader);
+        private static flatten(list: any[]) {
+            return list.reduce(function (acc, val) {
+                return acc.concat(val.constructor === Array ? GameObject.flatten(val) : val);
+            }, []);
+        }
 
-            this.children.forEach(c => c.draw(shader, baseTransform));
+        getComponentsRecursively<Type extends Components.Component<GameObject>>(componentType: { new (object: GameObject, args?): Type }): Type[]{
+            var result: Type[] = super.getComponents(componentType);
+
+            this.children.forEach(c => {
+                result = result.concat(c.getComponentsRecursively(componentType));
+            });
+
+            return result;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿module Jv.Games.WebGL {
     
-    export class Camera extends BehaviorCollection<Camera> {
+    export class Camera extends Components.ComponentCollection<Camera> {
         constructor(public projection: Matrix4, public transform: Matrix4) {
             super();
         }
