@@ -48,8 +48,7 @@
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
             this.cameras.forEach(cam => {
-                //TODO: add viewport to camera
-                gl.viewport(0, 0, canvas.width, canvas.height);
+                gl.viewport(canvas.width * cam.viewport.left, canvas.height * cam.viewport.top, canvas.width * cam.viewport.width, canvas.height * cam.viewport.height);
 
                 Scene.unique(this.getComponentsRecursively<MeshRenderer>(MeshRenderer).map(c => c.args.shader)).forEach(shader => {
                     shader.setUniform("Pmatrix", cam.projection);

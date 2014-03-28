@@ -1,8 +1,17 @@
 ﻿module Jv.Games.WebGL {
+
+    export class Viewport {
+        // 0 means top/left, 1 means bottom/right.
+        constructor(public left: number, public top: number, public width: number, public height: number) {
+        }
+    }
     
     export class Camera extends Components.ComponentCollection<Camera> {
+        viewport: Viewport;
+
         constructor(public projection: Matrix4, public transform: Matrix4) {
             super();
+            this.viewport = new Viewport(0, 0, 1, 1);
         }
 
         update(deltaTime: number) {

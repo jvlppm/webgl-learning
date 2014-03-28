@@ -72,6 +72,7 @@ function matchWindowSize(canvas: HTMLCanvasElement) {
 
 var scene: Jv.Games.WebGL.Scene;
 var camera: Camera;
+var jumperCube: Jv.Games.WebGL.GameObject;
 
 function init() {
     Jv.Games.WebGL.Keyboard.init();
@@ -80,7 +81,7 @@ function init() {
     platform.transform = platform.transform.translate(new Vector3(0, -5.5 - 0.125, 0));
     platform.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(30, 0.25, 3, webgl.context), shader: shaderProgram });
 
-    var jumperCube = new Jv.Games.WebGL.GameObject();
+    jumperCube = new Jv.Games.WebGL.GameObject();
     jumperCube.add(Jv.Games.WebGL.Components.Physics);
     jumperCube.add(Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
     jumperCube.add(Mover, { direction: new Vector3(1, 0, 0), acceleration: true, continuous: false });
@@ -98,7 +99,7 @@ function init() {
 
 function tick(dt: number): void {
     scene.update(dt);
-    camera.transform = Matrix4.LookAt(new Vector3(0, 0, 20), scene.children[0].transform.position);
+    camera.transform = Matrix4.LookAt(new Vector3(0, 0, 10), jumperCube.transform.position);
     scene.draw();
 }
 
