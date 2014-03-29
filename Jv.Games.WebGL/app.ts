@@ -84,10 +84,17 @@ function initGame() {
     jumperCube = new Jv.Games.WebGL.GameObject();
     jumperCube.transform.x = -14;
     jumperCube.transform.y = -5;
+    jumperCube.add(Jv.Games.WebGL.Components.SphereCollider, { radius: 0.5 });
     jumperCube.add(Jv.Games.WebGL.Components.RigidBody);
     jumperCube.add(Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
     jumperCube.add(Mover, { direction: new Vector3(1.5, 0, 0), acceleration: true, continuous: false });
     jumperCube.add(JumperCube.Behaviors.Controller, { minY: -5, jumpForce: 5, moveForce: 10 });
+
+    var obstacle = new Jv.Games.WebGL.GameObject();
+    obstacle.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(1, 1, 1, webgl.context), shader: shaderProgram });
+    obstacle.transform.y = -5;
+    obstacle.add(Jv.Games.WebGL.Components.SphereCollider, { radius: 0.5});
+    obstacle.add(Jv.Games.WebGL.Components.RigidBody);
 
     var body = jumperCube.add(new Jv.Games.WebGL.GameObject());
     body.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(1, 1, 1, webgl.context), shader: shaderProgram });
@@ -95,6 +102,7 @@ function initGame() {
 
     scene = new Jv.Games.WebGL.Scene(webgl);
     scene.add(jumperCube);
+    scene.add(obstacle);
     scene.add(platform);
     scene.add(camera);
     scene.init();
@@ -103,7 +111,7 @@ function initGame() {
 }
 
 function tick(dt: number): void {
-    scene.update(dt);
+    scene.update(dt / 2);
     camera.transform = Matrix4.LookAt(new Vector3(0, 0, 10), jumperCube.transform.position);
     scene.draw();
 }
