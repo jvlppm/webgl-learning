@@ -25,7 +25,7 @@ module Jv.Games.WebGL {
         }
 
         add(child: GameObject);
-        add<Type extends Components.Component<GameObject>, Arguments>(behaviorType: { new (object: GameObject, args?: Arguments): Type }, args?: Arguments);
+        add<Type extends Components.Component<GameObject>>(componentType: { new (object: GameObject, args?: { [prop: string]: any }): Type }, args?: { [prop: string]: any });
         add(item, args?) {
             if (typeof item === "function") {
                 super.add(item, args);

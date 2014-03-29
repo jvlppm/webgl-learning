@@ -8,18 +8,20 @@ module JumperCube.Behaviors {
 
     export class Mover extends Jv.Games.WebGL.Components.Component<GameObject> {
         private apply: boolean = true;
-        physics: Physics;
+        private physics: Physics;
+        direction: Vector3;
+        acceleration = false;
+        continuous = true;
 
-        constructor(object: GameObject, public args: { direction: Vector3; acceleration: boolean; continuous: boolean }) {
+        constructor(object: GameObject, args: { [prop: string]: any }) {
             super(object);
+            super.loadArgs(args);
             this.physics = <Physics>object.getComponent(Physics);
-            if (typeof this.physics === "undefined")
-                throw new Error("Attached object does not have a physics component");
         }
 
         update(deltaTime: number) {
-            if (this.apply || this.args.continuous) {
-                this.physics.push(this.args.direction, !this.args.continuous, this.args.acceleration);
+            if (this.apply || this.continuous) {
+                this.physics.push(this.direction, !this.continuous, this.acceleration);
                 this.apply = false;
             }
         }

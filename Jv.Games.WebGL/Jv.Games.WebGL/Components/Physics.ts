@@ -2,17 +2,17 @@
     export class Physics extends Component<GameObject> {
         private acceleration: Vector3;
         private instantaneousAcceleration: Vector3;
-        momentum: Vector3;
 
-        constructor(object: GameObject, public args: { mass: number }) {
+        momentum: Vector3;
+        mass = 1;
+
+        constructor(object: GameObject, args: { [prop: string]: any }) {
             super(object);
+            super.loadArgs(args);
 
             this.acceleration = Vector3.Zero;
             this.instantaneousAcceleration = Vector3.Zero;
             this.momentum = Vector3.Zero;
-
-            if (typeof this.args === "undefined")
-                this.args = { mass: 1 };
         }
 
         update(deltaTime: number) {
@@ -27,7 +27,7 @@
 
         push(force: Vector3, instantaneous: boolean = false, acceleration: boolean = false) {
             if (!acceleration)
-                force = force.divide(this.args.mass);
+                force = force.divide(this.mass);
 
             if (!instantaneous)
                 this.acceleration = this.acceleration.add(force);

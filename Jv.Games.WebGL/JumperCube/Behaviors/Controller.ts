@@ -9,27 +9,29 @@ module JumperCube.Behaviors {
 
     export class Controller extends Component<Jv.Games.WebGL.GameObject> {
         physics: Physics;
+        minY = 0;
+        jumpForce = 1;
+        moveForce = 1;
 
-        constructor(public object: Jv.Games.WebGL.GameObject, public args: { minY: number; jumpForce: number; moveForce: number }) {
+        constructor(object: Jv.Games.WebGL.GameObject, args) {
             super(object);
+            super.loadArgs(args);
             this.physics = <Physics>object.getComponent(Physics);
-            if (typeof this.physics === "undefined")
-                throw new Error("Attached object does not have a physics component");
         }
 
         update(deltaTime: number) {
-            if (this.physics.momentum.y <= 0 && this.object.transform.y <= this.args.minY) {
+            if (this.physics.momentum.y <= 0 && this.object.transform.y <= this.minY) {
                 this.physics.momentum.y = 0;
-                this.object.transform.y = this.args.minY;
+                this.object.transform.y = this.minY;
 
                 if (Keyboard.isKeyDown(Key.Up))
-                    this.physics.push(new Vector3(0, this.args.jumpForce, 0), true, true);
+                    this.physics.push(new Vector3(0, this.jumpForce, 0), true, true);
             }
 
             if (Keyboard.isKeyDown(Key.Right))
-                this.physics.push(new Vector3(this.args.moveForce, 0, 0));
+                this.physics.push(new Vector3(this.moveForce, 0, 0));
             if (Keyboard.isKeyDown(Key.Left))
-                this.physics.push(new Vector3(-this.args.moveForce, 0, 0));
+                this.physics.push(new Vector3(-this.moveForce, 0, 0));
         }
     }
 }

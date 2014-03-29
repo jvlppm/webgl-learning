@@ -2,6 +2,12 @@
     export class Component<ObjectType> {
         constructor(public object: ObjectType) { }
 
+        loadArgs(args: { [prop: string]: any }) {
+            for (var propName in args) {
+                this[propName] = args[propName];
+            }
+        }
+
         update(deltaTime: number) { }
 
         draw(baseTransform: Matrix4) { }

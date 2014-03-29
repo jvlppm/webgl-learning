@@ -1,12 +1,20 @@
 ﻿module Jv.Games.WebGL.Components {
     export class MeshRenderer extends Component<GameObject> {
-        constructor(object: GameObject, public args: { mesh: Mesh; shader: Jv.Games.WebGL.Core.ShaderProgram }) {
+        mesh: Mesh;
+        shader: Jv.Games.WebGL.Core.ShaderProgram;
+
+        constructor(object: GameObject, args: { [prop: string]: any }) {
             super(object);
+            super.loadArgs(args);
+            if (typeof this.mesh === "undefined")
+                throw new Error("No mesh specified for MeshRenderer");
+            if (typeof this.shader === "undefined")
+                throw new Error("No shader specified for MeshRenderer");
         }
 
         draw(baseTransform?: Matrix4) {
-            this.args.shader.getUniform("Mmatrix").setMatrix4(baseTransform.data);
-            this.args.mesh.draw(this.args.shader);
+            this.shader.getUniform("Mmatrix").setMatrix4(baseTransform.data);
+            this.mesh.draw(this.shader);
         }
     }
 }
