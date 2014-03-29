@@ -3,9 +3,10 @@
         constructor(public object: ObjectType) { }
 
         loadArgs(args: { [prop: string]: any }) {
-            for (var propName in args) {
+            if (typeof args === "undefined")
+                return;
+            for (var propName in args)
                 this[propName] = args[propName];
-            }
         }
 
         update(deltaTime: number) { }
@@ -20,12 +21,8 @@
         }
     }
 
-    export class AttachedComponent<Type extends Component<any>> {
-        constructor(public componentType: { new (object, args?): Type }, public instance: Type) { }
-    }
-
     export class ComponentCollection<T> {
-        private components: AttachedComponent<Component<T>>[];
+        private components: Component<T>[];
 
         constructor() {
             this.components = [];
@@ -33,7 +30,7 @@
 
         add<Type extends Component<T>, Arguments>(componentType: { new (object: T, args?: Arguments): Type }, args?: Arguments) {
             var instance = new componentType(<any>this, args);
-            this.components.push(new AttachedComponent(componentType, instance));
+            this.components.push(instance);
             return instance;
         }
 
@@ -48,17 +45,16 @@
         }
 
         getComponents<Type extends Component<T>>(componentType: { new (object: T, args?): Type }): Type[] {
-            return this.components
-                .filter(e => e.componentType === componentType)
-                .map(e => <any>e.instance);
+            return <Type[]>this.components
+                .filter(e => e instanceof componentType);
         }
 
         update(deltaTime: number) {
-            this.components.forEach(c => c.instance.update(deltaTime));
+            this.components.forEach(c => c.update(deltaTime));
         }
 
         draw(baseTransform?: Matrix4) {
-            this.components.forEach(c => c.instance.draw(baseTransform));
+            this.components.forEach(c => c.draw(baseTransform));
         }
     }
 }
