@@ -8,17 +8,46 @@
         intersects(collider: Collider) { }
     }
 
-    export class BoxCollider extends Collider {
+    export class AxisAlignedBoxCollider extends Collider {
+        radiusWidth = 0.5;
+        radiusHeight = 0.5;
+        radiusDepth = 0.5;
+
         constructor(object: GameObject, args?: { [prop: string]: any }) {
             super(object, args);
+            super.loadArgs(args);
         }
 
         intersects(collider: Collider) {
+            if (collider instanceof AxisAlignedBoxCollider)
+                return this.intersectsWithAABB(<AxisAlignedBoxCollider>collider);
+            if (collider instanceof SphereCollider)
+                return this.intersectsWithSphere(<SphereCollider>collider);
+        }
+
+        intersectsWithAABB(box: AxisAlignedBoxCollider) {
+            var center = this.object.transform.position;
+            var otherCenter = box.object.transform.position;
+
+            if (Math.abs(center.x - otherCenter.x) > (this.radiusWidth + box.radiusWidth)) return false;
+            if (Math.abs(center.y - otherCenter.y) > (this.radiusHeight + box.radiusHeight)) return false;
+            if (Math.abs(center.z - otherCenter.z) > (this.radiusDepth + box.radiusDepth)) return false;
+            return true;
+        }
+
+        intersectsWithSphere(sphere: SphereCollider) {
+            var center = this.object.transform.position;
+            var otherCenter = sphere.object.transform.position;
+
+            if (Math.abs(center.x - otherCenter.x) > (this.radiusWidth + sphere.radius)) return false;
+            if (Math.abs(center.y - otherCenter.y) > (this.radiusHeight + sphere.radius)) return false;
+            if (Math.abs(center.z - otherCenter.z) > (this.radiusDepth + sphere.radius)) return false;
+            return true;
         }
     }
 
     export class SphereCollider extends Collider {
-        radius = 1;
+        radius = 0.5;
 
         constructor(object: GameObject, args?: { [prop: string]: any }) {
             super(object, args);

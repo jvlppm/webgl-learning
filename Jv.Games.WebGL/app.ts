@@ -84,7 +84,7 @@ function initGame() {
     jumperCube = new Jv.Games.WebGL.GameObject();
     jumperCube.transform.x = -14;
     jumperCube.transform.y = -5;
-    jumperCube.add(Jv.Games.WebGL.Components.SphereCollider, { radius: 0.5 });
+    jumperCube.add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider);
     jumperCube.add(Jv.Games.WebGL.Components.RigidBody);
     jumperCube.add(Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
     jumperCube.add(Mover, { direction: new Vector3(1.5, 0, 0), acceleration: true, continuous: false });
@@ -93,7 +93,7 @@ function initGame() {
     var obstacle = new Jv.Games.WebGL.GameObject();
     obstacle.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(1, 1, 1, webgl.context), shader: shaderProgram });
     obstacle.transform.y = -5;
-    obstacle.add(Jv.Games.WebGL.Components.SphereCollider, { radius: 0.5});
+    obstacle.add(Jv.Games.WebGL.Components.SphereCollider);
     obstacle.add(Jv.Games.WebGL.Components.RigidBody);
 
     var body = jumperCube.add(new Jv.Games.WebGL.GameObject());
