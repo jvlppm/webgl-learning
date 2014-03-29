@@ -34,12 +34,12 @@
             return instance;
         }
 
-        getComponent<Type extends Component<T>>(componentType: { new (object: T, args?): Type }): Type {
+        getComponent<Type extends Component<T>>(componentType: { new (object: T, args?): Type }, failIfNotFound = true): Type {
             var found = this.getComponents(componentType);
-            if (found.length == 0)
-                throw new Error("No component of type " + Component.GetName(componentType) + " was found");
             if (found.length > 1)
                 throw new Error("Multiple components of type " + Component.GetName(componentType) + " were found");
+            if (found.length == 0 && failIfNotFound)
+                throw new Error("No component of type " + Component.GetName(componentType) + " was found");
 
             return found[0];
         }

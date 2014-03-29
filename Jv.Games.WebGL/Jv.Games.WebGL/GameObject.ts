@@ -46,18 +46,14 @@ module Jv.Games.WebGL {
             this.children.forEach(c => c.draw(baseTransform));
         }
 
-        private static flatten(list: any[]) {
-            return list.reduce(function (acc, val) {
-                return acc.concat(val.constructor === Array ? GameObject.flatten(val) : val);
-            }, []);
-        }
-
-        getComponentsRecursively<Type extends Components.Component<GameObject>>(componentType: { new (object: GameObject, args?): Type }): Type[]{
+        getComponents<Type extends Components.Component<GameObject>>(componentType: { new (object: GameObject, args?): Type }, recursively?: boolean): Type[]{
             var result: Type[] = super.getComponents(componentType);
 
-            this.children.forEach(c => {
-                result = result.concat(c.getComponentsRecursively(componentType));
-            });
+            if (recursively) {
+                this.children.forEach(c => {
+                    result = result.concat(c.getComponents(componentType, recursively));
+                });
+            }
 
             return result;
         }
@@ -74,19 +70,23 @@ module Jv.Games.WebGL {
                     continue;
                 ignoreObjects.push(current);
 
-                var found = current.getComponents(componentType);
-                if (found.length > 1)
-                    throw new Error("More than 1 components of type " + Components.Component.GetName(componentType) + " where found");
-                if (found.length == 1)
-                    return found[0];
+                var found = current.getComponent(componentType, false);
+
+                if (typeof found !== "undefined")
+                    return found;
 
                 this.children.forEach(c => toProcess.push(c));
             }
 
-            if (typeof this.parent !== "undefined")
-                return this.parent.searchComponent(componentType, ignoreObjects);
+            var current = this;
+            while (typeof current.parent !== "undefined") {
+                current = current.parent;
 
-            return;
+                var found = current.getComponent(componentType, false);
+
+                if (typeof found !== "undefined")
+                    return found;
+            }
         }
     }
 }

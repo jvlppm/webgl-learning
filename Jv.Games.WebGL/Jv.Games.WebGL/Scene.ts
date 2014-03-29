@@ -50,7 +50,7 @@
             this.cameras.forEach(cam => {
                 gl.viewport(canvas.width * cam.viewport.left, canvas.height * cam.viewport.top, canvas.width * cam.viewport.width, canvas.height * cam.viewport.height);
 
-                Scene.unique(this.getComponentsRecursively<MeshRenderer>(MeshRenderer).map(c => c.shader)).forEach(shader => {
+                Scene.unique(this.getComponents<MeshRenderer>(MeshRenderer, true).map(c => c.shader)).forEach(shader => {
                     shader.setUniform("Pmatrix", cam.projection);
                     shader.setUniform("Vmatrix", cam.transform);
                 });
