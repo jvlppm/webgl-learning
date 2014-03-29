@@ -34,6 +34,7 @@
         add<Type extends Component<T>, Arguments>(componentType: { new (object: T, args?: Arguments): Type }, args?: Arguments) {
             var instance = new componentType(<any>this, args);
             this.components.push(new AttachedComponent(componentType, instance));
+            return instance;
         }
 
         getComponent<Type extends Component<T>>(componentType: { new (object: T, args?): Type }): Type {

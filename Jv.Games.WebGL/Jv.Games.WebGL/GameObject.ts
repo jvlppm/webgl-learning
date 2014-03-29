@@ -11,6 +11,7 @@ module Jv.Games.WebGL {
     export class GameObject extends Components.ComponentCollection<GameObject> {
         transform: Matrix4;
         public children: GameObject[];
+        public parent: GameObject;
 
         constructor()
         {
@@ -24,15 +25,15 @@ module Jv.Games.WebGL {
             this.children.forEach(c => c.update(deltaTime));
         }
 
-        add(child: GameObject);
-        add<Type extends Components.Component<GameObject>>(componentType: { new (object: GameObject, args?: { [prop: string]: any }): Type }, args?: { [prop: string]: any });
+        add(child: GameObject) : GameObject;
+        add<Type extends Components.Component<GameObject>>(componentType: { new (object: GameObject, args?: { [prop: string]: any }): Type }, args?: { [prop: string]: any }): Type;
         add(item, args?) {
-            if (typeof item === "function") {
-                super.add(item, args);
-            }
-            else {
-                this.children.push(item);
-            }
+            if (typeof item === "function")
+                return super.add(item, args);
+
+            this.children.push(item);
+            item.parent = this;
+            return item;
         }
 
         draw(baseTransform?: Matrix4) {
@@ -59,6 +60,33 @@ module Jv.Games.WebGL {
             });
 
             return result;
+        }
+
+        searchComponent<Type extends Components.Component<GameObject>>(componentType: { new (object: GameObject, args?): Type }, ignoreObjects?: GameObject[]): Type {
+            var toProcess = [this];
+
+            ignoreObjects = ignoreObjects || [];
+
+            while (toProcess.length > 0) {
+                var current = toProcess.pop();
+
+                if (ignoreObjects.indexOf(current) >= 0)
+                    continue;
+                ignoreObjects.push(current);
+
+                var found = current.getComponents(componentType);
+                if (found.length > 1)
+                    throw new Error("More than 1 components of type " + Components.Component.GetName(componentType) + " where found");
+                if (found.length == 1)
+                    return found[0];
+
+                this.children.forEach(c => toProcess.push(c));
+            }
+
+            if (typeof this.parent !== "undefined")
+                return this.parent.searchComponent(componentType, ignoreObjects);
+
+            return;
         }
     }
 }

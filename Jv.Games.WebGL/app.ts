@@ -82,14 +82,15 @@ function initGame() {
     platform.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(30, 0.25, 3, webgl.context), shader: shaderProgram });
 
     jumperCube = new Jv.Games.WebGL.GameObject();
-    var body = new Jv.Games.WebGL.GameObject();
+    jumperCube.transform.x = -14;
+    jumperCube.transform.y = -5;
     jumperCube.add(Jv.Games.WebGL.Components.Physics);
     jumperCube.add(Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
-    jumperCube.add(Mover, { direction: new Vector3(1, 0, 0), acceleration: true, continuous: false });
+    jumperCube.add(Mover, { direction: new Vector3(1.5, 0, 0), acceleration: true, continuous: false });
     jumperCube.add(JumperCube.Behaviors.Controller, { minY: -5, jumpForce: 5, moveForce: 10 });
+    var body = jumperCube.add(new Jv.Games.WebGL.GameObject());
     body.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(1, 1, 1, webgl.context), shader: shaderProgram });
-    body.add(JumperCube.Behaviors.RotateWhileJumping, { speed: -6, controller: jumperCube.getComponent(JumperCube.Behaviors.Controller) });
-    jumperCube.add(body);
+    body.add(JumperCube.Behaviors.RotateWhileJumping, { speed: -6 });
 
     scene = new Jv.Games.WebGL.Scene(webgl);
     scene.add(jumperCube);

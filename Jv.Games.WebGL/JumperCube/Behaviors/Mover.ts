@@ -16,7 +16,7 @@ module JumperCube.Behaviors {
         constructor(object: GameObject, args: { [prop: string]: any }) {
             super(object);
             super.loadArgs(args);
-            this.physics = <Physics>object.getComponent(Physics);
+            this.physics = this.physics || <Physics>object.searchComponent(Physics);
         }
 
         update(deltaTime: number) {

@@ -12,7 +12,7 @@ module JumperCube.Behaviors {
         constructor(object: Jv.Games.WebGL.GameObject, args: { [prop: string]: any }) {
             super(object);
             super.loadArgs(args);
-            this.controller = this.controller || <Controller>object.getComponent(Controller);
+            this.controller = this.controller || <Controller>object.searchComponent(Controller);
         }
 
         update(deltaTime: number) {
