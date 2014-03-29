@@ -1,10 +1,10 @@
 ﻿///<reference path="../../Jv.Games.WebGL/GameObject.ts" />
 ///<reference path="../../Jv.Games.WebGL/Keyboard.ts" />
-///<reference path="../../Jv.Games.WebGL/Components/Physics.ts" />
+///<reference path="../../Jv.Games.WebGL/Components/RigidBody.ts" />
 
 module JumperCube.Behaviors {
     import Keyboard = Jv.Games.WebGL.Keyboard;
-    import Physics = Jv.Games.WebGL.Components.Physics;
+    import Physics = Jv.Games.WebGL.Components.RigidBody;
     import Component = Jv.Games.WebGL.Components.Component;
 
     export class Controller extends Component<Jv.Games.WebGL.GameObject> {

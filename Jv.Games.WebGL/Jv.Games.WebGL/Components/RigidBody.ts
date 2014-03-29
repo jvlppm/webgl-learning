@@ -1,5 +1,5 @@
 ﻿module Jv.Games.WebGL.Components {
-    export class Physics extends Component<GameObject> {
+    export class RigidBody extends Component<GameObject> {
         private acceleration: Vector3;
         private instantaneousAcceleration: Vector3;
 

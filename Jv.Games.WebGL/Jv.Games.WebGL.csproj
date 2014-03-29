@@ -28,7 +28,7 @@
     <TypeScriptCompile Include="JumperCube\CubeMesh.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Components\Component.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Components\MeshRenderer.ts" />
-    <TypeScriptCompile Include="Jv.Games.WebGL\Components\Physics.ts" />
+    <TypeScriptCompile Include="Jv.Games.WebGL\Components\RigidBody.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Camera.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Collider.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Color.ts" />
