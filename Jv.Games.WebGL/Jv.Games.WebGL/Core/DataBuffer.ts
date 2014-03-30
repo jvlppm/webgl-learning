@@ -1,15 +1,15 @@
 ﻿module Jv.Games.WebGL.Core {
     export class BufferAttribute {
-        constructor(public size: number, public type: Jv.Games.WebGL.Core.DataType, public normalized: boolean, public stride: number, public offset: number) {
+        constructor(public name: string, public size: number, public type: Jv.Games.WebGL.Core.DataType, public normalized: boolean, public stride: number, public offset: number) {
         }
     }
 
     export class DataBuffer {
         buffer: WebGLBuffer;
-        attributes: { [name: string]: BufferAttribute };
+        attributes: BufferAttribute[];
 
         constructor(public context: WebGLRenderingContext, public stride: number, public dataType: DataType) {
-            this.attributes = {};
+            this.attributes = [];
             this.buffer = context.createBuffer();
         }
 
@@ -29,20 +29,22 @@
         }
 
         attrib(name: string, size: number, normalized: boolean, offset: number) {
-            this.attributes[name] = new BufferAttribute(size, null, normalized, null, offset);
+            this.attributes.push(new BufferAttribute(name, size, null, normalized, null, offset));
         }
 
-        setAttributes(shader: ShaderProgram) {
+        setAttributes(material: Materials.Material) {
             var gl = this.context;
             gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
 
-            for (var name in this.attributes) {
-                var attrib = shader.getVertexAttribute(name);
-                if (attrib != null) {
-                    var info = this.attributes[name];
-                    var stride = info.stride || this.stride;
-                    var type = info.type || this.dataType;
-                    attrib.setPointer(info.size, type, info.normalized, stride, info.offset);
+            for (var index in this.attributes) {
+                var bufferAttribute = this.attributes[index];
+                var materialAttribute = material.program.getVertexAttribute(bufferAttribute.name);
+
+                if (typeof materialAttribute !== "undefined") {
+                    materialAttribute.enable();
+                    var stride = bufferAttribute.stride || this.stride;
+                    var type = bufferAttribute.type || this.dataType;
+                    materialAttribute.setPointer(bufferAttribute.size, type, bufferAttribute.normalized, stride, bufferAttribute.offset);
                 }
             }
         }

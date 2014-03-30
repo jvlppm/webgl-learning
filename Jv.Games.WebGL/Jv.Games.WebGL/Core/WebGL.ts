@@ -12,8 +12,7 @@ module Jv.Games.WebGL.Core {
         constructor(public context: WebGLRenderingContext, public canvas : HTMLCanvasElement) { }
 
         createShaderProgram(): ShaderProgram {
-            var gl = this.context;
-            return new ShaderProgram(this, gl.createProgram());
+            return new ShaderProgram(this.context);
         }
 
         private static getWebGLContext(canvas: HTMLCanvasElement) {

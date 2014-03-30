@@ -13,7 +13,7 @@
         program: WebGLProgram;
 
         constructor(shaderProgram: ShaderProgram, public index: number) {
-            this.context = shaderProgram.webgl.context;
+            this.context = shaderProgram.context;
             this.program = shaderProgram.program;
         }
 

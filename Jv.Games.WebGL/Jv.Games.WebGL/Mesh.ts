@@ -48,9 +48,9 @@ module Jv.Games.WebGL {
             }
         }
 
-        draw(shader: Core.ShaderProgram) {
+        draw(material: Materials.Material) {
             var gl = this.context;
-            this.buffers.forEach(buffer => buffer.setAttributes(shader));
+            this.buffers.forEach(buffer => buffer.setAttributes(material));
 
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
             gl.drawElements(this.renderModeId, this.elementCount, gl.UNSIGNED_SHORT, 0);
