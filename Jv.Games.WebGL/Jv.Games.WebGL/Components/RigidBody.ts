@@ -21,16 +21,31 @@
         update(deltaTime: number) {
             var accellSecs = this.acceleration.scale(deltaTime);
             this.momentum = this.momentum.add(this.instantaneousAcceleration);
-            var toMove = this.momentum.add(accellSecs.scale(0.5));
+
             var oldTransform = this.object.transform;
+            var toMove = this.momentum.add(accellSecs.scale(0.5));
             this.object.transform = this.object.transform.translate(toMove.scale(MeterSize * deltaTime));
 
             if (this.validPosition()) {
                 this.momentum = this.momentum.add(accellSecs);
             }
             else {
-                this.object.transform = oldTransform;
-                this.momentum = Vector3.Zero;
+                var i = 0;
+                for (; i < 3; i++) {
+                    var tryMove = this.momentum.add(accellSecs.scale(0.5));
+                    tryMove.setData(i, 0);
+                    this.object.transform = oldTransform.translate(tryMove.scale(MeterSize * deltaTime));
+                    if (this.validPosition()) {
+                        this.momentum = this.momentum.add(accellSecs);
+                        this.momentum.setData(i, 0);
+                        break;
+                    }
+                }
+
+                if (i >= 3) {
+                    this.object.transform = oldTransform;
+                    this.momentum = Vector3.Zero;
+                }
             }
 
             this.instantaneousAcceleration = this.acceleration = Vector3.Zero;

@@ -1,22 +1,23 @@
 ﻿///<reference path="../../Jv.Games.WebGL/GameObject.ts" />
-///<reference path="Controller.ts" />
+///<reference path="../../Jv.Games.WebGL/Components/RigidBody.ts" />
 
 module JumperCube.Behaviors {
     import Component = Jv.Games.WebGL.Components.Component;
+    import RigidBody = Jv.Games.WebGL.Components.RigidBody;
 
     export class RotateWhileJumping extends Component<Jv.Games.WebGL.GameObject> {
-        controller: Controller;
+        rigidBody: RigidBody;
         speed = 1;
         private resetTransform = false;
 
         constructor(object: Jv.Games.WebGL.GameObject, args: { [prop: string]: any }) {
             super(object);
             super.loadArgs(args);
-            this.controller = this.controller || <Controller>object.searchComponent(Controller);
+            this.rigidBody = this.rigidBody || <RigidBody>object.searchComponent(RigidBody);
         }
 
         update(deltaTime: number) {
-            if (this.controller.isJumping) {
+            if (this.rigidBody.momentum.y !== 0) {
                 this.object.transform = this.object.transform.rotateZ(this.speed * deltaTime);
                 this.resetTransform = true;
             }

@@ -25,6 +25,14 @@
             }
         }
 
+        getData(axis: number) {
+            return this.data[this.startIndex + axis];
+        }
+
+        setData(axis: number, value: number) {
+            this.data[this.startIndex + axis] = value;
+        }
+
         get x() {
             return this.data[this.startIndex + 0];
         }

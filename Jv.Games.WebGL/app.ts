@@ -70,50 +70,48 @@ function matchWindowSize(canvas: HTMLCanvasElement) {
 
 // -- Game --
 
-var scene: Jv.Games.WebGL.Scene;
 var camera: Camera;
 var jumperCube: Jv.Games.WebGL.GameObject;
 
 function initGame() {
     Jv.Games.WebGL.Keyboard.init();
 
-    var platform = new Jv.Games.WebGL.GameObject();
-    platform.transform = platform.transform.translate(new Vector3(0, -5.5 - 0.125, 0));
-    platform.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(30, 0.25, 3, webgl.context), shader: shaderProgram });
+    var scene = new Jv.Games.WebGL.Scene(webgl);
+    scene.add(camera);
 
-    jumperCube = new Jv.Games.WebGL.GameObject();
+    var floorHeight = -5;
+
+    var platform = scene.add(new Jv.Games.WebGL.GameObject());
+    platform.transform = platform.transform.translate(new Vector3(0, floorHeight - 0.126, 0));
+    platform.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(30, 0.25, 3, webgl.context), shader: shaderProgram });
+    platform.add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { radiusWidth: 15, radiusHeight: 0.125, radiusDepth: 1.5 });
+
+    jumperCube = scene.add(new Jv.Games.WebGL.GameObject());
     jumperCube.transform.x = -14;
-    jumperCube.transform.y = -5;
+    jumperCube.transform.y = floorHeight + 0.5;
     jumperCube.add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider);
     jumperCube.add(Jv.Games.WebGL.Components.RigidBody);
     jumperCube.add(Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
     jumperCube.add(Mover, { direction: new Vector3(1.5, 0, 0), acceleration: true, continuous: false });
-    jumperCube.add(JumperCube.Behaviors.Controller, { minY: -5, jumpForce: 5, moveForce: 10 });
-
-    var obstacle = new Jv.Games.WebGL.GameObject();
-    obstacle.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(1, 1, 1, webgl.context), shader: shaderProgram });
-    obstacle.transform.y = -5;
-    obstacle.add(Jv.Games.WebGL.Components.SphereCollider);
-    obstacle.add(Jv.Games.WebGL.Components.RigidBody);
+    jumperCube.add(JumperCube.Behaviors.Controller, { jumpForce: 5, moveForce: 10 });
 
     var body = jumperCube.add(new Jv.Games.WebGL.GameObject());
     body.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(1, 1, 1, webgl.context), shader: shaderProgram });
     body.add(JumperCube.Behaviors.RotateWhileJumping, { speed: -6 });
 
-    scene = new Jv.Games.WebGL.Scene(webgl);
-    scene.add(jumperCube);
-    scene.add(obstacle);
-    scene.add(platform);
-    scene.add(camera);
+    /*var obstacle = scene.add(new Jv.Games.WebGL.GameObject());
+    obstacle.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(1, 1, 1, webgl.context), shader: shaderProgram });
+    obstacle.transform.y = floorHeight + 0.5;
+    obstacle.add(Jv.Games.WebGL.Components.SphereCollider);
+    obstacle.add(Jv.Games.WebGL.Components.RigidBody);*/
+    
     scene.init();
 
-    Utils.StartTick(tick);
-}
-
-function tick(dt: number): void {
-    scene.update(dt / 2);
-    camera.transform = Matrix4.LookAt(new Vector3(0, 0, 10), jumperCube.transform.position);
-    scene.draw();
+    Utils.StartTick(dt => {
+        scene.update(dt);
+        camera.transform = Matrix4.LookAt(new Vector3(0, 0, 10), jumperCube.transform.position);
+        scene.draw();
+    });
 }
 
 init().fail(e => alert("Error: " + e.message));

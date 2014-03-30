@@ -23,8 +23,9 @@
         add(item, args?) {
             if (item instanceof Camera) {
                 this.cameras.push(item);
+                return item;
             }
-            else super.add(item);
+            else return super.add(item);
         }
 
         init() {

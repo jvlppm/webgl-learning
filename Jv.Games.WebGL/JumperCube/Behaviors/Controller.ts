@@ -4,39 +4,30 @@
 
 module JumperCube.Behaviors {
     import Keyboard = Jv.Games.WebGL.Keyboard;
-    import Physics = Jv.Games.WebGL.Components.RigidBody;
+    import RigidBody = Jv.Games.WebGL.Components.RigidBody;
     import Component = Jv.Games.WebGL.Components.Component;
 
     export class Controller extends Component<Jv.Games.WebGL.GameObject> {
-        physics: Physics;
-        minY = 0;
+        rigidBody: RigidBody;
         jumpForce = 1;
         moveForce = 1;
-        isJumping = true;
 
         constructor(object: Jv.Games.WebGL.GameObject, args) {
             super(object);
             super.loadArgs(args);
-            this.physics = this.physics || <Physics>object.searchComponent(Physics);
+            this.rigidBody = this.rigidBody || <RigidBody>object.searchComponent(RigidBody);
         }
 
         update(deltaTime: number) {
-            if (this.physics.momentum.y <= 0 && this.object.transform.y <= this.minY) {
-                this.physics.momentum.y = 0;
-                this.object.transform.y = this.minY;
-
-                if (Keyboard.isKeyDown(Key.Up)) {
-                    this.physics.push(new Vector3(0, this.jumpForce, 0), true, true);
-                    this.isJumping = true;
-                }
-                else
-                    this.isJumping = false;
+            if (this.rigidBody.momentum.y === 0) {
+                if (Keyboard.isKeyDown(Key.Up))
+                    this.rigidBody.push(new Vector3(0, this.jumpForce, 0), true, true);
             }
 
             if (Keyboard.isKeyDown(Key.Right))
-                this.physics.push(new Vector3(this.moveForce, 0, 0));
+                this.rigidBody.push(new Vector3(this.moveForce, 0, 0));
             if (Keyboard.isKeyDown(Key.Left))
-                this.physics.push(new Vector3(-this.moveForce, 0, 0));
+                this.rigidBody.push(new Vector3(-this.moveForce, 0, 0));
         }
     }
 }
