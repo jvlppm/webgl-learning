@@ -63,15 +63,14 @@ function matchWindowSize(canvas: HTMLCanvasElement) {
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        camera = Camera.Perspective(40, canvas.width / canvas.height, 1, 100);
+        camera.projection = Camera.Perspective(40, canvas.width / canvas.height, 1, 100);
     }
     resizeCanvas();
 }
 
 // -- Game --
 
-var camera: Camera;
-var jumperCube: Jv.Games.WebGL.GameObject;
+var camera: Camera = new Camera(Matrix4.Identity(), Matrix4.Identity());
 
 function initGame() {
     Jv.Games.WebGL.Keyboard.init();
@@ -86,28 +85,32 @@ function initGame() {
     platform.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(30, 0.25, 3, webgl.context), shader: shaderProgram });
     platform.add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { radiusWidth: 15, radiusHeight: 0.125, radiusDepth: 1.5 });
 
-    jumperCube = scene.add(new Jv.Games.WebGL.GameObject());
+    var jumperCube = scene.add(new Jv.Games.WebGL.GameObject());
     jumperCube.transform.x = -14;
     jumperCube.transform.y = floorHeight + 0.5;
     jumperCube.add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider);
     jumperCube.add(Jv.Games.WebGL.Components.RigidBody);
     jumperCube.add(Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
     jumperCube.add(Mover, { direction: new Vector3(1.5, 0, 0), acceleration: true, continuous: false });
-    jumperCube.add(JumperCube.Behaviors.Controller, { jumpForce: 5, moveForce: 10 });
+    jumperCube.add(JumperCube.Behaviors.Controller, { jumpForce: 4.9, moveForce: 10 });
 
     var body = jumperCube.add(new Jv.Games.WebGL.GameObject());
     body.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(1, 1, 1, webgl.context), shader: shaderProgram });
-    body.add(JumperCube.Behaviors.RotateWhileJumping, { speed: -6 });
+    body.add(JumperCube.Behaviors.RotateWhileJumping, { speed: 6 });
 
-    /*var obstacle = scene.add(new Jv.Games.WebGL.GameObject());
+    var obstacle = scene.add(new Jv.Games.WebGL.GameObject());
+    obstacle.transform.x = 14;
     obstacle.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(1, 1, 1, webgl.context), shader: shaderProgram });
     obstacle.transform.y = floorHeight + 0.5;
-    obstacle.add(Jv.Games.WebGL.Components.SphereCollider);
-    obstacle.add(Jv.Games.WebGL.Components.RigidBody);*/
+    obstacle.add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider);
+    obstacle.add(Jv.Games.WebGL.Components.RigidBody);
     
     scene.init();
 
+    var maxDeltaTime = 1 / 4;
     Utils.StartTick(dt => {
+        if (dt > maxDeltaTime)
+            dt = maxDeltaTime;
         scene.update(dt);
         camera.transform = Matrix4.LookAt(new Vector3(0, 0, 10), jumperCube.transform.position);
         scene.draw();

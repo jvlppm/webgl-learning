@@ -21,7 +21,7 @@
         static Perspective(fovy, aspect, near, far) {
             var top = near * Math.tan(fovy * Math.PI / 360.0);
             var right = top * aspect;
-            return new Camera(Camera.Frustum(-right, right, -top, top, near, far), Matrix4.Identity());
+            return Camera.Frustum(-right, right, -top, top, near, far);
         }
 
         static Frustum(left: number, right: number, bottom: number, top: number, zNear: number, zFar: number) {

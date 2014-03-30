@@ -18,7 +18,7 @@ module JumperCube.Behaviors {
 
         update(deltaTime: number) {
             if (this.rigidBody.momentum.y !== 0) {
-                this.object.transform = this.object.transform.rotateZ(this.speed * deltaTime);
+                this.object.transform = this.object.transform.rotateZ(this.speed * deltaTime * (this.rigidBody.momentum.x > 0? -1 : 1));
                 this.resetTransform = true;
             }
             else if (this.resetTransform) {
