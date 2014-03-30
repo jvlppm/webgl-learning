@@ -9,7 +9,7 @@
     export class Camera extends Components.ComponentCollection<Camera> {
         viewport: Viewport;
 
-        constructor(public projection: Matrix4, public transform: Matrix4) {
+        constructor(public projection: Matrix4 = Matrix4.Identity(), public transform: Matrix4 = Matrix4.Identity()) {
             super();
             this.viewport = new Viewport(0, 0, 1, 1);
         }

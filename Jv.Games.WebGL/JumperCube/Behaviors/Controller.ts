@@ -3,6 +3,7 @@
 ///<reference path="../../Jv.Games.WebGL/Components/RigidBody.ts" />
 
 module JumperCube.Behaviors {
+    import Key = Jv.Games.WebGL.Key;
     import Keyboard = Jv.Games.WebGL.Keyboard;
     import RigidBody = Jv.Games.WebGL.Components.RigidBody;
     import Component = Jv.Games.WebGL.Components.Component;
