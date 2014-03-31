@@ -36,13 +36,8 @@
             gl.clearDepth(1.0);
         }
 
-        //TODO: buscar todos os renderers, pegar os diferentes shaders, e aplicar a matriz
-
-        draw(baseTransform: Matrix4 = Matrix4.Identity()) {
-            if (typeof baseTransform !== "undefined")
-                baseTransform = baseTransform.multiply(this.transform);
-            else
-                baseTransform = this.transform;
+        draw(baseTransform?: Matrix4) {
+            baseTransform = baseTransform ? baseTransform.multiply(this.transform) : this.transform;
 
             var gl = this.webgl.context;
             var canvas = this.webgl.canvas;

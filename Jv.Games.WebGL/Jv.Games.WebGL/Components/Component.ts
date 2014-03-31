@@ -54,7 +54,7 @@
             this.components.forEach(c => c.update(deltaTime));
         }
 
-        draw(baseTransform?: Matrix4) {
+        draw(baseTransform: Matrix4) {
             this.components.forEach(c => c.draw(baseTransform));
         }
     }

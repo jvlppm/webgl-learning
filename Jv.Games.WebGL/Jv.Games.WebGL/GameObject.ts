@@ -36,12 +36,8 @@ module Jv.Games.WebGL {
             return item;
         }
 
-        draw(baseTransform?: Matrix4) {
-            if (typeof baseTransform !== "undefined")
-                baseTransform = baseTransform.multiply(this.transform);
-            else
-                baseTransform = this.transform;
-            
+        draw(baseTransform: Matrix4) {
+            baseTransform = baseTransform.multiply(this.transform);
             super.draw(baseTransform);
             this.children.forEach(c => c.draw(baseTransform));
         }

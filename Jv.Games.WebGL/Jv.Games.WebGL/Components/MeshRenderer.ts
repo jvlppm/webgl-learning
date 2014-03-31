@@ -12,7 +12,7 @@
             this.material = this.material || new Jv.Games.WebGL.Materials.VertexColorMaterial(this.mesh.context);
         }
 
-        draw(baseTransform?: Matrix4) {
+        draw(baseTransform: Matrix4) {
             this.material.program.use();
             this.material.setUniform("Mmatrix", baseTransform);
             this.material.setUniforms();
