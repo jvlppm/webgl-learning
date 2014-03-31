@@ -45,7 +45,7 @@ function initGame(webgl: WebGL) {
 
     var body = jumperCube.add(new GameObject());
     body.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(1, 1, 1, webgl.context) });
-    body.add(Behaviors.RotateWhileJumping, { speed: 6 });
+    body.add(Behaviors.RotateWhileJumping, { speed: 4 });
 
     var obstacle = scene.add(new GameObject());
     obstacle.transform.x = 14;
