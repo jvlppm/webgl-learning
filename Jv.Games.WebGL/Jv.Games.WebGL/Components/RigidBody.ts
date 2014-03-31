@@ -66,8 +66,11 @@
                 if (other == this.collider)
                     continue;
 
-                if (this.collider.intersects(other))
-                    return false;
+                if (this.collider.intersects(other)) {
+                    if (!other.isTrigger)
+                        return false;
+                    this.object.getComponents(Component, true).forEach(c => c.onTrigger(this.collider));
+                }
             }
 
             return true;
