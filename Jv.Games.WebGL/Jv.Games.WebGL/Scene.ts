@@ -53,7 +53,7 @@
 
                 Scene.unique(this.getComponents<MeshRenderer>(MeshRenderer, true).map(c => c.material)).forEach(material => {
                     material.setUniform("Pmatrix", cam.projection)
-                    material.setUniform("Vmatrix", cam.transform);
+                    material.setUniform("Vmatrix", cam.view);
                 });
 
                 this.children.forEach(obj => {

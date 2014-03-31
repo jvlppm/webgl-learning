@@ -25,6 +25,7 @@ function initGame(webgl: WebGL) {
 
     var scene = new Jv.Games.WebGL.Scene(webgl);
     scene.add(camera);
+    camera.transform.position.z = 10;
 
     var floorHeight = -5;
 
@@ -55,12 +56,13 @@ function initGame(webgl: WebGL) {
 
     scene.init();
 
+    camera.add(JumperCube.Behaviors.LookAtObject, { target: jumperCube });
+
     var maxDeltaTime = 1 / 4;
     Utils.StartTick(dt => {
         if (dt > maxDeltaTime)
             dt = maxDeltaTime;
         scene.update(dt);
-        camera.transform = Matrix4.LookAt(new Vector3(0, 0, 10), jumperCube.transform.position);
         scene.draw();
     });
 }
@@ -71,7 +73,7 @@ function matchWindowSize(canvas: HTMLCanvasElement) {
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        camera.projection = Camera.Perspective(40, canvas.width / canvas.height, 1, 100);
+        camera.setPerspective(40, canvas.width / canvas.height, 1, 100);
     }
     resizeCanvas();
 }

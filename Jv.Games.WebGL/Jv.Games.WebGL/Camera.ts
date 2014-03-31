@@ -6,11 +6,15 @@
         }
     }
     
-    export class Camera extends Components.ComponentCollection<Camera> {
+    export class Camera extends GameObject {
         viewport: Viewport;
+        view: Matrix4;
+        projection: Matrix4;
 
-        constructor(public projection: Matrix4 = Matrix4.Identity(), public transform: Matrix4 = Matrix4.Identity()) {
+        constructor() {
             super();
+            this.view = Matrix4.Identity();
+            this.projection = Matrix4.Identity();
             this.viewport = new Viewport(0, 0, 1, 1);
         }
 
@@ -18,10 +22,22 @@
             super.update(deltaTime);
         }
 
-        static Perspective(fovy, aspect, near, far) {
+        setPerspective(fovy, aspect, near, far) {
             var top = near * Math.tan(fovy * Math.PI / 360.0);
             var right = top * aspect;
-            return Camera.Frustum(-right, right, -top, top, near, far);
+            this.projection = Camera.Frustum(-right, right, -top, top, near, far);
+        }
+
+        lookAt(center: Vector3, up = new Vector3(0,1,0)) {
+            var basePosition = this.transform.position;
+
+            var currentObject: GameObject = this;
+            while (typeof currentObject.parent !== "undefined") {
+                currentObject = currentObject.parent;
+                basePosition = basePosition.add(currentObject.transform.position);
+            }
+
+            this.view = Matrix4.LookAt(basePosition, center, up);
         }
 
         static Frustum(left: number, right: number, bottom: number, top: number, zNear: number, zFar: number) {

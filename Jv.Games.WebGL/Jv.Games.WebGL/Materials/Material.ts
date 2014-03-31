@@ -30,9 +30,14 @@
 
     export class SolidColorMaterial extends Material {
         private static materialProgram: Core.ShaderProgram;
+        uniforms: { vColor: Color };
 
         set color(value: Color) {
-            this.uniforms["vColor"] = value;
+            this.uniforms.vColor = value;
+        }
+
+        get color() {
+            return this.uniforms.vColor;
         }
 
         constructor(context: WebGLRenderingContext, color: Color) {

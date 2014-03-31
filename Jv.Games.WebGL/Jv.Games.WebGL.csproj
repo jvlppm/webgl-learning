@@ -22,6 +22,7 @@
     <Content Include="app.css" />
     <Content Include="default.htm" />
     <Content Include="packages.config" />
+    <TypeScriptCompile Include="JumperCube\Behaviors\LookAtObject.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\RotateWhileJumping.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\Controller.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\Mover.ts" />
