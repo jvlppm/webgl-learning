@@ -28,18 +28,6 @@
             this.projection = Camera.Frustum(-right, right, -top, top, near, far);
         }
 
-        lookAt(center: Vector3, up = new Vector3(0,1,0)) {
-            var basePosition = this.transform.position;
-
-            var currentObject: GameObject = this;
-            while (typeof currentObject.parent !== "undefined") {
-                currentObject = currentObject.parent;
-                basePosition = basePosition.add(currentObject.transform.position);
-            }
-
-            this.view = Matrix4.LookAt(basePosition, center, up);
-        }
-
         static Frustum(left: number, right: number, bottom: number, top: number, zNear: number, zFar: number) {
             var zDelta = (zFar - zNear);
             var dir = (right - left);

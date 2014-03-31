@@ -46,6 +46,22 @@ module Jv.Games.WebGL {
             this.children.forEach(c => c.draw(baseTransform));
         }
 
+        get globalTransform() {
+            var m: Matrix4[] = [];
+            m.push(this.transform);
+
+            var currentObject: GameObject = this;
+            while (typeof currentObject.parent !== "undefined") {
+                currentObject = currentObject.parent;
+                m.push(currentObject.transform);
+            }
+
+            var gTransform = m.pop();
+            while (m.length > 0)
+                gTransform = gTransform.multiply(m.pop());
+            return gTransform;
+        }
+
         getComponents<Type extends Components.Component<GameObject>>(componentType: { new (object: GameObject, args?): Type }, recursively?: boolean): Type[]{
             var result: Type[] = super.getComponents(componentType);
 

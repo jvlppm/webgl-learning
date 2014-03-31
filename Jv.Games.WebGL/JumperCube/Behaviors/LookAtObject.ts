@@ -14,7 +14,11 @@ module JumperCube.Behaviors {
         }
 
         update(deltaTime: number) {
-            this.object.lookAt(this.target.transform.position);
+            var eye = this.object.globalTransform.position;
+            var center = this.target.globalTransform.position;
+            var up = new Vector3(0, 1, 0);
+
+            this.object.view = Matrix4.LookAt(eye, center, up);
         }
     }
 }
