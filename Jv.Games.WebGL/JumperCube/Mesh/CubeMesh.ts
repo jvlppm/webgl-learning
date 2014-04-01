@@ -1,5 +1,5 @@
-﻿///<reference path="../Jv.Games.WebGL/Mesh.ts" />
-///<reference path="../Jv.Games.WebGL/Core/VertexAttribute.ts" />
+﻿///<reference path="../../Jv.Games.WebGL/Mesh.ts" />
+///<reference path="../../Jv.Games.WebGL/Core/VertexAttribute.ts" />
 
 module JumperCube {
     import WebGL = Jv.Games.WebGL;

@@ -19,6 +19,22 @@
                 0, 0, 0, 1]));
         }
 
+        static Scale(x: number, y: number, z: number) {
+            return new Matrix4(new Float32Array(
+                [x, 0, 0, 0,
+                0, y, 0, 0,
+                0, 0, z, 0,
+                0, 0, 0, 1]));
+        }
+
+        static Translate(x: number, y: number, z: number) {
+            return new Matrix4(new Float32Array(
+                [1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    x, y, z, 1]));
+        }
+
         static LookAt(eye: Vector3, center: Vector3, up?: Vector3) {
             if (typeof up === "undefined")
                 up = new Vector3(0, 1, 0);
