@@ -27,5 +27,12 @@
         setMatrix4(value: Matrix4, transpose: boolean = false) {
             this.context.uniformMatrix4fv(this.location, transpose, value.data);
         }
+
+        setTexture(value: Materials.Texture) {
+            var gl = this.context;
+            gl.activeTexture(gl.TEXTURE0);
+            gl.bindTexture(gl.TEXTURE_2D, value.texture);
+            gl.uniform1i(this.location, 0);
+        }
     }
 }

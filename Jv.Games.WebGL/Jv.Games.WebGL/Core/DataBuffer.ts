@@ -19,6 +19,9 @@
                 case Core.DataType.Float:
                     bufferContent = new Float32Array(data);
                     break;
+                case Core.DataType.UnsignedShort:
+                    bufferContent = new Uint16Array(data);
+                    break;
                 default:
                     throw new Error("Data type of " + this.dataType + " is not supported yet");
             }

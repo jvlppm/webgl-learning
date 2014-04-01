@@ -13,6 +13,7 @@
 
         setUniform(name: string, value: Color);
         setUniform(name: string, value: Matrix4);
+        setUniform(name: string, value: Texture);
         setUniform(name: string, value) {
             this.program.use();
             if (value instanceof Matrix4) {
@@ -21,6 +22,10 @@
             }
             if (value instanceof Color) {
                 this.program.getUniform(name).setColor(value);
+                return;
+            }
+            if (value instanceof Texture) {
+                this.program.getUniform(name).setTexture(value);
                 return;
             }
 
@@ -119,6 +124,56 @@
             }
 
             return VertexColorMaterial.materialProgram;
+        }
+    }
+
+    export class TextureMaterial extends Material {
+        private static materialProgram: Core.ShaderProgram;
+        uniforms: { uSampler: Texture };
+
+        constructor(context: WebGLRenderingContext, texture: Texture) {
+            super(TextureMaterial.getProgram(context));
+            this.texture = texture;
+        }
+
+        set texture(value: Texture) {
+            this.uniforms.uSampler = value;
+        }
+
+        private static getProgram(context: WebGLRenderingContext) {
+            if (typeof TextureMaterial.materialProgram === "undefined") {
+                TextureMaterial.materialProgram = new Core.ShaderProgram(context);
+
+                TextureMaterial.materialProgram.addShader(Core.ShaderType.Vertex,
+                    [
+                        "attribute vec3 position;",
+                        "attribute vec2 textureCoord;",
+
+                        "uniform mat4 Pmatrix;",
+                        "uniform mat4 Vmatrix;",
+                        "uniform mat4 Mmatrix;",
+
+                        "varying highp vec2 vTextureCoord;",
+
+                        "void main(void)", [ //pre-built function
+                            "gl_Position = Pmatrix * Vmatrix * Mmatrix * vec4(position, 1.);",
+                            "vTextureCoord = textureCoord;"
+                        ]
+                    ]);
+
+                TextureMaterial.materialProgram.addShader(Core.ShaderType.Fragment,
+                    [
+                        "varying highp vec2 vTextureCoord;",
+                        "uniform sampler2D uSampler;",
+
+                        "void main(void)", [
+                            "gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));"
+                        ]
+                    ]);
+                TextureMaterial.materialProgram.link();
+            }
+
+            return TextureMaterial.materialProgram;
         }
     }
 }

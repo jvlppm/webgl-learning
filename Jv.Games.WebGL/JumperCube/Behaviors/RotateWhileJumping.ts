@@ -4,6 +4,7 @@
 module JumperCube.Behaviors {
     import Component = Jv.Games.WebGL.Components.Component;
     import RigidBody = Jv.Games.WebGL.Components.RigidBody;
+    import Matrix4 = Jv.Games.WebGL.Matrix4;
 
     export class RotateWhileJumping extends Component<Jv.Games.WebGL.GameObject> {
         rigidBody: RigidBody;

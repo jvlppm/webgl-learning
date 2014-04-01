@@ -37,6 +37,7 @@
     <TypeScriptCompile Include="Jv.Games.WebGL\GameObject.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Keyboard.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Materials\Material.ts" />
+    <TypeScriptCompile Include="Jv.Games.WebGL\Materials\Texture.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Scene.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Utils.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\MathHelper.ts" />

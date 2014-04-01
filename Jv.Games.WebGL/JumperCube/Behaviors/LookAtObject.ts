@@ -4,6 +4,9 @@
 module JumperCube.Behaviors {
     import Keyboard = Jv.Games.WebGL.Keyboard;
     import Component = Jv.Games.WebGL.Components.Component;
+    import Vector3 = Jv.Games.WebGL.Vector3;
+    import GameObject = Jv.Games.WebGL.GameObject;
+    import Matrix4 = Jv.Games.WebGL.Matrix4;
 
     export class LookAtObject extends Component<Jv.Games.WebGL.Camera> {
         public target: GameObject;
