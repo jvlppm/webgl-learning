@@ -11,16 +11,17 @@ import MeshRenderer = Jv.Games.WebGL.Components.MeshRenderer;
 import GameObject = Jv.Games.WebGL.GameObject;
 import Components = Jv.Games.WebGL.Components;
 import Behaviors = JumperCube.Behaviors;
+import Texture = Jv.Games.WebGL.Materials.Texture;
 
-// -- Setup --
-
-Jv.Games.WebGL.MeterSize = 3;
+// -- Assets --
+var marioTexture: Texture;
 
 // -- Game --
 
 var camera: Camera = new Camera();
 
 function initGame(webgl: WebGL) {
+    Jv.Games.WebGL.MeterSize = 3;
     Jv.Games.WebGL.Keyboard.init();
 
     var scene = new Jv.Games.WebGL.Scene(webgl);
@@ -28,6 +29,7 @@ function initGame(webgl: WebGL) {
     camera.transform.position.z = 10;
 
     var floorHeight = -5;
+    var marioHeadMesh = { mesh: new JumperCube.Mesh.Mario.Head(webgl.context), material: new Jv.Games.WebGL.Materials.TextureMaterial(webgl.context, marioTexture) };
 
     var platform = scene.add(new GameObject());
     platform.transform = platform.transform.translate(new Vector3(0, floorHeight - 0.126, 0));
@@ -37,14 +39,16 @@ function initGame(webgl: WebGL) {
     var jumperCube = scene.add(new GameObject());
     jumperCube.transform.x = -14;
     jumperCube.transform.y = floorHeight + 0.5;
+    jumperCube.transform._rotateY(Math.PI / 2);
     jumperCube.add(Components.AxisAlignedBoxCollider);
     jumperCube.add(Components.RigidBody);
     jumperCube.add(Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
-    jumperCube.add(Mover, { direction: new Vector3(1.5, 0, 0), acceleration: true, continuous: false });
+    jumperCube.add(Mover, { direction: new Vector3(0, 0, 1.5), acceleration: true, continuous: false });
     jumperCube.add(Behaviors.Controller, { jumpForce: 4.9, moveForce: 10 });
+    //jumperCube.add(Behaviors.ViewModel);
 
     var body = jumperCube.add(new GameObject());
-    body.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(1, 1, 1, webgl.context) });
+    body.add(MeshRenderer, marioHeadMesh);
     body.add(Behaviors.RotateWhileJumping, { speed: 4 });
 
     var obstacle = scene.add(new GameObject());
@@ -78,11 +82,28 @@ function matchWindowSize(canvas: HTMLCanvasElement) {
     resizeCanvas();
 }
 
+function loadTexture(context: WebGLRenderingContext, url: string) {
+    var def = $.Deferred<Texture>();
+    var image = new Image();
+    image.onload = function () {
+        var canvas = <HTMLCanvasElement>document.getElementById("canvas-element-id");
+        matchWindowSize(canvas);
+        def.resolve(Texture.FromImage(context, image));
+    };
+    image.onerror = def.reject;
+    image.src = url;
+    return def;
+}
+
 $(document).ready(function () {
     try {
         var canvas = <HTMLCanvasElement>document.getElementById("canvas-element-id");
-        matchWindowSize(canvas);
-        initGame(WebGL.fromCanvas(canvas));
+        var webgl = WebGL.fromCanvas(canvas);
+
+        loadTexture(webgl.context, "new-mario.png").then((t) => {
+            marioTexture = t;
+            initGame(webgl);
+        });
     }
     catch (e) {
         alert("Error: " + e.message)

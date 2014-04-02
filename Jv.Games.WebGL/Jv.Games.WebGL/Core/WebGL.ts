@@ -19,7 +19,7 @@ module Jv.Games.WebGL.Core {
             var context: WebGLRenderingContext;
             var contextName = ["webgl", "experimental-webgl", "webkit-3d", "moz-webgl"];
             for (var i = 0; i < contextName.length && context == null; i++)
-                context = <WebGLRenderingContext>canvas.getContext(contextName[i], { antialias: false });
+                context = <WebGLRenderingContext>canvas.getContext(contextName[i], { antialias: false, alpha: false });
             return context;
         }
     }

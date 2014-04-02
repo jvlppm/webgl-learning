@@ -21,11 +21,16 @@
   <ItemGroup>
     <Content Include="app.css" />
     <Content Include="default.htm" />
+    <Content Include="new-mario.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="packages.config" />
     <TypeScriptCompile Include="JumperCube\Behaviors\LookAtObject.ts" />
+    <TypeScriptCompile Include="JumperCube\Behaviors\ViewModel.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\RotateWhileJumping.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\Controller.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\Mover.ts" />
+    <TypeScriptCompile Include="JumperCube\Mesh\Mario\Head.ts" />
     <TypeScriptCompile Include="JumperCube\Mesh\CubeMesh.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Components\Component.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Components\MeshRenderer.ts" />

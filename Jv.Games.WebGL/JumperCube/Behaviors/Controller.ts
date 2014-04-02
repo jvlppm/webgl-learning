@@ -27,9 +27,9 @@ module JumperCube.Behaviors {
             }
 
             if (Keyboard.isKeyDown(Key.Right))
-                this.rigidBody.push(new Vector3(this.moveForce, 0, 0));
+                this.rigidBody.push(new Vector3(0,0,this.moveForce));
             if (Keyboard.isKeyDown(Key.Left))
-                this.rigidBody.push(new Vector3(-this.moveForce, 0, 0));
+                this.rigidBody.push(new Vector3(0,0,-this.moveForce));
         }
     }
 }

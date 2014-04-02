@@ -91,9 +91,8 @@
             this.data[14] = value;
         }
 
-        rotateX(angle: number) {
-            var m = new Float32Array(16);
-            m.set(this.data);
+        _rotateX(angle: number) {
+            var m = this.data;
 
             var c = Math.cos(angle);
             var s = Math.sin(angle);
@@ -105,13 +104,10 @@
             m[2] = m[2] * c + mv1 * s;
             m[6] = m[6] * c + mv5 * s;
             m[10] = m[10] * c + mv9 * s;
-
-            return new Matrix4(m);
         }
 
-        rotateY(angle: number) {
-            var m = new Float32Array(16);
-            m.set(this.data);
+        _rotateY(angle: number) {
+            var m = this.data;
 
             var c = Math.cos(angle);
             var s = Math.sin(angle);
@@ -123,13 +119,10 @@
             m[2] = c * m[2] - s * mv0;
             m[6] = c * m[6] - s * mv4;
             m[10] = c * m[10] - s * mv8;
-
-            return new Matrix4(m);
         }
 
-        rotateZ(angle: number) {
-            var m = new Float32Array(16);
-            m.set(this.data);
+        _rotateZ(angle: number) {
+            var m = this.data;
 
             var c = Math.cos(angle);
             var s = Math.sin(angle);
@@ -141,8 +134,6 @@
             m[1] = c * m[1] + s * mv0;
             m[5] = c * m[5] + s * mv4;
             m[9] = c * m[9] + s * mv8;
-
-            return new Matrix4(m);
         }
 
         translate(t: Vector3) {
