@@ -1,4 +1,6 @@
-﻿module Jv.Games.WebGL.Components {
+﻿///<reference path="../references.ts" />
+
+module Jv.Games.WebGL.Components {
     export class MeshRenderer extends Component<GameObject> {
         mesh: Mesh;
         material: Jv.Games.WebGL.Materials.Material;

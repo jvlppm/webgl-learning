@@ -1,4 +1,6 @@
-﻿module Jv.Games.WebGL.Materials {
+﻿///<reference path="../references.ts" />
+
+module Jv.Games.WebGL.Materials {
     export class Material {
         constructor(public program: Core.ShaderProgram) {
             this.uniforms = {};

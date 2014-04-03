@@ -1,5 +1,4 @@
-﻿///<reference path="../../Jv.Games.WebGL/GameObject.ts" />
-///<reference path="../../Jv.Games.WebGL/Components/RigidBody.ts" />
+﻿///<reference path="../references.ts" />
 
 module JumperCube.Behaviors {
     import Component = Jv.Games.WebGL.Components.Component;
@@ -20,8 +19,7 @@ module JumperCube.Behaviors {
 
         update(deltaTime: number) {
             if (this.rigidBody.momentum.y !== 0) {
-                var movement = new Vector3(this.rigidBody.momentum.x, 0, this.rigidBody.momentum.z);
-                this.object.transform._rotateX(this.speed * deltaTime * movement.length());
+                this.object.transform._rotateX(this.speed * deltaTime);
                 this.resetTransform = true;
             }
             else if (this.resetTransform) {

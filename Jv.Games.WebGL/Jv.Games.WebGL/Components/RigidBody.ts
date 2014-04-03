@@ -1,4 +1,6 @@
-﻿module Jv.Games.WebGL.Components {
+﻿///<reference path="../references.ts" />
+
+module Jv.Games.WebGL.Components {
     export class RigidBody extends Component<GameObject> {
         private acceleration: Vector3;
         private instantaneousAcceleration: Vector3;
@@ -14,9 +16,9 @@
 
             this.collider = this.collider || <Collider>object.getComponent(Collider, false);
 
-            this.acceleration = Vector3.Zero;
-            this.instantaneousAcceleration = Vector3.Zero;
-            this.momentum = Vector3.Zero;
+            this.acceleration = new Vector3();
+            this.instantaneousAcceleration = new Vector3();
+            this.momentum = new Vector3();
         }
 
         update(deltaTime: number) {
@@ -45,14 +47,15 @@
 
                 if (i >= 3) {
                     this.object.transform = oldTransform;
-                    this.momentum = Vector3.Zero;
+                    this.momentum = new Vector3();
                 }
             }
 
             if (typeof this.friction !== "undefined")
                 this.momentum._multiply(this.friction);
 
-            this.instantaneousAcceleration = this.acceleration = Vector3.Zero;
+            this.instantaneousAcceleration = new Vector3();
+            this.acceleration = new Vector3();
         }
 
         validPosition() {

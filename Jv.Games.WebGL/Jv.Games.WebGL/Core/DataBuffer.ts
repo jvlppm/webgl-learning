@@ -1,4 +1,6 @@
-﻿module Jv.Games.WebGL.Core {
+﻿///<reference path="../references.ts" />
+
+module Jv.Games.WebGL.Core {
     export class BufferAttribute {
         constructor(public name: string, public size: number, public type: Jv.Games.WebGL.Core.DataType, public normalized: boolean, public stride: number, public offset: number) {
         }

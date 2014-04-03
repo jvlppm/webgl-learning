@@ -1,4 +1,6 @@
-﻿module Jv.Games.WebGL {
+﻿///<reference path="references.ts" />
+
+module Jv.Games.WebGL {
     import MeshRenderer = Jv.Games.WebGL.Components.MeshRenderer;
 
     export class Scene extends GameObject {

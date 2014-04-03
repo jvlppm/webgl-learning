@@ -1,4 +1,6 @@
-﻿module Jv.Games.WebGL {
+﻿///<reference path="references.ts" />
+
+module Jv.Games.WebGL {
 
     export class Viewport {
         // 0 means top/left, 1 means bottom/right.

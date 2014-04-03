@@ -1,20 +1,39 @@
-﻿module Jv.Games.WebGL {
-    export class Vector3 {
-        static Zero: Vector3 = new Vector3(0, 0, 0);
+﻿///<reference path="references.ts" />
 
+module Jv.Games.WebGL {
+    export class Vector3 {
         private data: Float32Array;
         private startIndex: number;
 
-        constructor(data: Float32Array, startIndex: number);
+        constructor();
+        constructor(xyz: number);
         constructor(x: number, y: number, z: number);
+        constructor(data: Float32Array, startIndex: number);
 
-        constructor(a1, a2, a3?) {
-            if (typeof a1 === "number") {
+        constructor(a1?, a2?, a3?) {
+            if (!(a1 instanceof Float32Array)) {
                 this.data = new Float32Array(3);
-                this.data[0] = a1;
-                this.data[1] = a2;
-                this.data[2] = a3;
                 this.startIndex = 0;
+                if (typeof a1 === "undefined") {
+                    this.data[0] = 0;
+                    this.data[1] = 0;
+                    this.data[2] = 0;
+                }
+                else {
+                    this.data[0] = a1;
+                    if (typeof a2 === "undefined") {
+                        this.data[1] = this.data[0];
+                        this.data[2] = this.data[0];
+                    }
+                    else {
+                        this.data[1] = a2;
+
+                        if (typeof a2 === "undefined")
+                            throw new Error("Z coordinate not specified for Vector3");
+
+                        this.data[2] = a3;
+                    }
+                }
             }
             else {
                 this.data = a1;

@@ -1,4 +1,6 @@
-﻿module Jv.Games.WebGL {
+﻿///<reference path="references.ts" />
+
+module Jv.Games.WebGL {
     export class Color {
         constructor(public data: Float32Array, public startIndex: number = 0) {
             if (startIndex + 4 > data.length)

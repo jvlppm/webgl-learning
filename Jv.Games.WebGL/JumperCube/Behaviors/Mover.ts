@@ -1,5 +1,4 @@
-﻿///<reference path="../../Jv.Games.WebGL/GameObject.ts" />
-///<reference path="../../Jv.Games.WebGL/Components/RigidBody.ts" />
+﻿///<reference path="../references.ts" />
 
 module JumperCube.Behaviors {
     import GameObject = Jv.Games.WebGL.GameObject;

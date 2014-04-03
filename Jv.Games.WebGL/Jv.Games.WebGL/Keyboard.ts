@@ -1,4 +1,6 @@
-﻿module Jv.Games.WebGL {
+﻿///<reference path="references.ts" />
+
+module Jv.Games.WebGL {
     export enum Key {
         Space = 32,
         Left = 37,

@@ -1,5 +1,5 @@
-///<reference path="Scripts/typings/jquery/jquery.d.ts" />
-///<reference path="Jv.Games.WebGL/Core/WebGL.ts" />
+///<reference path="Jv.Games.WebGL/references.ts" />
+///<reference path="JumperCube/references.ts" />
 
 module JumperCube {
     import WebGL = Jv.Games.WebGL.Core.WebGL;
@@ -73,7 +73,7 @@ module JumperCube {
                 bodyYaw.add(Behaviors.LookForward);
                 var body = bodyYaw.add(new GameObject());
                 body.add(MeshRenderer, marioHeadMesh);
-                body.add(Behaviors.RotateWhileJumping, { speed: 4 });
+                body.add(Behaviors.RotateWhileJumping, { speed: 6 });
 
                 var obstacle = this.scene.add(new GameObject());
                 obstacle.transform.x = 14;

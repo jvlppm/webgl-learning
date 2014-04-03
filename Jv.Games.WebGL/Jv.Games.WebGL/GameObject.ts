@@ -1,7 +1,4 @@
-﻿///<reference path="Components/Component.ts" />
-///<reference path="Mesh.ts" />
-///<reference path="Matrix4.ts" />
-///<reference path="Vector3.ts" />
+﻿///<reference path="references.ts" />
 
 module Jv.Games.WebGL {
     import ShaderProgram = Core.ShaderProgram;

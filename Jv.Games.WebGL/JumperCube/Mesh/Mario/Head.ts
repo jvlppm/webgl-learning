@@ -1,5 +1,4 @@
-﻿///<reference path="../../../Jv.Games.WebGL/Mesh.ts" />
-///<reference path="../../../Jv.Games.WebGL/Core/VertexAttribute.ts" />
+﻿///<reference path="../../references.ts" />
 
 module JumperCube.Mesh.Mario {
     import WebGL = Jv.Games.WebGL;

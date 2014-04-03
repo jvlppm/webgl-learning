@@ -1,6 +1,4 @@
-﻿///<reference path="../../Jv.Games.WebGL/GameObject.ts" />
-///<reference path="../../Jv.Games.WebGL/Keyboard.ts" />
-///<reference path="../../Jv.Games.WebGL/Components/RigidBody.ts" />
+﻿///<reference path="../references.ts" />
 
 module JumperCube.Behaviors {
     import Key = Jv.Games.WebGL.Key;
@@ -37,8 +35,6 @@ module JumperCube.Behaviors {
             var right = forward.cross(new Vector3(0, -1, 0));
 
             var toMove = new Vector3(0, 0, 0);
-
-            window.document.title = "x:" + objt.x + ", y:" + objt.y + ", z: " + objt.z;
 
             if (Keyboard.isKeyDown(Key.Up))
                 toMove._add(forward.scale(this.moveForce));

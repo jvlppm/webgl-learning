@@ -1,4 +1,6 @@
-﻿module Jv.Games.WebGL.Core {
+﻿///<reference path="../references.ts" />
+
+module Jv.Games.WebGL.Core {
 
     export enum ShaderType {
         Vertex,

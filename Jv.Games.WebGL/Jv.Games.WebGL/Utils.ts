@@ -1,4 +1,6 @@
-﻿module Jv.Games.WebGL {
+﻿///<reference path="references.ts" />
+
+module Jv.Games.WebGL {
     export class Utils {
         static StartTick(tickMethod: (dt: number) => void) {
             var result = $.Deferred();

@@ -1,4 +1,6 @@
-﻿module Jv.Games.WebGL.Components {
+﻿///<reference path="../references.ts" />
+
+module Jv.Games.WebGL.Components {
     export class Collider extends Component<GameObject> {
         isTrigger = false;
 

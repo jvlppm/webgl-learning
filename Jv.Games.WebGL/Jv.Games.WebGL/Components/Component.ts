@@ -1,4 +1,6 @@
-﻿module Jv.Games.WebGL.Components {
+﻿///<reference path="../references.ts" />
+
+module Jv.Games.WebGL.Components {
     export class Component<ObjectType> {
         constructor(public object: ObjectType) { }
 

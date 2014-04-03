@@ -1,4 +1,4 @@
-﻿///<reference path="../Jv.Games.WebGL/Core/DataBuffer.ts" />
+﻿///<reference path="references.ts" />
 
 module Jv.Games.WebGL {
     import DataBuffer = Jv.Games.WebGL.Core.DataBuffer;

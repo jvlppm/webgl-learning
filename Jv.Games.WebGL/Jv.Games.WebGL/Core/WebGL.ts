@@ -1,4 +1,4 @@
-﻿///<reference path="ShaderProgram.ts" />
+﻿///<reference path="../references.ts" />
 
 module Jv.Games.WebGL.Core {
     import ShaderProgram = Jv.Games.WebGL.Core.ShaderProgram;

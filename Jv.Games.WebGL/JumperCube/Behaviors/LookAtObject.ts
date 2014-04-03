@@ -1,5 +1,4 @@
-﻿///<reference path="../../Jv.Games.WebGL/GameObject.ts" />
-///<reference path="../../Jv.Games.WebGL/Keyboard.ts" />
+﻿///<reference path="../references.ts" />
 
 module JumperCube.Behaviors {
     import Keyboard = Jv.Games.WebGL.Keyboard;
