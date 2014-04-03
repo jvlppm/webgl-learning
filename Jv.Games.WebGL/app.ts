@@ -66,7 +66,7 @@ module JumperCube {
                 jumperCube.add(Components.RigidBody, { friction: new Vector3(0.90, 1, 0.90) });
                 jumperCube.add(Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
                 //jumperCube.add(Mover, { direction: new Vector3(0, 0, 1.5), acceleration: true, continuous: false });
-                jumperCube.add(Behaviors.Controller, { jumpForce: 4.9, moveForce: 20, camera: this.camera });
+                jumperCube.add(Behaviors.Controller, { minJumpForce: 2.0, maxJumpForce: 4.9, moveForce: 20, camera: this.camera });
                 //jumperCube.add(Behaviors.ViewModel);
 
                 var bodyYaw = jumperCube.add(new GameObject());

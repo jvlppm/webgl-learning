@@ -11,8 +11,10 @@ module JumperCube.Behaviors {
     export class Controller extends Component<Jv.Games.WebGL.GameObject> {
         rigidBody: RigidBody;
         camera: Jv.Games.WebGL.Camera;
-        jumpForce = 1;
+        minJumpForce = 1;
+        maxJumpForce = 1;
         moveForce = 1;
+        private spareJumpForce = 0;
 
         constructor(object: Jv.Games.WebGL.GameObject, args) {
             super(object);
@@ -22,9 +24,24 @@ module JumperCube.Behaviors {
 
         update(deltaTime: number) {
             if (this.rigidBody.momentum.y === 0) {
-                if (Keyboard.isKeyDown(Key.Space))
-                    this.rigidBody.push(new Vector3(0, this.jumpForce, 0), true, true);
+                if (Keyboard.isKeyDown(Key.Space)) {
+                    this.rigidBody.push(new Vector3(0, this.minJumpForce, 0), true, true);
+                    if (this.maxJumpForce > this.minJumpForce)
+                        this.spareJumpForce = this.maxJumpForce - this.minJumpForce;
+                }
             }
+            else if (Keyboard.isKeyDown(Key.Space)) {
+                if (this.spareJumpForce > 0 && this.rigidBody.momentum.y > 0) {
+                    var addToJump = this.minJumpForce * 20 * deltaTime;
+                    this.spareJumpForce -= addToJump;
+                    if (this.spareJumpForce < 0) {
+                        addToJump += this.spareJumpForce;
+                        this.spareJumpForce = 0;
+                    }
+                    this.rigidBody.push(new Vector3(0, addToJump, 0), true, true);
+                }
+            }
+            else this.spareJumpForce = 0;
 
             var objt = this.object.globalTransform;
 
