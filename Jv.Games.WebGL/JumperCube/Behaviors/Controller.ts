@@ -31,14 +31,14 @@ module JumperCube.Behaviors {
             var objt = this.object.globalTransform;
 
             var forward = this.camera.view.multiply(this.camera.globalTransform).invert()
-                .multiply(this.object.globalTransform)
-                .transform(new Vector3(0, 0, 1));
+                .multiply(objt.invert())
+                .transform(new Vector3(0, 0, -1));
 
             var right = forward.cross(new Vector3(0, -1, 0));
 
             var toMove = new Vector3(0, 0, 0);
 
-            window.document.title = "x:" + forward.x + ", y:" + forward.y + ", z: " + forward.z;
+            window.document.title = "x:" + objt.x + ", y:" + objt.y + ", z: " + objt.z;
 
             if (Keyboard.isKeyDown(Key.Up))
                 toMove._add(forward.scale(this.moveForce));

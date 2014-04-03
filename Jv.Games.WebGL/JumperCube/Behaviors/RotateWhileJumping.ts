@@ -5,6 +5,7 @@ module JumperCube.Behaviors {
     import Component = Jv.Games.WebGL.Components.Component;
     import RigidBody = Jv.Games.WebGL.Components.RigidBody;
     import Matrix4 = Jv.Games.WebGL.Matrix4;
+    import Vector3 = Jv.Games.WebGL.Vector3;
 
     export class RotateWhileJumping extends Component<Jv.Games.WebGL.GameObject> {
         rigidBody: RigidBody;
@@ -19,7 +20,8 @@ module JumperCube.Behaviors {
 
         update(deltaTime: number) {
             if (this.rigidBody.momentum.y !== 0) {
-                this.object.transform._rotateX(this.speed * deltaTime * this.rigidBody.momentum.z);
+                var movement = new Vector3(this.rigidBody.momentum.x, 0, this.rigidBody.momentum.z);
+                this.object.transform._rotateX(this.speed * deltaTime * movement.length());
                 this.resetTransform = true;
             }
             else if (this.resetTransform) {

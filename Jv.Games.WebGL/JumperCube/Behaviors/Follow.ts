@@ -1,6 +1,7 @@
 ﻿///<reference path="../../Jv.Games.WebGL/GameObject.ts" />
 ///<reference path="../../Jv.Games.WebGL/Keyboard.ts" />
 ///<reference path="../../Jv.Games.WebGL/Matrix4.ts" />
+///<reference path="../../Jv.Games.WebGL/Components/RigidBody.ts" />
 
 module JumperCube.Behaviors {
     import Keyboard = Jv.Games.WebGL.Keyboard;
@@ -8,26 +9,30 @@ module JumperCube.Behaviors {
     import Vector3 = Jv.Games.WebGL.Vector3;
     import GameObject = Jv.Games.WebGL.GameObject;
     import Matrix4 = Jv.Games.WebGL.Matrix4;
+    import RigidBody = Jv.Games.WebGL.Components.RigidBody;
 
     export class Follow extends Component<Jv.Games.WebGL.Camera> {
-        public target: GameObject;
-        public speed = 1;
-        public minDistance = new Vector3(1, 1, 1);
+        target: GameObject;
+        speed = 1;
+        stopSpeed = 0.9;
+        minDistance = 1;
+        rigidBody: RigidBody;
 
         constructor(public object: Jv.Games.WebGL.Camera, args) {
             super(object);
             this.loadArgs(args);
+            this.rigidBody = this.rigidBody || <RigidBody>object.searchComponent(RigidBody);
         }
 
         update(deltaTime: number) {
-            var dist = this.target.globalTransform.position.sub(this.object.globalTransform.position);
+            var target = this.object.globalTransform.invert().multiply(this.target.globalTransform).position;
+            var targetXZ = new Vector3(target.x, 0, target.z);
 
-            for (var i = 0; i < 3; i++) {
-                if (Math.abs(dist.getData(i)) < this.minDistance.getData(i))
-                    dist.setData(i, 0);
+            if (targetXZ.length() > this.minDistance) {
+                this.rigidBody.push(targetXZ.scale(this.speed));
             }
-
-            this.object.transform.position._add(dist.scale(deltaTime));
+            else
+                this.rigidBody.momentum = this.rigidBody.momentum.scale(this.stopSpeed);
         }
     }
 }

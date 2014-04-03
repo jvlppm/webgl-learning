@@ -25,7 +25,7 @@ module JumperCube.Behaviors {
 
             if (direction.x !== 0 || direction.z !== 0) {
                 direction = direction.normalize();
-                var angle = Math.atan2(direction.x, -direction.z);
+                var angle = Math.atan2(-direction.x, direction.z);
                 this.object.transform.setRotationY(angle);
             }
         }

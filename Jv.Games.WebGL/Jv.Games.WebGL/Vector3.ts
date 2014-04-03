@@ -70,6 +70,12 @@
                 this.z + vector.z);
         }
 
+        _multiply(vector: Vector3) {
+            this.x *= vector.x;
+            this.y *= vector.y;
+            this.z *= vector.z;
+        }
+
         sub(vector: Vector3): Vector3 {
             return new Vector3(
                 this.x - vector.x,

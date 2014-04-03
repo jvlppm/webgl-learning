@@ -6,6 +6,7 @@
 
         momentum: Vector3;
         mass = 1;
+        friction: Vector3;
 
         constructor(object: GameObject, args: { [prop: string]: any }) {
             super(object);
@@ -47,6 +48,9 @@
                     this.momentum = Vector3.Zero;
                 }
             }
+
+            if (typeof this.friction !== "undefined")
+                this.momentum._multiply(this.friction);
 
             this.instantaneousAcceleration = this.acceleration = Vector3.Zero;
         }
