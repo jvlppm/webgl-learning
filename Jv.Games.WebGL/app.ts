@@ -88,7 +88,7 @@ module JumperCube {
 
         run() {
             var maxDeltaTime = 1 / 4;
-            Utils.StartTick(dt => {
+            return Utils.StartTick(dt => {
                 if (dt > maxDeltaTime)
                     dt = maxDeltaTime;
                 this.scene.update(dt);
@@ -127,19 +127,15 @@ function matchWindowSize(canvas: HTMLCanvasElement, sizeChanged?: () => any) {
     resizeCanvas();
 }
 
-function loadDocument() {
-    var result = $.Deferred();
-    $(document).ready(result.resolve);
-    return result.promise();
-}
-
-loadDocument().then(() => {
+$(document).ready(function () {
     var canvas = <HTMLCanvasElement>document.getElementById("canvas-element-id");
     var webgl = Jv.Games.WebGL.Core.WebGL.fromCanvas(canvas);
     var game = new JumperCube.Game(webgl);
 
     matchWindowSize(canvas, () => game.updateCameraProjection());
 
-    return game.init().then(() => game.run());
+    game.init()
+        .then(() => game.run())
+        .fail(e => alert("Error: " + e.message));
+});
 
-}).fail(e => alert("Error: " + e.message));
