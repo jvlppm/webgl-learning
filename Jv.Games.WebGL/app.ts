@@ -72,6 +72,7 @@ module JumperCube {
                 var body = jumperCube.add(new GameObject());
                 body.add(MeshRenderer, marioHeadMesh);
                 body.add(Behaviors.RotateWhileJumping, { speed: 4 });
+                body.add(Behaviors.LookForward);
 
                 var obstacle = this.scene.add(new GameObject());
                 obstacle.transform.x = 14;

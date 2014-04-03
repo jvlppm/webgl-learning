@@ -91,6 +91,16 @@
             this.data[14] = value;
         }
 
+        setRotationY(value: number) {
+            var c = Math.cos(value), s = Math.sin(value);
+            var x = this.x, y = this.y, z = this.z;
+            this.data.set([
+                c, 0, s, 0,
+                0, 1, 0, 0,
+                -s, 0, c, 0,
+                x, y, z, 1]);
+        }
+
         transform(vector: Vector3) {
             var x = vector.x, y = vector.y, z = vector.z;
             var m = this.data;
