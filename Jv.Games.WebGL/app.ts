@@ -49,35 +49,23 @@ module JumperCube {
 
                 var floorHeight = -5;
                 var marioHeadMesh = {
-                    mesh: new JumperCube.Mesh.Mario.Head(this.webgl.context),
+                    mesh: new JumperCube.Models.Mesh.MarioHead(this.webgl.context),
                     material: new Jv.Games.WebGL.Materials.TextureMaterial(this.webgl.context, this.marioTexture)
                 };
 
                 var platform = this.scene.add(new GameObject());
                 platform.transform = platform.transform.translate(new Vector3(0, floorHeight - 0.126, 0));
-                platform.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(30, 0.25, 30, this.webgl.context) });
+                platform.add(MeshRenderer, { mesh: new JumperCube.Models.Mesh.Cube(30, 0.25, 30, this.webgl.context) });
                 platform.add(Components.AxisAlignedBoxCollider, { radiusWidth: 15, radiusHeight: 0.125, radiusDepth: 15 });
 
-                var jumperCube = this.scene.add(new GameObject());
-                //jumperCube.transform.x = -14;
-                jumperCube.transform.y = floorHeight + 0.5;
-                jumperCube.transform._rotateY(Math.PI / 2);
-                jumperCube.add(Components.AxisAlignedBoxCollider);
-                jumperCube.add(Components.RigidBody, { friction: new Vector3(0.90, 1, 0.90) });
-                jumperCube.add(Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
-                //jumperCube.add(Mover, { direction: new Vector3(0, 0, 1.5), acceleration: true, continuous: false });
-                jumperCube.add(Behaviors.Controller, { minJumpForce: 2.0, maxJumpForce: 4.9, moveForce: 20, camera: this.camera });
-                //jumperCube.add(Behaviors.ViewModel);
-
-                var bodyYaw = jumperCube.add(new GameObject());
-                bodyYaw.add(Behaviors.LookForward);
-                var body = bodyYaw.add(new GameObject());
-                body.add(MeshRenderer, marioHeadMesh);
-                body.add(Behaviors.RotateWhileJumping, { speed: 6 });
+                var player = this.scene.add(new JumperCube.Models.Mario(this.webgl.context, this.marioTexture));
+                player.transform.y = floorHeight + 0.5;
+                player.body.transform._rotateY(Math.PI / 2);
+                player.add(Behaviors.Controller, { minJumpForce: 2.0, maxJumpForce: 4.9, moveForce: 20, camera: this.camera });
 
                 var obstacle = this.scene.add(new GameObject());
                 obstacle.transform.x = 14;
-                obstacle.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(1, 1, 1, this.webgl.context) });
+                obstacle.add(MeshRenderer, { mesh: new JumperCube.Models.Mesh.Cube(1, 1, 1, this.webgl.context) });
                 obstacle.transform.y = floorHeight + 0.5;
                 obstacle.add(Components.AxisAlignedBoxCollider);
                 obstacle.add(Components.RigidBody);
@@ -85,8 +73,8 @@ module JumperCube {
                 this.scene.init();
 
                 this.camera.add(Components.RigidBody);
-                this.camera.add(JumperCube.Behaviors.Follow, { target: jumperCube, speed: 0.7, minDistance: 10 });
-                this.camera.add(JumperCube.Behaviors.LookAtObject, { target: jumperCube });
+                this.camera.add(JumperCube.Behaviors.Follow, { target: player, speed: 0.7, minDistance: 10 });
+                this.camera.add(JumperCube.Behaviors.LookAtObject, { target: player });
             });
         }
 

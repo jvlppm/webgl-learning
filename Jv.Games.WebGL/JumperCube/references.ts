@@ -8,5 +8,5 @@
 ///<reference path="Behaviors/RotateWhileJumping.ts" />
 ///<reference path="Behaviors/ViewModel.ts" />
 
-///<reference path="Mesh/CubeMesh.ts" />
-///<reference path="Mesh/Mario/Head.ts" />
+///<reference path="Models/Mesh/Cube.ts" />
+///<reference path="Models/Mesh/MarioHead.ts" />

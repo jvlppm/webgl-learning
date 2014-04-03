@@ -1,11 +1,11 @@
-﻿///<reference path="../references.ts" />
+﻿///<reference path="../../references.ts" />
 
-module JumperCube {
+module JumperCube.Models.Mesh {
     import WebGL = Jv.Games.WebGL;
     import BufferAttribute = Jv.Games.WebGL.Core.BufferAttribute;
     import DataType = Jv.Games.WebGL.Core.DataType;
 
-    export class CubeMesh extends WebGL.Mesh {
+    export class Cube extends WebGL.Mesh {
         constructor(width: number, height: number, depth: number, context: WebGLRenderingContext) {
             super(context, WebGL.MeshRenderMode.TriangleStrip);
 

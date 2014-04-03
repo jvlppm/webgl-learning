@@ -1,11 +1,11 @@
 ﻿///<reference path="../../references.ts" />
 
-module JumperCube.Mesh.Mario {
+module JumperCube.Models.Mesh {
     import WebGL = Jv.Games.WebGL;
     import BufferAttribute = Jv.Games.WebGL.Core.BufferAttribute;
     import DataType = Jv.Games.WebGL.Core.DataType;
 
-    export class Head extends WebGL.Mesh {
+    export class MarioHead extends WebGL.Mesh {
         constructor(context: WebGLRenderingContext) {
             super(context, WebGL.MeshRenderMode.Triangles);
 

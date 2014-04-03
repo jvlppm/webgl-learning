@@ -7,8 +7,8 @@ module Jv.Games.WebGL {
 
     export class GameObject extends Components.ComponentCollection<GameObject> {
         transform: Matrix4;
-        public children: GameObject[];
-        public parent: GameObject;
+        children: GameObject[];
+        parent: GameObject;
 
         constructor()
         {
