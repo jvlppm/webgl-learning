@@ -57,6 +57,12 @@
             this.data[this.startIndex + 2] = value;
         }
 
+        _add(vector: Vector3) {
+            this.x += vector.x;
+            this.y += vector.y;
+            this.z += vector.z;
+        }
+
         add(vector: Vector3): Vector3 {
             return new Vector3(
                 this.x + vector.x,

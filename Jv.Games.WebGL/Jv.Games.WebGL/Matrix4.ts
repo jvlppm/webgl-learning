@@ -91,6 +91,16 @@
             this.data[14] = value;
         }
 
+        transform(vector: Vector3) {
+            var x = vector.x, y = vector.y, z = vector.z;
+            var m = this.data;
+
+            return new Vector3(
+                m[0] * x + m[4] * y + m[8] * z,
+                m[1] * x + m[5] * y + m[9] * z,
+                m[2] * x + m[6] * y + m[10] * z);
+        }
+
         _rotateX(angle: number) {
             var m = this.data;
 

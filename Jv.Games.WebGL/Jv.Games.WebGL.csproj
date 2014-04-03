@@ -25,6 +25,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="packages.config" />
+    <TypeScriptCompile Include="JumperCube\Behaviors\Follow.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\LookAtObject.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\ViewModel.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\RotateWhileJumping.ts" />

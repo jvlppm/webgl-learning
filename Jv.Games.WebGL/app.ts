@@ -55,18 +55,18 @@ module JumperCube {
 
                 var platform = this.scene.add(new GameObject());
                 platform.transform = platform.transform.translate(new Vector3(0, floorHeight - 0.126, 0));
-                platform.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(30, 0.25, 3, this.webgl.context) });
-                platform.add(Components.AxisAlignedBoxCollider, { radiusWidth: 15, radiusHeight: 0.125, radiusDepth: 1.5 });
+                platform.add(MeshRenderer, { mesh: new JumperCube.CubeMesh(30, 0.25, 30, this.webgl.context) });
+                platform.add(Components.AxisAlignedBoxCollider, { radiusWidth: 150, radiusHeight: 0.125, radiusDepth: 150 });
 
                 var jumperCube = this.scene.add(new GameObject());
-                jumperCube.transform.x = -14;
+                //jumperCube.transform.x = -14;
                 jumperCube.transform.y = floorHeight + 0.5;
                 jumperCube.transform._rotateY(Math.PI / 2);
                 jumperCube.add(Components.AxisAlignedBoxCollider);
                 jumperCube.add(Components.RigidBody);
                 jumperCube.add(Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
-                jumperCube.add(Mover, { direction: new Vector3(0, 0, 1.5), acceleration: true, continuous: false });
-                jumperCube.add(Behaviors.Controller, { jumpForce: 4.9, moveForce: 10 });
+                //jumperCube.add(Mover, { direction: new Vector3(0, 0, 1.5), acceleration: true, continuous: false });
+                jumperCube.add(Behaviors.Controller, { jumpForce: 4.9, moveForce: 10, camera: this.camera });
                 //jumperCube.add(Behaviors.ViewModel);
 
                 var body = jumperCube.add(new GameObject());
@@ -82,6 +82,7 @@ module JumperCube {
 
                 this.scene.init();
 
+                this.camera.add(JumperCube.Behaviors.Follow, { target: jumperCube, minDistance: new Vector3(3, 3, 3) });
                 this.camera.add(JumperCube.Behaviors.LookAtObject, { target: jumperCube });
             });
         }
