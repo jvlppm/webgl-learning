@@ -48,6 +48,7 @@ module JumperCube.Behaviors {
             var forward = this.camera.view.multiply(this.camera.globalTransform).invert()
                 .multiply(objt.invert())
                 .transform(new Vector3(0, 0, -1));
+            forward._multiply(new Vector3(1, 0, 1));
 
             var right = forward.cross(new Vector3(0, -1, 0));
 

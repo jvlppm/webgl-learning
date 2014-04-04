@@ -16,17 +16,17 @@ module Jv.Games.WebGL {
         static Identity() {
             return new Matrix4(new Float32Array(
                 [1, 0, 0, 0,
-                0, 1, 0, 0,
-                0, 0, 1, 0,
-                0, 0, 0, 1]));
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    0, 0, 0, 1]));
         }
 
         static Scale(x: number, y: number, z: number) {
             return new Matrix4(new Float32Array(
                 [x, 0, 0, 0,
-                0, y, 0, 0,
-                0, 0, z, 0,
-                0, 0, 0, 1]));
+                    0, y, 0, 0,
+                    0, 0, z, 0,
+                    0, 0, 0, 1]));
         }
 
         static Translate(x: number, y: number, z: number) {
@@ -158,6 +158,65 @@ module Jv.Games.WebGL {
             m[9] = c * m[9] + s * mv8;
         }
 
+        // Deprecated source from three.js
+        // This do not work with a non-uniform scale
+        _rotateByAxis(axis, angle) {
+            var te = this.data;
+
+            // optimize by checking axis
+            if (axis.x === 1 && axis.y === 0 && axis.z === 0) {
+                this._rotateX(angle);
+                return;
+            } else if (axis.x === 0 && axis.y === 1 && axis.z === 0) {
+                this._rotateY(angle);
+                return;
+            } else if (axis.x === 0 && axis.y === 0 && axis.z === 1) {
+                this._rotateZ(angle);
+                return;
+            }
+
+            var x = axis.x, y = axis.y, z = axis.z;
+
+            var n = Math.sqrt(x * x + y * y + z * z);
+            x /= n;
+            y /= n;
+            z /= n;
+            var xx = x * x, yy = y * y, zz = z * z;
+            var c = Math.cos(angle);
+            var s = Math.sin(angle);
+            var oneMinusCosine = 1 - c;
+            var xy = x * y * oneMinusCosine;
+            var xz = x * z * oneMinusCosine;
+            var yz = y * z * oneMinusCosine;
+            var xs = x * s;
+            var ys = y * s;
+            var zs = z * s;
+            var r11 = xx + (1 - xx) * c;
+            var r21 = xy + zs;
+            var r31 = xz - ys;
+            var r12 = xy - zs;
+            var r22 = yy + (1 - yy) * c;
+            var r32 = yz + xs;
+            var r13 = xz + ys;
+            var r23 = yz - xs;
+            var r33 = zz + (1 - zz) * c;
+            var m11 = te[0], m21 = te[1], m31 = te[2], m41 = te[3];
+            var m12 = te[4], m22 = te[5], m32 = te[6], m42 = te[7];
+            var m13 = te[8], m23 = te[9], m33 = te[10], m43 = te[11];
+            te[0] = r11 * m11 + r21 * m12 + r31 * m13;
+            te[1] = r11 * m21 + r21 * m22 + r31 * m23;
+            te[2] = r11 * m31 + r21 * m32 + r31 * m33;
+            te[3] = r11 * m41 + r21 * m42 + r31 * m43;
+            te[4] = r12 * m11 + r22 * m12 + r32 * m13;
+            te[5] = r12 * m21 + r22 * m22 + r32 * m23;
+            te[6] = r12 * m31 + r22 * m32 + r32 * m33;
+            te[7] = r12 * m41 + r22 * m42 + r32 * m43;
+            te[8] = r13 * m11 + r23 * m12 + r33 * m13;
+            te[9] = r13 * m21 + r23 * m22 + r33 * m23;
+            te[10] = r13 * m31 + r23 * m32 + r33 * m33;
+            te[11] = r13 * m41 + r23 * m42 + r33 * m43;
+        }
+
         translate(t: Vector3) {
             var m = new Float32Array(16);
             m.set(this.data);
@@ -182,8 +241,7 @@ module Jv.Games.WebGL {
             return matrixC;
         }
 
-        invert()
-        {
+        invert() {
             var inv = new Float32Array(16);
             var m = this.data;
 

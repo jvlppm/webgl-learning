@@ -6,7 +6,14 @@ module Jv.Games.WebGL {
         Left = 37,
         Up = 38,
         Right = 39,
-        Down = 40
+        Down = 40,
+
+        A = 65,
+        D = 68,
+        E = 69,
+        Q = 81,
+        S = 83,
+        W = 87,
     }
 
     export class Keyboard {
