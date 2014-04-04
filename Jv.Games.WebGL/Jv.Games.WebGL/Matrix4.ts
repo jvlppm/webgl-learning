@@ -217,6 +217,29 @@ module Jv.Games.WebGL {
             te[11] = r13 * m41 + r23 * m42 + r33 * m43;
         }
 
+        // Source from Three.js
+        _extractRotation (m: Matrix4) {
+
+            var scaleX = 1 / new Vector3(m.data[0], m.data[4], m.data[8]).length();
+            var scaleY = 1 / new Vector3(m.data[1], m.data[5], m.data[9]).length();
+            var scaleZ = 1 / new Vector3(m.data[2], m.data[6], m.data[10]).length();
+
+            this.data[0] = m.data[0] * scaleX;
+            this.data[4] = m.data[4] * scaleX;
+            this.data[8] = m.data[8] * scaleX;
+
+            this.data[1] = m.data[1] * scaleY;
+            this.data[5] = m.data[5] * scaleY;
+            this.data[9] = m.data[9] * scaleY;
+
+            this.data[2] = m.data[2] * scaleZ;
+            this.data[6] = m.data[6] * scaleZ;
+            this.data[10] = m.data[10] * scaleZ;
+
+            return this;
+
+        }
+
         translate(t: Vector3) {
             var m = new Float32Array(16);
             m.set(this.data);

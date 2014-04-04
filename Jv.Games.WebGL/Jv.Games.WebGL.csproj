@@ -29,6 +29,7 @@
     <TypeScriptCompile Include="JumperCube\Behaviors\Follow.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\LookForward.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\LookAtObject.ts" />
+    <TypeScriptCompile Include="JumperCube\Behaviors\SwingWhileMoving.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\ViewModel.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\RotateWhileJumping.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\Controller.ts" />

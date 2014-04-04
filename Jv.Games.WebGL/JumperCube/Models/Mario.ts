@@ -33,12 +33,18 @@ module JumperCube.Models {
             this.body.transform.y = -0.5;
             this.body.add(Behaviors.RotateWhileJumping, { speed: 6 });
 
+            var xAxis = new Vector3(1, 0, 0);
+
             this.addHead(new Vector3(0,0.8,0));
             this.addChest();
-            this.addArm(new Vector3(-0.35, 0.05, 0));
-            this.addArm(new Vector3(0.35, 0.05, 0));
-            this.addLeg(new Vector3(-0.125, -0.35, 0));
-            this.addLeg(new Vector3(0.125, -0.35, 0));
+            this.addArm(new Vector3(-0.35, 0.05, 0))
+                .add(Behaviors.SwingWhileMoving, { axis: xAxis, inverse: true });
+            this.addArm(new Vector3(0.35, 0.05, 0))
+                .add(Behaviors.SwingWhileMoving, { axis: xAxis });
+            this.addLeg(new Vector3(-0.125, -0.35, 0))
+                .add(Behaviors.SwingWhileMoving, { axis: xAxis });
+            this.addLeg(new Vector3(0.125, -0.35, 0))
+                .add(Behaviors.SwingWhileMoving, { axis: xAxis, inverse: true });
         }
 
         private addHead(location: Vector3) {
@@ -50,6 +56,7 @@ module JumperCube.Models {
             var head = this.body.add(new GameObject());
             head.transform = head.transform.translate(location);
             head.add(MeshRenderer, marioHeadMesh);
+            return head;
         }
 
         private addChest() {
@@ -59,6 +66,7 @@ module JumperCube.Models {
 
             var chest = this.body.add(new GameObject());
             chest.add(MeshRenderer, marioChestMesh);
+            return chest;
         }
 
         private addArm(location: Vector3) {
@@ -66,19 +74,25 @@ module JumperCube.Models {
                 mesh: new JumperCube.Models.Mesh.Cube(0.2, 0.5, 0.2, this.context)
             };
 
-            var arm = this.body.add(new GameObject());
-            arm.transform = arm.transform.translate(location);
+            var container = this.body.add(new GameObject());
+            container.transform.y = 0.2;
+            var arm = container.add(new GameObject());
+            arm.transform = arm.transform.translate(location.add(new Vector3(0, -0.2, 0)));
             arm.add(MeshRenderer, marioArmMesh);
+            return container;
         }
 
         private addLeg(location: Vector3) {
             var marioLegMesh = <{ [prop: string]: any }>{
-                mesh: new JumperCube.Models.Mesh.Cube(0.25, 0.25, 0.3, this.context)
+                mesh: new JumperCube.Models.Mesh.Cube(0.24, 0.24, 0.3, this.context)
             };
 
-            var leg = this.body.add(new GameObject());
-            leg.transform = leg.transform.translate(location);
+            var container = this.body.add(new GameObject());
+            container.transform.y = -0.05;
+            var leg = container.add(new GameObject());
+            leg.transform = leg.transform.translate(location.add(new Vector3(0, 0.05, 0)));
             leg.add(MeshRenderer, marioLegMesh);
+            return container;
         }
     }
 }
