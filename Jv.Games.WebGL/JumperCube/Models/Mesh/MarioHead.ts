@@ -45,7 +45,7 @@ module JumperCube.Models.Mesh {
                 -1.0, -1.0, 1.0,
                 -1.0, 1.0, 1.0,
                 -1.0, 0.6, -1.0,
-            ].map(i => i / 2), DataType.Float, 4 * 3);
+            ].map(i => i / 2.1), DataType.Float, 4 * 3);
 
             data.attrib("position", 3, false, 0);
 

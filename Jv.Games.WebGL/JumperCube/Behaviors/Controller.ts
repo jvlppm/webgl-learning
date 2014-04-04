@@ -23,7 +23,7 @@ module JumperCube.Behaviors {
         }
 
         update(deltaTime: number) {
-            if (this.rigidBody.momentum.y === 0) {
+            if (Math.abs(this.rigidBody.momentum.y) < 0.001) {
                 if (Keyboard.isKeyDown(Key.Space)) {
                     this.rigidBody.push(new Vector3(0, this.minJumpForce, 0), true, true);
                     if (this.maxJumpForce > this.minJumpForce)
@@ -55,16 +55,19 @@ module JumperCube.Behaviors {
             var toMove = new Vector3(0, 0, 0);
 
             if (Keyboard.isKeyDown(Key.Up))
-                toMove._add(forward.scale(this.moveForce));
+                toMove._add(forward);
 
             if (Keyboard.isKeyDown(Key.Down))
-                toMove._add(forward.scale(-this.moveForce));
+                toMove._add(forward.scale(-1));
 
             if (Keyboard.isKeyDown(Key.Right))
-                toMove._add(right.scale(-this.moveForce));
+                toMove._add(right.scale(-1));
 
             if (Keyboard.isKeyDown(Key.Left))
-                toMove._add(right.scale(this.moveForce));
+                toMove._add(right);
+
+            if (toMove.x !== 0 || toMove.y !== 0 || toMove.z !== 0)
+                toMove = toMove.normalize().scale(this.moveForce);
 
             this.rigidBody.push(toMove);
         }

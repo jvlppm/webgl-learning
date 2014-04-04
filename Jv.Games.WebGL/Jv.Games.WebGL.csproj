@@ -34,6 +34,7 @@
     <TypeScriptCompile Include="JumperCube\Behaviors\RotateWhileJumping.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\Controller.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\Mover.ts" />
+    <TypeScriptCompile Include="JumperCube\Models\Mesh\TexturedCube.ts" />
     <TypeScriptCompile Include="JumperCube\Models\Mesh\MarioHead.ts" />
     <TypeScriptCompile Include="JumperCube\Models\Mesh\Cube.ts" />
     <TypeScriptCompile Include="JumperCube\Models\Mario.ts" />
