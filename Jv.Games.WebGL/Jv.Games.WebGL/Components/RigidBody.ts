@@ -23,14 +23,14 @@ module Jv.Games.WebGL.Components {
 
         update(deltaTime: number) {
             var accellSecs = this.acceleration.scale(deltaTime);
-            this.momentum = this.momentum.add(this.instantaneousAcceleration);
+            this.momentum._add(this.instantaneousAcceleration);
 
             var oldTransform = this.object.transform;
             var toMove = this.momentum.add(accellSecs.scale(0.5));
             this.object.transform = this.object.transform.translate(toMove.scale(MeterSize * deltaTime));
 
             if (this.validPosition()) {
-                this.momentum = this.momentum.add(accellSecs);
+                this.momentum._add(accellSecs);
             }
             else {
                 var i = 0;
@@ -39,7 +39,7 @@ module Jv.Games.WebGL.Components {
                     tryMove.setData(i, 0);
                     this.object.transform = oldTransform.translate(tryMove.scale(MeterSize * deltaTime));
                     if (this.validPosition()) {
-                        this.momentum = this.momentum.add(accellSecs);
+                        this.momentum._add(accellSecs);
                         this.momentum.setData(i, 0);
                         break;
                     }
@@ -88,9 +88,9 @@ module Jv.Games.WebGL.Components {
                 force = force.divide(this.mass);
 
             if (!instantaneous)
-                this.acceleration = this.acceleration.add(force);
+                this.acceleration._add(force);
             else
-                this.instantaneousAcceleration = this.instantaneousAcceleration.add(force);
+                this.instantaneousAcceleration._add(force);
         }
     }
 }
