@@ -30,16 +30,16 @@ module JumperCube.Models.Mesh {
                 -w, h, d,
 
                 // Back face
+                w, -h, -d,
                 -w, -h, -d,
                 -w, h, -d,
                 w, h, -d,
-                w, -h, -d,
 
                 // Top face
-                -w, h, -d,
                 -w, h, d,
                 w, h, d,
                 w, h, -d,
+                -w, h, -d,
 
                 // Bottom face
                 -w, -h, -d,
@@ -48,10 +48,10 @@ module JumperCube.Models.Mesh {
                 -w, -h, d,
 
             // Right face
+                w, -h, d,
                 w, -h, -d,
                 w, h, -d,
                 w, h, d,
-                w, -h, d,
 
                 // Left face
                 -w, -h, -d,
