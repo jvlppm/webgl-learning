@@ -18,7 +18,10 @@ module JumperCube.Behaviors {
         constructor(object: Jv.Games.WebGL.GameObject, args: { [prop: string]: any }) {
             super(object);
             super.loadArgs(args);
-            this.rigidBody = this.rigidBody || <RigidBody>object.searchComponent(RigidBody);
+        }
+
+        init() {
+            this.rigidBody = this.rigidBody || <RigidBody>this.object.searchComponent(RigidBody);
         }
 
         update(deltaTime: number) {

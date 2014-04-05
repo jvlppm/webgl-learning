@@ -6,7 +6,6 @@ module JumperCube.Behaviors {
     import Matrix4 = Jv.Games.WebGL.Matrix4;
 
     export class ViewModel extends Component<Jv.Games.WebGL.GameObject> {
-        rigidBody: RigidBody;
         speedX = 0;
         speedY = 1;
         speedZ = 0;
@@ -15,7 +14,6 @@ module JumperCube.Behaviors {
         constructor(object: Jv.Games.WebGL.GameObject, args: { [prop: string]: any }) {
             super(object);
             super.loadArgs(args);
-            this.rigidBody = this.rigidBody || <RigidBody>object.searchComponent(RigidBody);
         }
 
         update(deltaTime: number) {

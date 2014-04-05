@@ -38,6 +38,9 @@ module Jv.Games.WebGL {
             gl.enable(gl.DEPTH_TEST);
             gl.depthFunc(gl.LEQUAL);
             gl.clearDepth(1.0);
+
+            this.children.forEach(c => c.init());
+            this.cameras.forEach(c => c.init());
         }
 
         draw(baseTransform?: Matrix4) {

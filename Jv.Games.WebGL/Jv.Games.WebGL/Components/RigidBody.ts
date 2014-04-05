@@ -14,11 +14,14 @@ module Jv.Games.WebGL.Components {
             super(object);
             super.loadArgs(args);
 
-            this.collider = this.collider || <Collider>object.getComponent(Collider, false);
-
             this.acceleration = new Vector3();
             this.instantaneousAcceleration = new Vector3();
             this.momentum = new Vector3();
+        }
+
+        init() {
+            this.collider = this.collider || <Collider>this.object.getComponent(Collider, true);
+            super.init();
         }
 
         update(deltaTime: number) {

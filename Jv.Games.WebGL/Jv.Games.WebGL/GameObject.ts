@@ -17,6 +17,11 @@ module Jv.Games.WebGL {
             this.transform = Matrix4.Identity();
         }
 
+        init() {
+            this.getComponents(Components.Component, false).forEach(c => c.init());
+            this.children.forEach(c => c.init());
+        }
+
         update(deltaTime: number) {
             super.update(deltaTime);
             this.children.forEach(c => c.update(deltaTime));

@@ -11,6 +11,7 @@ module Jv.Games.WebGL.Components {
                 this[propName] = args[propName];
         }
 
+        init() { }
         update(deltaTime: number) { }
         draw(baseTransform: Matrix4) { }
 

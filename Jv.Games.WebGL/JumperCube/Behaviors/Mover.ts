@@ -15,7 +15,11 @@ module JumperCube.Behaviors {
         constructor(object: GameObject, args: { [prop: string]: any }) {
             super(object);
             super.loadArgs(args);
-            this.rigidBody = this.rigidBody || <RigidBody>object.searchComponent(RigidBody);
+        }
+
+        init() {
+            this.rigidBody = this.rigidBody || <RigidBody>this.object.searchComponent(RigidBody);
+            super.init();
         }
 
         update(deltaTime: number) {

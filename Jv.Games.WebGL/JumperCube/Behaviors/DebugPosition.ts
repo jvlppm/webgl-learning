@@ -9,8 +9,6 @@ module JumperCube.Behaviors {
     import Matrix4 = Jv.Games.WebGL.Matrix4;
 
     export class DebugPosition extends Component<Jv.Games.WebGL.GameObject> {
-        rigidBody: RigidBody;
-        camera: Jv.Games.WebGL.Camera;
         minJumpForce = 1;
         maxJumpForce = 1;
         moveForce = 1;
@@ -19,7 +17,6 @@ module JumperCube.Behaviors {
         constructor(object: Jv.Games.WebGL.GameObject, args) {
             super(object);
             super.loadArgs(args);
-            this.rigidBody = this.rigidBody || <RigidBody>object.searchComponent(RigidBody);
         }
 
         update(deltaTime: number) {
