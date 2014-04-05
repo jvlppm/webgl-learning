@@ -89,7 +89,7 @@ module Jv.Games.WebGL {
                 if (typeof found !== "undefined")
                     return found;
 
-                this.children.forEach(c => toProcess.push(c));
+                current.children.forEach(c => toProcess.push(c));
             }
 
             var current = this;
