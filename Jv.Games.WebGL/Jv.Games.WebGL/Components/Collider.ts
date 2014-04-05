@@ -30,8 +30,8 @@ module Jv.Games.WebGL.Components {
         }
 
         intersectsWithAABB(box: AxisAlignedBoxCollider) {
-            var center = this.object.transform.position;
-            var otherCenter = box.object.transform.position;
+            var center = this.object.globalTransform.position;
+            var otherCenter = box.object.globalTransform.position;
 
             if (Math.abs(center.x - otherCenter.x) > (this.radiusWidth + box.radiusWidth)) return false;
             if (Math.abs(center.y - otherCenter.y) > (this.radiusHeight + box.radiusHeight)) return false;
@@ -40,8 +40,8 @@ module Jv.Games.WebGL.Components {
         }
 
         intersectsWithSphere(sphere: SphereCollider) {
-            var center = this.object.transform.position;
-            var otherCenter = sphere.object.transform.position;
+            var center = this.object.globalTransform.position;
+            var otherCenter = sphere.object.globalTransform.position;
 
             if (Math.abs(center.x - otherCenter.x) > (this.radiusWidth + sphere.radius)) return false;
             if (Math.abs(center.y - otherCenter.y) > (this.radiusHeight + sphere.radius)) return false;

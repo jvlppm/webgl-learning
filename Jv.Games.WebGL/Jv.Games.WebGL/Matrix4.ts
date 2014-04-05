@@ -93,6 +93,18 @@ module Jv.Games.WebGL {
             this.data[14] = value;
         }
 
+        get scaleX() {
+            return 1 / new Vector3(this.data[0], this.data[1], this.data[2]).length();
+        }
+
+        get scaleY() {
+            return 1 / new Vector3(this.data[4], this.data[5], this.data[6]).length();
+        }
+
+        get scaleZ() {
+            return 1 / new Vector3(this.data[8], this.data[9], this.data[10]).length();
+        }
+
         setRotationY(value: number) {
             var c = Math.cos(value), s = Math.sin(value);
             var x = this.x, y = this.y, z = this.z;

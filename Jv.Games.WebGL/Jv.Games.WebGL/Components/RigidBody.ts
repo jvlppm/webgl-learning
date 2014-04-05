@@ -20,7 +20,7 @@ module Jv.Games.WebGL.Components {
         }
 
         init() {
-            this.collider = this.collider || <Collider>this.object.getComponent(Collider, true);
+            this.collider = this.collider || <Collider>this.object.searchComponent(Collider);
             super.init();
         }
 

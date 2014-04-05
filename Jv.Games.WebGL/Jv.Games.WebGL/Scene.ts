@@ -21,8 +21,8 @@ module Jv.Games.WebGL {
             });
         }
 
-        add(child: GameObject);
-        add(camera: Camera);
+        add<Type extends GameObject>(child: Type) : Type;
+        add(camera: Camera): Camera;
         add<Type extends Components.Component<GameObject>, Arguments>(behaviorType: { new (object: GameObject, args?: Arguments): Type }, args?: Arguments);
         add(item, args?) {
             if (item instanceof Camera) {

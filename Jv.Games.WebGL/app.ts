@@ -54,27 +54,27 @@ module JumperCube {
                     material: new Jv.Games.WebGL.Materials.TextureMaterial(this.webgl.context, this.marioTexture)
                 };
 
-                var platform = this.scene.add(new GameObject());
+                var platform = this.scene.add(new GameObject())
+                    .add(MeshRenderer, { mesh: new JumperCube.Models.Mesh.Cube(30, 0.25, 30, this.webgl.context) })
+                    .add(Components.AxisAlignedBoxCollider, { radiusWidth: 15, radiusHeight: 0.125, radiusDepth: 15 });
                 platform.transform = platform.transform.translate(new Vector3(0, floorHeight - 0.126, 0));
-                platform.add(MeshRenderer, { mesh: new JumperCube.Models.Mesh.Cube(30, 0.25, 30, this.webgl.context) });
-                platform.add(Components.AxisAlignedBoxCollider, { radiusWidth: 15, radiusHeight: 0.125, radiusDepth: 15 });
 
                 var player = this.scene.add(new JumperCube.Models.Mario(this.webgl.context, this.marioTexture));
-                player.transform.y = floorHeight + 1;
                 player.add(Behaviors.Controller, { minJumpForce: 2.0, maxJumpForce: 4.9, moveForce: 20, camera: this.camera });
+                player.transform.y = floorHeight + 1;
 
-                var obstacle = this.scene.add(new GameObject());
+                var obstacle = this.scene.add(new GameObject())
+                    .add(MeshRenderer, { mesh: new JumperCube.Models.Mesh.Cube(1, 1, 1, this.webgl.context) })
+                    .add(Components.AxisAlignedBoxCollider)
+                    .add(Components.RigidBody);
                 obstacle.transform.x = 14;
-                obstacle.add(MeshRenderer, { mesh: new JumperCube.Models.Mesh.Cube(1, 1, 1, this.webgl.context) });
                 obstacle.transform.y = floorHeight + 0.5;
-                obstacle.add(Components.AxisAlignedBoxCollider);
-                obstacle.add(Components.RigidBody);
-
-                this.scene.init();
 
                 this.camera.add(Components.RigidBody, { friction: new Vector3(0.90, 1, 0.90) });
                 this.camera.add(JumperCube.Behaviors.Follow, { target: player, speed: 2, minDistance: 8 });
                 this.camera.add(JumperCube.Behaviors.LookAtObject, { target: player });
+
+                this.scene.init();
             });
         }
 

@@ -33,28 +33,48 @@ module JumperCube.Models {
         static CapUV = [0.89330776237489, 0.696465289337119, 0.850683275812094, 0.749094291589151, 0.697622619518418, 0.555713306570058, 0.733465937764405, 0.510427886027612];
 
         body: GameObject;
+        sizeContainer: GameObject;
+        private _small: boolean;
 
         constructor(public context: WebGLRenderingContext, public texture: Jv.Games.WebGL.Materials.Texture) {
             super();
 
             this.loadBehaviors();
             this.createBody();
+            this.isSmall = false;
         }
 
         loadBehaviors() {
-            this.add(Components.AxisAlignedBoxCollider, { radiusWidth: 0.3, radiusDepth: 0.3, radiusHeight: 1 });
             this.add(Components.RigidBody, { friction: new Vector3(0.90, 1, 0.90) });
             this.add(Behaviors.Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
         }
 
+        set isSmall(value: boolean) {
+            if (this._small === value)
+                return;
+
+            var scale = value ? 0.5 : 1;
+            this.sizeContainer.transform = Jv.Games.WebGL.Matrix4.Scale(scale, scale, scale);
+
+            var collider = this.searchComponent(Components.AxisAlignedBoxCollider);
+            if (typeof collider !== "undefined") {
+                collider.radiusWidth = 0.3 * scale;
+                collider.radiusHeight = 1 * scale;
+                collider.radiusDepth = 0.3 * scale;
+            }
+        }
+
         private createBody() {
+            this.sizeContainer = this.add(new GameObject());
+
             // Container vai ser rotacionado no plano xz para olhar na direção do movimento
-            var container = this.add(new GameObject());
-            container.add(Behaviors.LookForward);
+            var container = this.sizeContainer.add(new GameObject())
+                .add(Behaviors.LookForward)
+                .add(Components.AxisAlignedBoxCollider);
 
             // Body container poderá rotacionar no seu eixo X, sem que a direção seja impactada
-            var bodyContainer = container.add(new GameObject());
-            bodyContainer.add(Behaviors.RotateWhileJumping, { speed: 6 });
+            var bodyContainer = container.add(new GameObject())
+                .add(Behaviors.RotateWhileJumping, { speed: 6 });
             bodyContainer.transform.y = 0.1;
             
             this.body = bodyContainer.add(new GameObject());

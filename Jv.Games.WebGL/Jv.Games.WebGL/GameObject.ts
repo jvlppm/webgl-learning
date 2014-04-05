@@ -27,7 +27,7 @@ module Jv.Games.WebGL {
             this.children.forEach(c => c.update(deltaTime));
         }
 
-        add(child: GameObject) : GameObject;
+        add<Type extends GameObject>(child: Type) : Type;
         add<Type extends Components.Component<GameObject>>(componentType: { new (object: GameObject, args?: { [prop: string]: any }): Type }, args?: { [prop: string]: any }): GameObject;
         add(item, args?) {
             if (typeof item === "function")
