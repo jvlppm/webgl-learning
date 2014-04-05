@@ -32,12 +32,12 @@ module JumperCube.Behaviors {
             if (targetXZ.length() - this.maxDistance > 0.001) {
                 //this.object.transform.position._add(targetXZ);
                 //this.object.transform.position._add(targetXZ.normalize().scale(-this.maxDistance));
-                this.rigidBody.momentum = targetXZ.normalize().scale(this.speed * (targetXZ.length() - this.maxDistance));
+                this.rigidBody.momentum = targetXZ.normalize().scale(this.speed * Math.min((targetXZ.length() - this.maxDistance), 1));
             }
             else if (targetXZ.length() - this.minDistance < -0.001) {
                 //this.object.transform.position._add(targetXZ);
                 //this.object.transform.position._add(targetXZ.normalize().scale(-this.minDistance));
-                this.rigidBody.momentum = targetXZ.normalize().scale(this.speed * (targetXZ.length() - this.minDistance));
+                this.rigidBody.momentum = targetXZ.normalize().scale(-this.speed * Math.min((this.minDistance - targetXZ.length()), 1));
             }
             else {
                 var mid = (this.minDistance + this.maxDistance) / 2;
