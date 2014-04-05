@@ -12,7 +12,8 @@ module JumperCube.Behaviors {
         target: GameObject;
         speed = 1;
         stopSpeed = 0.9;
-        minDistance = 1;
+        minDistance = 0.5;
+        maxDistance = 1;
         rigidBody: RigidBody;
 
         constructor(public object: Jv.Games.WebGL.Camera, args) {
@@ -29,11 +30,17 @@ module JumperCube.Behaviors {
             var target = this.object.globalTransform.invert().multiply(this.target.globalTransform).position;
             var targetXZ = new Vector3(target.x, 0, target.z);
 
-            if (targetXZ.length() > this.minDistance) {
-                this.rigidBody.push(targetXZ.scale(this.speed));
-            }
-            else
-                this.rigidBody.momentum = this.rigidBody.momentum.scale(this.stopSpeed);
+            //if (targetXZ.length() > this.maxDistance)
+              //  this.rigidBody.push(targetXZ.scale(this.speed));
+            //else if (targetXZ.length() < this.minDistance) {
+
+                //this.rigidBody.push(targetXZ.scale(-this.speed * 2));
+                //var n = targetXZ.scale(-1).normalize().scale(this.minDistance);
+                this.object.transform.position._add(targetXZ);
+                this.object.transform.position._add(targetXZ.normalize().scale(-this.minDistance));
+            //}
+            //else
+                //this.rigidBody.momentum = this.rigidBody.momentum.scale(this.stopSpeed);
         }
     }
 }
