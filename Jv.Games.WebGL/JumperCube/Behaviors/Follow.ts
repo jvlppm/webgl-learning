@@ -10,37 +10,44 @@ module JumperCube.Behaviors {
 
     export class Follow extends Component<Jv.Games.WebGL.Camera> {
         target: GameObject;
-        speed = 1;
+        speed = 10;
         stopSpeed = 0.9;
-        minDistance = 0.5;
-        maxDistance = 1;
+        minDistance = 5;
+        maxDistance = 10;
         rigidBody: RigidBody;
 
         constructor(public object: Jv.Games.WebGL.Camera, args) {
             super(object);
             this.loadArgs(args);
-        }
-
-        init() {
-            this.rigidBody = this.rigidBody || <RigidBody>this.object.searchComponent(RigidBody);
-            super.init();
+            this.rigidBody = this.rigidBody || <RigidBody>object.searchComponent(RigidBody);
         }
 
         update(deltaTime: number) {
             var target = this.object.globalTransform.invert().multiply(this.target.globalTransform).position;
             var targetXZ = new Vector3(target.x, 0, target.z);
 
-            //if (targetXZ.length() > this.maxDistance)
-              //  this.rigidBody.push(targetXZ.scale(this.speed));
-            //else if (targetXZ.length() < this.minDistance) {
+            var target = this.object.globalTransform.invert().multiply(this.target.globalTransform).position;
+            var targetXZ = new Vector3(target.x, 0, target.z);
 
-                //this.rigidBody.push(targetXZ.scale(-this.speed * 2));
-                //var n = targetXZ.scale(-1).normalize().scale(this.minDistance);
-                this.object.transform.position._add(targetXZ);
-                this.object.transform.position._add(targetXZ.normalize().scale(-this.minDistance));
-            //}
-            //else
-                //this.rigidBody.momentum = this.rigidBody.momentum.scale(this.stopSpeed);
+            if (targetXZ.length() - this.maxDistance > 0.001) {
+                //this.object.transform.position._add(targetXZ);
+                //this.object.transform.position._add(targetXZ.normalize().scale(-this.maxDistance));
+                this.rigidBody.momentum = targetXZ.normalize().scale(this.speed * (targetXZ.length() - this.maxDistance));
+            }
+            else if (targetXZ.length() - this.minDistance < -0.001) {
+                //this.object.transform.position._add(targetXZ);
+                //this.object.transform.position._add(targetXZ.normalize().scale(-this.minDistance));
+                this.rigidBody.momentum = targetXZ.normalize().scale(this.speed * (targetXZ.length() - this.minDistance));
+            }
+            else {
+                var mid = (this.minDistance + this.maxDistance) / 2;
+                var dir = (targetXZ.length() > mid)? 1 : -1;
+
+                if (Math.abs(targetXZ.length() - mid) > 0.5)
+                    this.rigidBody.push(targetXZ.normalize().scale(this.speed * dir));
+                else
+                    this.rigidBody.momentum = this.rigidBody.momentum.scale(this.stopSpeed);
+            }
         }
     }
 }

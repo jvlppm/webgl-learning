@@ -71,7 +71,7 @@ module JumperCube {
                 obstacle.transform.y = floorHeight + 0.5;
 
                 this.camera.add(Components.RigidBody, { friction: new Vector3(0.90, 1, 0.90) });
-                this.camera.add(JumperCube.Behaviors.Follow, { target: player, speed: 2, minDistance: 4, maxDistance: 8 });
+                this.camera.add(JumperCube.Behaviors.Follow, { target: player, minDistance: 4, maxDistance: 10, speed: 5 });
                 this.camera.add(JumperCube.Behaviors.LookAtObject, { target: player });
 
                 this.scene.init();
