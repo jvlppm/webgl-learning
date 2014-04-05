@@ -8,9 +8,10 @@ module JumperCube.Behaviors {
 
     export class SwingWhileMoving extends Component<Jv.Games.WebGL.GameObject> {
         rigidBody: RigidBody;
-        speed = 4;
+        speed = 8;
         inverse = false;
         axis: Vector3;
+        maxSwing = 0.4;
         private moveTime = 0;
         private baseRotation = Matrix4.Identity();
         private rotation = 0;
@@ -27,16 +28,17 @@ module JumperCube.Behaviors {
         update(deltaTime: number) {
             var momentum = this.rigidBody.momentum.length();
 
-            if (momentum > 0.5) {
-                this.moveTime += deltaTime * momentum * this.speed;
+            if (momentum > 0.001) {
+                this.moveTime += deltaTime * this.speed;
 
-                var sin = Math.sin(this.moveTime);
+                var sin = Math.sin(this.moveTime) * this.maxSwing;
                 if (this.inverse)
                     sin = -sin;
 
                 this.object.transform._extractRotation(this.baseRotation);
-                this.object.transform._rotateByAxis(this.axis, sin);
-                this.rotation = sin;
+                var toSwing = sin * momentum;
+                this.object.transform._rotateByAxis(this.axis, toSwing);
+                this.rotation = toSwing;
             }
             else if (Math.abs(this.rotation) > 0.001) {
                 this.moveTime = 0;
