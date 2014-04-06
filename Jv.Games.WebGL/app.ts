@@ -20,11 +20,15 @@ module JumperCube {
         // -- Assets --
         textures: { [name: string]: (texture: Texture) => void };
         marioTexture: Texture;
+        goombaTexture: Texture;
         camera: Camera;
         scene: Scene;
 
         constructor(public webgl: WebGL) {
-            this.textures = { "new-mario.png": t => this.marioTexture = t };
+            this.textures = {
+                "new-mario.png": t => this.marioTexture = t,
+                "goomba.png": t => this.goombaTexture = t,
+            };
             this.camera = new Camera();
             this.updateCameraProjection();
         }
@@ -63,7 +67,7 @@ module JumperCube {
                 player.add(Behaviors.Controller, { minJumpForce: 2.0, maxJumpForce: 4.9, moveForce: 20, camera: this.camera });
                 player.transform.y = floorHeight + 1;
 
-                var goomba = this.scene.add(new JumperCube.Models.Goomba(this.webgl.context))
+                var goomba = this.scene.add(new JumperCube.Models.Goomba(this.webgl.context, this.goombaTexture))
                     .add(Behaviors.Follow, { target: player, minDistance: 0, maxDistance: 0, speed: 1 });
                 goomba.transform.x = 4;
 
