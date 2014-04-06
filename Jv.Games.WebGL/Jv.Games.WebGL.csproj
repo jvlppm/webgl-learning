@@ -35,6 +35,7 @@
     <TypeScriptCompile Include="JumperCube\Behaviors\RotateWhileJumping.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\Controller.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\Mover.ts" />
+    <TypeScriptCompile Include="JumperCube\Models\Goomba.ts" />
     <TypeScriptCompile Include="JumperCube\Models\Mesh\TexturedCube.ts" />
     <TypeScriptCompile Include="JumperCube\Models\Mesh\MarioHead.ts" />
     <TypeScriptCompile Include="JumperCube\Models\Mesh\Cube.ts" />
@@ -80,7 +81,6 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -30,7 +30,7 @@ module JumperCube.Models {
         static LegTopUV = [0.635623366336169, 0.981641045726035, 0.585248973125592, 0.981641045726035, 0.586217711456565, 0.919220601194556, 0.635623366336169, 0.921668461764418];
         static LegBottomUV = [0.453500560113313, 0.964506021737002, 0.462219205092067, 0.965729952021933, 0.466094158415958, 0.971849603446588, 0.452531821782341, 0.970625673161657];
 
-        static CapUV = [0.89330776237489, 0.696465289337119, 0.850683275812094, 0.749094291589151, 0.697622619518418, 0.555713306570058, 0.733465937764405, 0.510427886027612];
+        static CapUV = [0.850683275812094, 0.749094291589151, 0.697622619518418, 0.555713306570058, 0.733465937764405, 0.510427886027612, 0.89330776237489, 0.696465289337119];
 
         body: GameObject;
         sizeContainer: GameObject;
@@ -73,8 +73,8 @@ module JumperCube.Models {
                 .add(Components.AxisAlignedBoxCollider);
 
             // Body container poderá rotacionar no seu eixo X, sem que a direção seja impactada
-            var bodyContainer = container.add(new GameObject())
-                .add(Behaviors.RotateWhileJumping, { speed: 6 });
+            var bodyContainer = container.add(new GameObject());
+                //.add(Behaviors.RotateWhileJumping, { speed: 6 });
             bodyContainer.transform.y = 0.1;
             
             this.body = bodyContainer.add(new GameObject());

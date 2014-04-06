@@ -26,18 +26,13 @@ module JumperCube.Behaviors {
             var target = this.object.globalTransform.invert().multiply(this.target.globalTransform).position;
             var targetXZ = new Vector3(target.x, 0, target.z);
 
-            var target = this.object.globalTransform.invert().multiply(this.target.globalTransform).position;
-            var targetXZ = new Vector3(target.x, 0, target.z);
-
             if (targetXZ.length() - this.maxDistance > 0.001) {
-                //this.object.transform.position._add(targetXZ);
-                //this.object.transform.position._add(targetXZ.normalize().scale(-this.maxDistance));
-                this.rigidBody.momentum = targetXZ.normalize().scale(this.speed * Math.min((targetXZ.length() - this.maxDistance), 1));
+                var moveMomentum = targetXZ.normalize().scale(this.speed * Math.min((targetXZ.length() - this.maxDistance), 1));
+                this.rigidBody.momentum = new Vector3(moveMomentum.x, this.rigidBody.momentum.y, moveMomentum.z);
             }
             else if (targetXZ.length() - this.minDistance < -0.001) {
-                //this.object.transform.position._add(targetXZ);
-                //this.object.transform.position._add(targetXZ.normalize().scale(-this.minDistance));
-                this.rigidBody.momentum = targetXZ.normalize().scale(-this.speed * Math.min((this.minDistance - targetXZ.length()), 1));
+                var moveMomentum = targetXZ.normalize().scale(-this.speed * Math.min((this.minDistance - targetXZ.length()), 1));
+                this.rigidBody.momentum = new Vector3(moveMomentum.x, this.rigidBody.momentum.y, moveMomentum.z);
             }
             else {
                 var mid = (this.minDistance + this.maxDistance) / 2;

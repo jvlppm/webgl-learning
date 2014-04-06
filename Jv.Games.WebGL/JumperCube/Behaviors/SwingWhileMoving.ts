@@ -19,6 +19,8 @@ module JumperCube.Behaviors {
         constructor(object: Jv.Games.WebGL.GameObject, args: { [prop: string]: any }) {
             super(object);
             super.loadArgs(args);
+            if (typeof this.axis === "undefined")
+                throw new Error("A rotation axis must be defined");
         }
 
         init() {

@@ -63,10 +63,9 @@ module JumperCube {
                 player.add(Behaviors.Controller, { minJumpForce: 2.0, maxJumpForce: 4.9, moveForce: 20, camera: this.camera });
                 player.transform.y = floorHeight + 1;
 
-                var obstacle = this.scene.add(new JumperCube.Models.Mario(this.webgl.context, this.marioTexture))
-                    .add(Behaviors.Follow, { target: player, minDistance: 0, maxDistance: 5, speed: 1.5 });
-                obstacle.transform.x = 4;
-                obstacle.transform.y = floorHeight + 1;
+                var goomba = this.scene.add(new JumperCube.Models.Goomba(this.webgl.context))
+                    .add(Behaviors.Follow, { target: player, minDistance: 0, maxDistance: 0, speed: 1 });
+                goomba.transform.x = 4;
 
                 this.camera.add(Components.RigidBody, { friction: new Vector3(0.90, 1, 0.90) });
                 this.camera.add(JumperCube.Behaviors.Follow, { target: player, minDistance: 4, maxDistance: 10, speed: 5 });
