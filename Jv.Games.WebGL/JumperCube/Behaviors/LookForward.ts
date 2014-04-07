@@ -11,10 +11,13 @@ module JumperCube.Behaviors {
     export class LookForward extends Component<Jv.Games.WebGL.Camera> {
         target: GameObject;
         rigidBody: RigidBody;
+        maxFrameCount: number = 3;
+        private oldDirections: Vector3[];
 
         constructor(public object: Jv.Games.WebGL.Camera, args) {
             super(object);
             this.loadArgs(args);
+            this.oldDirections = [];
         }
 
         init() {
@@ -24,6 +27,13 @@ module JumperCube.Behaviors {
 
         update(deltaTime: number) {
             var direction = new Vector3(this.rigidBody.momentum.x, 0, this.rigidBody.momentum.z);
+
+            this.oldDirections.push(direction);
+            if (this.oldDirections.length > this.maxFrameCount)
+                this.oldDirections.splice(0, 1);
+
+            direction = new Vector3();
+            this.oldDirections.forEach(d => direction._add(d));
 
             if (direction.x !== 0 || direction.z !== 0) {
                 direction = direction.normalize();
