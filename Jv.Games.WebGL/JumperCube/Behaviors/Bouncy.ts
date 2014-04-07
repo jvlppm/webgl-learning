@@ -12,8 +12,16 @@
         }
 
         onTrigger(collider: Jv.Games.WebGL.Components.Collider) {
-            if (typeof this.force !== "undefined" && this.tags.indexOf(collider.object.tag) >= 0)
-                (<RigidBody>collider.object.searchComponent(RigidBody)).push(this.force, true);
+            if (typeof this.force !== "undefined" && this.tags.indexOf(collider.object.tag) >= 0) {
+                var body = <RigidBody>collider.object.searchComponent(RigidBody);
+                for (var i = 0; i < 3; i++) {
+                    //if (body.momentum.getData(i) < 0 != this.force.getData(i) < 0)
+                    //    body.momentum.setData(i, 0);
+                    if (this.force.getData(i) != 0)
+                        body.momentum.setData(i, 0);
+                }
+                body.push(this.force, true);
+            }
         }
     }
 }

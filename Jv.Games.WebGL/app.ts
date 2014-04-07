@@ -64,7 +64,7 @@ module JumperCube {
                 platform.transform = platform.transform.translate(new Vector3(0, floorHeight - 0.126, 0));
 
                 var player = this.scene.add(new JumperCube.Models.Mario(this.webgl.context, this.marioTexture));
-                player.add(Behaviors.Controller, { minJumpForce: 2.0, maxJumpForce: 4.9, moveForce: 20, camera: this.camera });
+                player.add(Behaviors.Controller, { minJumpForce: 2.0, maxJumpForce: 4.91, moveForce: 8, camera: this.camera });
                 player.transform.y = floorHeight + 1;
 
                 var goomba = this.scene.add(new JumperCube.Models.Goomba(this.webgl.context, this.goombaTexture))

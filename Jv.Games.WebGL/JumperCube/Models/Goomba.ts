@@ -30,11 +30,12 @@ module JumperCube.Models {
                 });
 
             var hitbox = this.add(new GameObject())
-                .add(JumperCube.Behaviors.Bouncy, { tags: ["player"]})
+                .add(JumperCube.Behaviors.Bouncy, { tags: ["player"] })
+            //  .add(JumperCube.Behaviors.DebugPosition)
+            //  .add(MeshRenderer, { mesh: new JumperCube.Models.Mesh.Cube(0.98, 0.2, 0.98, context) })
                 .add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { isTrigger: true, radiusWidth: 0.49, radiusHeight: 0.1, radiusDepth: 0.49 })
-                .add(JumperCube.Behaviors.DebugPosition)
                 .add(JumperCube.Behaviors.DieOnTrigger, { object: this, tags: ["player"] });
-            hitbox.transform.y = 0.45;
+            hitbox.transform.y = 0.6;
         }
     }
 }
