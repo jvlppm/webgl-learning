@@ -54,10 +54,10 @@ module Jv.Games.WebGL.Components {
             if (!this.tryMove(deltaTime, accellSecs)) {
                 if (!this.tryMove(deltaTime, new Vector3(accellSecs.x, 0, 0)))
                     this.momentum.x = 0;
-                if (!this.tryMove(deltaTime, new Vector3(0, accellSecs.y, 0)))
-                    this.momentum.y = 0;
                 if (!this.tryMove(deltaTime, new Vector3(0, 0, accellSecs.z)))
                     this.momentum.z = 0;
+                if (!this.tryMove(deltaTime, new Vector3(0, accellSecs.y, 0)))
+                    this.momentum.y = 0;
             }
 
             if (typeof this.friction !== "undefined")

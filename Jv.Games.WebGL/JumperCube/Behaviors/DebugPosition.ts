@@ -9,10 +9,7 @@ module JumperCube.Behaviors {
     import Matrix4 = Jv.Games.WebGL.Matrix4;
 
     export class DebugPosition extends Component<Jv.Games.WebGL.GameObject> {
-        minJumpForce = 1;
-        maxJumpForce = 1;
-        moveForce = 1;
-        private spareJumpForce = 0;
+        speed = 1;
 
         constructor(object: Jv.Games.WebGL.GameObject, args) {
             super(object);
@@ -22,27 +19,25 @@ module JumperCube.Behaviors {
         update(deltaTime: number) {
             document.title = "x: " + this.object.transform.x + ", y: " + this.object.transform.y + ", z: " + this.object.transform.z;
 
-            var speed = 0.5;
-
             var toMove = new Vector3(0, 0, 0);
 
             if (Keyboard.isKeyDown(Key.E))
-                toMove._add(new Vector3(0, speed, 0));
+                toMove._add(new Vector3(0, this.speed, 0));
 
             if (Keyboard.isKeyDown(Key.Q))
-                toMove._add(new Vector3(0, -speed, 0));
+                toMove._add(new Vector3(0, -this.speed, 0));
 
             if (Keyboard.isKeyDown(Key.D))
-                toMove._add(new Vector3(speed, 0, 0));
+                toMove._add(new Vector3(this.speed, 0, 0));
 
             if (Keyboard.isKeyDown(Key.A))
-                toMove._add(new Vector3(-speed, 0, 0));
+                toMove._add(new Vector3(-this.speed, 0, 0));
 
             if (Keyboard.isKeyDown(Key.W))
-                toMove._add(new Vector3(0, 0, speed));
+                toMove._add(new Vector3(0, 0, this.speed));
 
             if (Keyboard.isKeyDown(Key.S))
-                toMove._add(new Vector3(0, 0, -speed));
+                toMove._add(new Vector3(0, 0, -this.speed));
 
             this.object.transform = this.object.transform.translate(toMove.scale(deltaTime));
         }

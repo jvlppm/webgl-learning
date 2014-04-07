@@ -48,35 +48,57 @@ module JumperCube {
                 Jv.Games.WebGL.Keyboard.init();
 
                 this.scene = new Jv.Games.WebGL.Scene(this.webgl);
-                this.scene.add(this.camera);
-                this.camera.transform.position.z = 10;
-                this.camera.transform.position.y = 0;
 
-                var floorHeight = -5;
                 var marioHeadMesh = {
                     mesh: new JumperCube.Models.Mesh.MarioHead(this.webgl.context),
                     material: new Jv.Games.WebGL.Materials.TextureMaterial(this.webgl.context, this.marioTexture)
                 };
 
-                var platform = this.scene.add(new GameObject())
-                    .add(MeshRenderer, { mesh: new JumperCube.Models.Mesh.Cube(160, 0.25, 160, this.webgl.context) })
-                    .add(Components.AxisAlignedBoxCollider, { radiusWidth: 80, radiusHeight: 0.125, radiusDepth: 80 });
-                platform.transform = platform.transform.translate(new Vector3(0, floorHeight - 0.126, 0));
-
                 var player = this.scene.add(new JumperCube.Models.Mario(this.webgl.context, this.marioTexture));
-                player.add(Behaviors.Controller, { minJumpForce: 2.0, maxJumpForce: 4.91, moveForce: 8, camera: this.camera });
-                player.transform.y = floorHeight + 1;
+                player.add(Behaviors.Controller, { minJumpForce: 2.0, maxJumpForce: 4.91, moveForce: 10, camera: this.camera });
+                player.transform.y = 1;
+                player.transform.z = 60;
 
                 var goomba = this.scene.add(new JumperCube.Models.Goomba(this.webgl.context, this.goombaTexture))
                     .add(Behaviors.Follow, { target: player, minDistance: 0, maxDistance: 0, viewDistance: 4, speed: 0.5, stopSpeed: 1 });
-                goomba.transform.x = 4;
+                goomba.transform.z = 40;
+                goomba.transform.y = 0.5;
+
+                this.scene.add(this.camera);
+                this.camera.transform.position.z = 65;
+                this.camera.transform.position.y = 5;
 
                 this.camera.add(Components.RigidBody, { friction: new Vector3(0.90, 1, 0.90) });
-                this.camera.add(JumperCube.Behaviors.Follow, { target: goomba, minDistance: 4, maxDistance: 10, speed: 5 });
-                this.camera.add(JumperCube.Behaviors.LookAtObject, { target: goomba });
+                this.camera.add(JumperCube.Behaviors.Follow, { target: player, minDistance: 4, maxDistance: 10, speed: 5 });
+                this.camera.add(JumperCube.Behaviors.LookAtObject, { target: player });
+
+                this.createMap();
 
                 this.scene.init();
             });
+        }
+
+        createMap() {
+
+            var floor = this.scene.add(new GameObject())
+                .add(MeshRenderer, { mesh: new JumperCube.Models.Mesh.Cube(160, 0.25, 160, this.webgl.context) })
+                .add(Components.AxisAlignedBoxCollider, { radiusWidth: 80, radiusHeight: 0.125, radiusDepth: 80 });
+            floor.transform = floor.transform.translate(new Vector3(0, -0.25, 0));
+
+            this.createPlatform(-10, 50, 0, 5, 10, 3);
+            this.createPlatform(-10, 40, 3, 5, 10, 0.5, false);
+            this.createPlatform(10, 50, 0, 5, 20, 200);
+        }
+
+        createPlatform(x: number, z: number, y: number, w: number, d: number, h: number, alignBottom = true) {
+            var platform = this.scene.add(new GameObject())
+                .add(MeshRenderer, { mesh: new JumperCube.Models.Mesh.Cube(w, h, d, this.webgl.context) })
+                .add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { radiusWidth: w/2, radiusHeight: h/2, radiusDepth: d/2 })
+            ;
+
+            platform.transform.x = x;
+            platform.transform.z = z;
+            platform.transform.y = h / 2 + (alignBottom ? y : y - h);
         }
 
         run() {

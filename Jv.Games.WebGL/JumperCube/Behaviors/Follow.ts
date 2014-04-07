@@ -15,7 +15,7 @@ module JumperCube.Behaviors {
         stopSpeed = 0.9;
         minDistance = 5;
         maxDistance = 10;
-        viewDistance = 15;
+        viewDistance: number;
         rigidBody: RigidBody;
         private lastRandomTargetTime: number;
 
@@ -32,13 +32,15 @@ module JumperCube.Behaviors {
 
             this.lastRandomTargetTime -= deltaTime;
 
-            if (target.length() > this.viewDistance) {
-                if (this.lastRandomTargetTime <= 0) {
-                    this.lastRandomTargetTime = 1;
-                    this.targetPosition = new Vector3(Math.random() - 0.5, 0, Math.random() - 0.5);
+            if (typeof this.viewDistance == "number") {
+                if (target.length() > this.viewDistance) {
+                    if (this.lastRandomTargetTime <= 0) {
+                        this.lastRandomTargetTime = 1;
+                        this.targetPosition = new Vector3(Math.random() - 0.5, 0, Math.random() - 0.5);
+                    }
+                    this.rigidBody.push(this.targetPosition.normalize().scale(this.speed));
+                    return;
                 }
-                this.rigidBody.push(this.targetPosition.normalize().scale(this.speed));
-                return;
             }
 
             this.targetPosition = target;

@@ -8,7 +8,7 @@ module JumperCube.Behaviors {
 
     export class SwingWhileMoving extends Component<Jv.Games.WebGL.GameObject> {
         rigidBody: RigidBody;
-        speed = 8;
+        speed = 16;
         inverse = false;
         axis: Vector3;
         maxSwing = 0.4;

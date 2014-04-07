@@ -11,7 +11,7 @@ module JumperCube.Behaviors {
     export class LookForward extends Component<Jv.Games.WebGL.Camera> {
         target: GameObject;
         rigidBody: RigidBody;
-        maxFrameCount: number = 3;
+        maxFrameCount: number = 1;
         private oldDirections: Vector3[];
 
         constructor(public object: Jv.Games.WebGL.Camera, args) {
