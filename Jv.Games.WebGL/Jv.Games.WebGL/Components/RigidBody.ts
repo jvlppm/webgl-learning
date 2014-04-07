@@ -24,6 +24,19 @@ module Jv.Games.WebGL.Components {
             super.init();
         }
 
+        tryMove(deltaTime: number, acceleration: Vector3): boolean {
+            var toMove = this.momentum.add(acceleration.divide(2));
+
+            var oldTransform = this.object.transform;
+            this.object.transform = this.object.transform.translate(toMove.scale(MeterSize * deltaTime));
+            if (this.validPosition()) {
+                this.momentum._add(acceleration);
+                return true;
+            }
+            this.object.transform = oldTransform;
+            return false;
+        }
+
         update(deltaTime: number) {
             var addedInstantAccel = this.instantaneousAcceleration.clone();
             var addedAccel = this.acceleration;
@@ -31,30 +44,13 @@ module Jv.Games.WebGL.Components {
             var accellSecs = addedAccel.scale(deltaTime);
             this.momentum._add(addedInstantAccel);
 
-            var oldTransform = this.object.transform;
-            var toMove = this.momentum.add(accellSecs.scale(0.5));
-            this.object.transform = this.object.transform.translate(toMove.scale(MeterSize * deltaTime));
-
-            if (this.validPosition()) {
-                this.momentum._add(accellSecs);
-            }
-            else {
-                var i = 0;
-                for (; i < 3; i++) {
-                    var tryMove = this.momentum.add(accellSecs.scale(0.5));
-                    tryMove.setData(i, 0);
-                    this.object.transform = oldTransform.translate(tryMove.scale(MeterSize * deltaTime));
-                    if (this.validPosition()) {
-                        this.momentum._add(accellSecs);
-                        this.momentum.setData(i, 0);
-                        break;
-                    }
-                }
-
-                if (i >= 3) {
-                    this.object.transform = oldTransform;
-                    this.momentum = new Vector3();
-                }
+            if (!this.tryMove(deltaTime, accellSecs)) {
+                if (!this.tryMove(deltaTime, new Vector3(accellSecs.x, 0, 0)))
+                    this.momentum.x = 0;
+                if (!this.tryMove(deltaTime, new Vector3(0, accellSecs.y, 0)))
+                    this.momentum.y = 0;
+                if (!this.tryMove(deltaTime, new Vector3(0, 0, accellSecs.z)))
+                    this.momentum.z = 0;
             }
 
             if (typeof this.friction !== "undefined")
