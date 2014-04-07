@@ -44,6 +44,10 @@ module Jv.Games.WebGL {
             }
         }
 
+        clone() {
+            return new Vector3(this.x, this.y, this.z);
+        }
+
         getData(axis: number) {
             return this.data[this.startIndex + axis];
         }

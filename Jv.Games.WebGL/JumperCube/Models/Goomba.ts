@@ -16,6 +16,7 @@ module JumperCube.Models {
 
         constructor(context: WebGLRenderingContext, texture: Jv.Games.WebGL.Materials.Texture) {
             super();
+            this.tag = "npc";
             this.add(Behaviors.Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true })
                 .add(Jv.Games.WebGL.Components.RigidBody)
                 .add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { radiusWidth: 0.5, radiusHeight: 0.5, radiusDepth: 0.5 })
@@ -29,8 +30,8 @@ module JumperCube.Models {
                 });
 
             var hitbox = this.add(new GameObject())
-                .add(Jv.Games.WebGL.Components.RigidBody)
-                .add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { isTrigger: true, radiusWidth: 0.49, radiusHeight: 0.1, radiusDepth: 0.49, tag: "npc" })
+                .add(JumperCube.Behaviors.Bouncy, { tags: ["player"]})
+                .add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { isTrigger: true, radiusWidth: 0.49, radiusHeight: 0.1, radiusDepth: 0.49 })
                 .add(JumperCube.Behaviors.DebugPosition)
                 .add(JumperCube.Behaviors.DieOnJump, { object: this });
             hitbox.transform.y = 0.45;

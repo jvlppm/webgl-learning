@@ -9,6 +9,7 @@ module Jv.Games.WebGL {
         transform: Matrix4;
         children: GameObject[];
         parent: GameObject;
+        tag: string;
 
         constructor()
         {

@@ -25,8 +25,11 @@ module Jv.Games.WebGL.Components {
         }
 
         update(deltaTime: number) {
-            var accellSecs = this.acceleration.scale(deltaTime);
-            this.momentum._add(this.instantaneousAcceleration);
+            var addedInstantAccel = this.instantaneousAcceleration.clone();
+            var addedAccel = this.acceleration;
+
+            var accellSecs = addedAccel.scale(deltaTime);
+            this.momentum._add(addedInstantAccel);
 
             var oldTransform = this.object.transform;
             var toMove = this.momentum.add(accellSecs.scale(0.5));
@@ -57,8 +60,8 @@ module Jv.Games.WebGL.Components {
             if (typeof this.friction !== "undefined")
                 this.momentum._multiply(this.friction);
 
-            this.instantaneousAcceleration = new Vector3();
-            this.acceleration = new Vector3();
+            this.instantaneousAcceleration._add(addedInstantAccel.scale(-1));
+            this.acceleration._add(addedAccel.scale(-1));
         }
 
         validPosition() {

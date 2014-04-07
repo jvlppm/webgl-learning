@@ -38,6 +38,7 @@ module JumperCube.Models {
 
         constructor(public context: WebGLRenderingContext, public texture: Jv.Games.WebGL.Materials.Texture) {
             super();
+            this.tag = "player";
 
             this.loadBehaviors();
             this.createBody();
@@ -69,8 +70,9 @@ module JumperCube.Models {
 
             // Container vai ser rotacionado no plano xz para olhar na direção do movimento
             var container = this.sizeContainer.add(new GameObject())
-                .add(Behaviors.LookForward)
-                .add(Components.AxisAlignedBoxCollider, { tag: "player" });
+                .add(Behaviors.LookForward);
+
+            container.add(Components.AxisAlignedBoxCollider, { object: this });
 
             // Body container poderá rotacionar no seu eixo X, sem que a direção seja impactada
             var bodyContainer = container.add(new GameObject());
