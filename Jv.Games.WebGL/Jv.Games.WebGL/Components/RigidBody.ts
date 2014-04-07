@@ -9,6 +9,7 @@ module Jv.Games.WebGL.Components {
         momentum: Vector3;
         mass = 1;
         friction: Vector3;
+        maxSpeed: number;
 
         constructor(object: GameObject, args: { [prop: string]: any }) {
             super(object);
@@ -26,6 +27,12 @@ module Jv.Games.WebGL.Components {
 
         tryMove(deltaTime: number, acceleration: Vector3): boolean {
             var toMove = this.momentum.add(acceleration.divide(2));
+
+            if (typeof this.maxSpeed !== "undefined") {
+                var speed = new Vector3(toMove.x, 0, toMove.z).length();
+                if (speed > this.maxSpeed)
+                    toMove._multiply(new Vector3(this.maxSpeed / speed, 1, this.maxSpeed / speed));
+            }
 
             var oldTransform = this.object.transform;
             this.object.transform = this.object.transform.translate(toMove.scale(MeterSize * deltaTime));

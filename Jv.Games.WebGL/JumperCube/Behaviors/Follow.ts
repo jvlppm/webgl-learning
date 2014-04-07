@@ -10,24 +10,40 @@ module JumperCube.Behaviors {
 
     export class Follow extends Component<Jv.Games.WebGL.Camera> {
         target: GameObject;
+        targetPosition: Vector3;
         speed = 10;
         stopSpeed = 0.9;
         minDistance = 5;
         maxDistance = 10;
         viewDistance = 15;
         rigidBody: RigidBody;
+        private lastRandomTargetTime: number;
 
         constructor(public object: Jv.Games.WebGL.Camera, args) {
             super(object);
             this.loadArgs(args);
             this.rigidBody = this.rigidBody || <RigidBody>object.searchComponent(RigidBody);
+            this.rigidBody.maxSpeed = this.speed;
+            this.lastRandomTargetTime = 0;
         }
 
         update(deltaTime: number) {
             var target = this.object.globalTransform.invert().multiply(this.target.globalTransform).position;
-            if (target.length() > this.viewDistance)
+
+            this.lastRandomTargetTime -= deltaTime;
+
+            if (target.length() > this.viewDistance) {
+                if (this.lastRandomTargetTime <= 0) {
+                    this.lastRandomTargetTime = 1;
+                    this.targetPosition = new Vector3(Math.random() - 0.5, 0, Math.random() - 0.5);
+                }
+                this.rigidBody.push(this.targetPosition.normalize().scale(this.speed));
                 return;
-            var targetXZ = new Vector3(target.x, 0, target.z);
+            }
+
+            this.targetPosition = target;
+
+            var targetXZ = new Vector3(this.targetPosition.x, 0, this.targetPosition.z);
 
             if (targetXZ.length() - this.maxDistance > 0.001) {
                 var moveMomentum = targetXZ.normalize().scale(this.speed * Math.min((targetXZ.length() - this.maxDistance), 1));
