@@ -33,7 +33,7 @@ module JumperCube.Models {
                 .add(JumperCube.Behaviors.Bouncy, { tags: ["player"]})
                 .add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { isTrigger: true, radiusWidth: 0.49, radiusHeight: 0.1, radiusDepth: 0.49 })
                 .add(JumperCube.Behaviors.DebugPosition)
-                .add(JumperCube.Behaviors.DieOnJump, { object: this });
+                .add(JumperCube.Behaviors.DieOnTrigger, { object: this, tags: ["player"] });
             hitbox.transform.y = 0.45;
         }
     }

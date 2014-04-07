@@ -1,9 +1,10 @@
 ﻿module JumperCube.Behaviors {
     import Component = Jv.Games.WebGL.Components.Component;
 
-    export class DieOnJump extends Component<Jv.Games.WebGL.GameObject> {
+    export class DieOnTrigger extends Component<Jv.Games.WebGL.GameObject> {
         dying: boolean;
         scaleY = 1;
+        tags: string[];
 
         constructor(object: Jv.Games.WebGL.GameObject, args) {
             super(object);
@@ -12,7 +13,7 @@
         }
 
         onTrigger(collider: Jv.Games.WebGL.Components.Collider) {
-            if (collider.object.tag == "player" && !this.dying)
+            if (typeof this.tags === "undefined" || this.tags.indexOf(collider.object.tag) >= 0 && !this.dying)
                 this.dying = true;
         }
 
