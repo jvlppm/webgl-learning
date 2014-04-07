@@ -45,7 +45,7 @@ module JumperCube.Models {
         }
 
         loadBehaviors() {
-            this.add(Components.RigidBody, { friction: new Vector3(0.90, 1, 0.90) });
+            this.add(Components.RigidBody, { friction: new Vector3(0.90, 1, 0.90), });
             this.add(Behaviors.Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
         }
 
@@ -58,9 +58,9 @@ module JumperCube.Models {
 
             var collider = this.searchComponent(Components.AxisAlignedBoxCollider);
             if (typeof collider !== "undefined") {
-                collider.radiusWidth = 0.3 * scale;
+                collider.radiusWidth = 0.4 * scale;
                 collider.radiusHeight = 1 * scale;
-                collider.radiusDepth = 0.3 * scale;
+                collider.radiusDepth = 0.4 * scale;
             }
         }
 
@@ -70,7 +70,7 @@ module JumperCube.Models {
             // Container vai ser rotacionado no plano xz para olhar na direção do movimento
             var container = this.sizeContainer.add(new GameObject())
                 .add(Behaviors.LookForward)
-                .add(Components.AxisAlignedBoxCollider);
+                .add(Components.AxisAlignedBoxCollider, { tag: "player" });
 
             // Body container poderá rotacionar no seu eixo X, sem que a direção seja impactada
             var bodyContainer = container.add(new GameObject());

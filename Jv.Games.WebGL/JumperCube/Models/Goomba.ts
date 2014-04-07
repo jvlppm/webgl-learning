@@ -27,6 +27,13 @@ module JumperCube.Models {
                     mesh: new JumperCube.Models.Mesh.TexturedCube(1, 1, 1, context, Goomba.FrontUV, Goomba.BackUV, Goomba.LeftUV, Goomba.RightUV, Goomba.TopUV, Goomba.BottomUV),
                     material: new Jv.Games.WebGL.Materials.TextureMaterial(context, texture)
                 });
+
+            var hitbox = this.add(new GameObject())
+                .add(Jv.Games.WebGL.Components.RigidBody)
+                .add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { isTrigger: true, radiusWidth: 0.49, radiusHeight: 0.1, radiusDepth: 0.49, tag: "npc" })
+                .add(JumperCube.Behaviors.DebugPosition)
+                .add(JumperCube.Behaviors.DieOnJump, { object: this });
+            hitbox.transform.y = 0.45;
         }
     }
 }

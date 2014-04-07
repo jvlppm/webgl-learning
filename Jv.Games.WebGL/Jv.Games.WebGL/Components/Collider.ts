@@ -3,6 +3,7 @@
 module Jv.Games.WebGL.Components {
     export class Collider extends Component<GameObject> {
         isTrigger = false;
+        tag: string;
 
         constructor(object: GameObject, args?: { [prop: string]: any }) {
             super(object);

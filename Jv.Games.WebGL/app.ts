@@ -68,7 +68,7 @@ module JumperCube {
                 player.transform.y = floorHeight + 1;
 
                 var goomba = this.scene.add(new JumperCube.Models.Goomba(this.webgl.context, this.goombaTexture))
-                    .add(Behaviors.Follow, { target: player, minDistance: 0, maxDistance: 0, speed: 1 });
+                    .add(Behaviors.Follow, { target: player, minDistance: 0, maxDistance: 0, speed: 0.5 });
                 goomba.transform.x = 4;
 
                 this.camera.add(Components.RigidBody, { friction: new Vector3(0.90, 1, 0.90) });
@@ -80,7 +80,7 @@ module JumperCube {
         }
 
         run() {
-            var maxDeltaTime = 1 / 4;
+            var maxDeltaTime = 1 / 8;
             return Utils.StartTick(dt => {
                 if (dt > maxDeltaTime)
                     dt = maxDeltaTime;
