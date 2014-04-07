@@ -14,6 +14,7 @@ module JumperCube.Behaviors {
         stopSpeed = 0.9;
         minDistance = 5;
         maxDistance = 10;
+        viewDistance = 15;
         rigidBody: RigidBody;
 
         constructor(public object: Jv.Games.WebGL.Camera, args) {
@@ -24,6 +25,8 @@ module JumperCube.Behaviors {
 
         update(deltaTime: number) {
             var target = this.object.globalTransform.invert().multiply(this.target.globalTransform).position;
+            if (target.length() > this.viewDistance)
+                return;
             var targetXZ = new Vector3(target.x, 0, target.z);
 
             if (targetXZ.length() - this.maxDistance > 0.001) {
