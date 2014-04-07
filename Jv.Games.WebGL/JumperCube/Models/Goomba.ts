@@ -29,13 +29,20 @@ module JumperCube.Models {
                     material: new Jv.Games.WebGL.Materials.TextureMaterial(context, texture)
                 });
 
-            var hitbox = this.add(new GameObject())
+            var deathHitbox = this.add(new GameObject())
                 .add(JumperCube.Behaviors.Bouncy, { tags: ["player"] })
             //  .add(JumperCube.Behaviors.DebugPosition)
             //  .add(MeshRenderer, { mesh: new JumperCube.Models.Mesh.Cube(0.98, 0.2, 0.98, context) })
                 .add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { isTrigger: true, radiusWidth: 0.49, radiusHeight: 0.1, radiusDepth: 0.49 })
                 .add(JumperCube.Behaviors.DieOnTrigger, { object: this, tags: ["player"] });
-            hitbox.transform.y = 0.6;
+            deathHitbox.transform.y = 0.6;
+
+            var collisionHitbox = this.add(new GameObject())
+            //  .add(JumperCube.Behaviors.DebugPosition)
+            //  .add(MeshRenderer, { mesh: new JumperCube.Models.Mesh.Cube(1.25, 0.8, 1.25, context) })
+                .add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { isTrigger: true, radiusWidth: 1.25/2, radiusHeight: 0.8/2, radiusDepth: 1.25/2 })
+                .add(JumperCube.Behaviors.HitOnTrigger, { object: this, tags: ["player"] });
+            //deathHitbox.transform.y = 0.6;
         }
     }
 }

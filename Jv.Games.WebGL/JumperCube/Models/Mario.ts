@@ -54,6 +54,8 @@ module JumperCube.Models {
             if (this._small === value)
                 return;
 
+            this._small = value;
+
             var scale = value ? 0.5 : 1;
             this.sizeContainer.transform = Jv.Games.WebGL.Matrix4.Scale(scale, scale, scale);
 
@@ -168,6 +170,10 @@ module JumperCube.Models {
             leg.transform = leg.transform.translate(location.add(new Vector3(0, 0.05, 0)));
             leg.add(MeshRenderer, marioLegMesh);
             return container;
+        }
+
+        onHit() {
+            this.isSmall = true;
         }
     }
 }

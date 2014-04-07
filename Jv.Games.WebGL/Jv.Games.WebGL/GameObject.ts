@@ -103,5 +103,20 @@ module Jv.Games.WebGL {
                     return found;
             }
         }
+
+        sendMessage(name: string, recursively?: boolean, ...args: any[]) {
+            var m = <Function>this[name];
+            if (typeof m === "function")
+                m.apply(this, args);
+
+            super.getComponents(Components.Component).forEach(c => {
+                var m = <Function>c[name];
+                if (typeof c === "function")
+                    m.apply(c, args);
+            });
+
+            if(recursively)
+                this.children.forEach(c => c.sendMessage(name, recursively, args));
+        }
     }
 }

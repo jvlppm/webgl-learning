@@ -29,6 +29,7 @@
     <Content Include="packages.config" />
     <TypeScriptCompile Include="JumperCube\Behaviors\DebugPosition.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\Bouncy.ts" />
+    <TypeScriptCompile Include="JumperCube\Behaviors\HitOnTrigger.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\DieOnTrigger.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\Follow.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\LookForward.ts" />
