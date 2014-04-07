@@ -39,13 +39,54 @@ module Jv.Games.WebGL.Components {
                 this.momentum._add(accellSecs);
             }
             else {
+                this.object.transform = oldTransform;
+
+                var globTransform = this.object.globalTransform;
+                var invertTransform = globTransform.invert();
+
+                var dir = globTransform.transform(toMove);
                 var i = 0;
                 for (; i < 3; i++) {
-                    var tryMove = this.momentum.add(accellSecs.scale(0.5));
-                    tryMove.setData(i, 0);
+                    var tryGlobMove = new Vector3(dir.x, dir.y, dir.z);
+                    tryGlobMove.setData(i, 0);
+                    if (tryGlobMove.x === 0 && tryGlobMove.y === 0 && tryGlobMove.z === 0)
+                        continue;
+                    var tryMove = invertTransform.transform(tryGlobMove);
+                    if (this.validPosition()) {
+                        var accelSecsAxis = new Vector3(accellSecs.x, accellSecs.y, accellSecs.z);
+                        accelSecsAxis.setData(i, 0);
+                        this.momentum._add(accelSecsAxis);
+
+                        this.momentum.setData(i, 0);
+                    }
+                    else {
+                        
+                    }
+                }
+
+                /*var toFall = toMove.y;
+                toMove.y = 0;
+
+                var globTransform = this.object.globalTransform;
+                var invertTransform = globTransform.invert();
+
+                var dir = globTransform.transform(toMove);
+
+                var i = 0;
+                for (; i < 3; i++) {
+                    var tryGlobMove = new Vector3(dir.x, dir.y, dir.z);
+                    tryGlobMove.setData(i, 0);
+                    /*for (var j = 0; j < 3; j++) {
+                        if(j != i)
+                            tryGlobMove.setData(j, 0);
+                    }* /
+                    if (tryGlobMove.x === 0 && tryGlobMove.y === 0 && tryGlobMove.z === 0)
+                        continue;
+                    var tryMove = invertTransform.transform(tryGlobMove);
+
                     this.object.transform = oldTransform.translate(tryMove.scale(MeterSize * deltaTime));
                     if (this.validPosition()) {
-                        this.momentum._add(accellSecs);
+                        this.momentum._add(new Vector3(accellSecs.x, 0, accellSecs.z));
                         this.momentum.setData(i, 0);
                         break;
                     }
@@ -55,6 +96,14 @@ module Jv.Games.WebGL.Components {
                     this.object.transform = oldTransform;
                     this.momentum = new Vector3();
                 }
+
+                toMove = new Vector3(0, toFall, 0);
+                oldTransform = this.object.transform;
+                this.object.transform = this.object.transform.translate(toMove.scale(MeterSize * deltaTime));
+                if (!this.validPosition()) {
+                    this.object.transform = oldTransform;
+                    this.momentum = new Vector3(this.momentum.x, 0, this.momentum.y);
+                }*/
             }
 
             if (typeof this.friction !== "undefined")
@@ -80,11 +129,14 @@ module Jv.Games.WebGL.Components {
                     continue;
 
                 if (this.collider.intersects(other)) {
+
+                    if (other.isTrigger)
+                        this.object.getComponents(Component, true).forEach(c => c.onTrigger(other));
+                    if (this.collider.isTrigger)
+                        other.object.getComponents(Component, true).forEach(c => c.onTrigger(this.collider));
+
                     if (!other.isTrigger)
                         return false;
-
-                    this.object.getComponents(Component, true).forEach(c => c.onTrigger(other));
-                    other.object.getComponents(Component, true).forEach(c => c.onTrigger(this.collider));
                 }
             }
 
