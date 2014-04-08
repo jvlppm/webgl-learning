@@ -46,7 +46,7 @@ module JumperCube.Models {
         }
 
         loadBehaviors() {
-            this.add(Components.RigidBody, { friction: new Vector3(0.90, 1, 0.90), });
+            this.add(Components.RigidBody, { friction: new Vector3(8, 0, 8),  maxSpeed: 2 });
             this.add(Behaviors.Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
         }
 

@@ -78,7 +78,10 @@ module Jv.Games.WebGL.Components {
             }
 
             if (typeof this.friction !== "undefined")
-                this.momentum._multiply(this.friction);
+                this.momentum._multiply(new Vector3(
+                    Math.max(1 - this.friction.x * deltaTime, 0),
+                    Math.max(1 - this.friction.y * deltaTime, 0),
+                    Math.max(1 - this.friction.z * deltaTime, 0)));
 
             this.instantaneousAcceleration._add(addedInstantAccel.scale(-1));
             this.acceleration._add(addedAccel.scale(-1));
