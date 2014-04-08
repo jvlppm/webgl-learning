@@ -29,14 +29,24 @@ module JumperCube {
         marioTexture: Texture;
         goombaTexture: Texture;
         grassTexture: Texture;
+
+        whitePlatform: Texture;
+        yellowPlatform: Texture;
+        cyanPlatform: Texture;
+        pinkPlatform: Texture;
+
         camera: Camera;
         scene: Scene;
 
         constructor(public webgl: WebGL) {
             this.textures = [
-                { url: "new-mario.png", attribute: "marioTexture" },
-                { url: "goomba.png", attribute: "goombaTexture" },
-                { url: "grass.png", attribute: "grassTexture" }
+                { url: "Textures/new-mario.png", attribute: "marioTexture" },
+                { url: "Textures/goomba.png", attribute: "goombaTexture" },
+                { url: "Textures/grass.png", attribute: "grassTexture" },
+                { url: "Textures/white_platform.png", attribute: "whitePlatform" },
+                { url: "Textures/yellow_platform.png", attribute: "yellowPlatform" },
+                { url: "Textures/cyan_platform.png", attribute: "cyanPlatform" },
+                { url: "Textures/pink_platform.png", attribute: "pinkPlatform" },
             ];
             this.camera = new Camera();
             this.updateCameraProjection();
@@ -91,10 +101,10 @@ module JumperCube {
         createMap() {
             this.createPlatform(this.grassTexture, 0, 40, 0, 80, 80, 10, false);
 
-            this.createPlatform(this.marioTexture, -10, 50, 0, 5, 10, 3);
-            this.createPlatform(this.marioTexture, -10, 40, 3, 5, 10, 0.5, false);
-            this.createPlatform(this.marioTexture, -10, 30, 0, 5, 10, 5);
-            this.createPlatform(this.marioTexture, 10, 40, 0, 5, 20, 200);
+            this.createPlatform(this.whitePlatform, -10, 50, 0, 5, 10, 3);
+            this.createPlatform(this.yellowPlatform, -10, 40, 3, 5, 10, 0.5, false);
+            this.createPlatform(this.cyanPlatform, -10, 30, 0, 5, 10, 5);
+            this.createPlatform(this.pinkPlatform, 10, 40, 0, 5, 20, 10);
         }
 
         createUV(texture: Texture, w: number, h: number) {

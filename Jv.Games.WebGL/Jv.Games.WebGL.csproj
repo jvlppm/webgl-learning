@@ -21,10 +21,11 @@
   <ItemGroup>
     <Content Include="app.css" />
     <Content Include="default.htm" />
-    <Content Include="goomba.png" />
-    <Content Include="grass.png" />
-    <Content Include="luigi.jpg" />
-    <Content Include="new-mario.png">
+    <Content Include="Textures\cyan_platform.png" />
+    <Content Include="Textures\goomba.png" />
+    <Content Include="Textures\grass.png" />
+    <Content Include="Textures\luigi.jpg" />
+    <Content Include="Textures\new-mario.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="packages.config" />
@@ -71,6 +72,9 @@
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />
+    <Content Include="Textures\pink_platform.png" />
+    <Content Include="Textures\white_platform.png" />
+    <Content Include="Textures\yellow_platform.png" />
     <Content Include="web.config" />
     <Content Include="Scripts\jquery-2.1.0.min.map" />
   </ItemGroup>
