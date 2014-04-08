@@ -25,8 +25,22 @@ module Jv.Games.WebGL.Components {
             super.init();
         }
 
-        tryMove(deltaTime: number, acceleration: Vector3): boolean {
+        tryMove(deltaTime: number, acceleration: Vector3, axis?: number): boolean {
+
+            if (typeof axis !== "undefined") {
+                acceleration = acceleration.clone();
+                for (var i = 0; i < 3; i++)
+                    if (axis !== i)
+                        acceleration.setData(i, 0);
+            }
+
             var toMove = this.momentum.add(acceleration.divide(2));
+
+            if (typeof axis !== "undefined") {
+                for (var i = 0; i < 3; i++)
+                    if (axis !== i)
+                        toMove.setData(i, 0);
+            }
 
             if (typeof this.maxSpeed !== "undefined") {
                 var speed = new Vector3(toMove.x, 0, toMove.z).length();
@@ -48,16 +62,19 @@ module Jv.Games.WebGL.Components {
             var addedInstantAccel = this.instantaneousAcceleration.clone();
             var addedAccel = this.acceleration;
 
-            var accellSecs = addedAccel.scale(deltaTime);
-            this.momentum._add(addedInstantAccel);
+            var accellSecs = addedAccel.scale(deltaTime).add(addedInstantAccel);
+            //this.momentum._add(addedInstantAccel);
+
+            if (this.object.tag === "player")
+                document.title = this.momentum.y.toString();
 
             if (!this.tryMove(deltaTime, accellSecs)) {
-                if (!this.tryMove(deltaTime, new Vector3(accellSecs.x, 0, 0)))
-                    this.momentum.x = 0;
-                if (!this.tryMove(deltaTime, new Vector3(0, 0, accellSecs.z)))
-                    this.momentum.z = 0;
-                if (!this.tryMove(deltaTime, new Vector3(0, accellSecs.y, 0)))
+                if (!this.tryMove(deltaTime, accellSecs, 1))
                     this.momentum.y = 0;
+                if (!this.tryMove(deltaTime, accellSecs, 0))
+                    this.momentum.x = 0;
+                if (!this.tryMove(deltaTime, accellSecs, 2))
+                    this.momentum.z = 0;
             }
 
             if (typeof this.friction !== "undefined")

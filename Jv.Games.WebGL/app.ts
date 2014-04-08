@@ -55,14 +55,14 @@ module JumperCube {
                 };
 
                 var player = this.scene.add(new JumperCube.Models.Mario(this.webgl.context, this.marioTexture));
-                player.add(Behaviors.Controller, { minJumpForce: 2.0, maxJumpForce: 4.91, moveForce: 10, camera: this.camera });
+                player.add(Behaviors.Controller, { minJumpForce: 2.0, maxJumpForce: 4.91, moveForce: 20, camera: this.camera });
                 player.transform.y = 1;
                 player.transform.z = 60;
 
-                var goomba = this.scene.add(new JumperCube.Models.Goomba(this.webgl.context, this.goombaTexture))
-                    .add(Behaviors.Follow, { target: player, minDistance: 0, maxDistance: 0, viewDistance: 4, speed: 0.5, stopSpeed: 1 });
-                goomba.transform.z = 40;
-                goomba.transform.y = 0.5;
+                //var goomba = this.scene.add(new JumperCube.Models.Goomba(this.webgl.context, this.goombaTexture))
+                //    .add(Behaviors.Follow, { target: player, minDistance: 0, maxDistance: 0, viewDistance: 4, speed: 0.5, stopSpeed: 1 });
+                //goomba.transform.z = 40;
+                //goomba.transform.y = 0.5;
 
                 this.scene.add(this.camera);
                 this.camera.transform.position.z = 65;
@@ -87,7 +87,7 @@ module JumperCube {
 
             this.createPlatform(-10, 50, 0, 5, 10, 3);
             this.createPlatform(-10, 40, 3, 5, 10, 0.5, false);
-            this.createPlatform(10, 50, 0, 5, 20, 200);
+            this.createPlatform(0, 40, 0, 5, 20, 200);
         }
 
         createPlatform(x: number, z: number, y: number, w: number, d: number, h: number, alignBottom = true) {
