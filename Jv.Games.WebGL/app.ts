@@ -59,10 +59,10 @@ module JumperCube {
                 player.transform.y = 1;
                 player.transform.z = 60;
 
-                //var goomba = this.scene.add(new JumperCube.Models.Goomba(this.webgl.context, this.goombaTexture))
-                //    .add(Behaviors.Follow, { target: player, minDistance: 0, maxDistance: 0, viewDistance: 4, speed: 0.5, stopSpeed: 1 });
-                //goomba.transform.z = 40;
-                //goomba.transform.y = 0.5;
+                var goomba = this.scene.add(new JumperCube.Models.Goomba(this.webgl.context, this.goombaTexture))
+                    .add(Behaviors.Follow, { target: player, minDistance: 0, maxDistance: 0, viewDistance: 4, speed: 0.5, stopSpeed: 1 });
+                goomba.transform.z = 40;
+                goomba.transform.y = 0.5;
 
                 this.scene.add(this.camera);
                 this.camera.transform.position.z = 65;
@@ -70,6 +70,7 @@ module JumperCube {
 
                 this.camera.add(Components.RigidBody, { friction: new Vector3(0.90, 1, 0.90) });
                 this.camera.add(JumperCube.Behaviors.Follow, { target: player, minDistance: 4, maxDistance: 10, speed: 5 });
+                this.camera.add(JumperCube.Behaviors.KeepAbove, { target: player, minDistance: 3, maxDistance: 7, speed: 1 });
                 this.camera.add(JumperCube.Behaviors.LookAtObject, { target: player });
 
                 this.createMap();
@@ -87,7 +88,7 @@ module JumperCube {
 
             this.createPlatform(-10, 50, 0, 5, 10, 3);
             this.createPlatform(-10, 40, 3, 5, 10, 0.5, false);
-            this.createPlatform(0, 40, 0, 5, 20, 200);
+            this.createPlatform(10, 40, 0, 5, 20, 200);
         }
 
         createPlatform(x: number, z: number, y: number, w: number, d: number, h: number, alignBottom = true) {

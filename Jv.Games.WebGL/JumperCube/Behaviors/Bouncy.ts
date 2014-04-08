@@ -3,7 +3,7 @@
     import RigidBody = Jv.Games.WebGL.Components.RigidBody;
 
     export class Bouncy extends Component<Jv.Games.WebGL.GameObject> {
-        force = new Jv.Games.WebGL.Vector3(0, 4, 0);
+        force = new Jv.Games.WebGL.Vector3(0, 2, 0);
         tags: string[];
 
         constructor(object: Jv.Games.WebGL.GameObject, args) {
