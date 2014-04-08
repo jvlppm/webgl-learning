@@ -25,21 +25,21 @@ module JumperCube.Models {
                 .add(new GameObject())
                 .add(Behaviors.SwingWhileMoving, { axis: new Vector3(0, 0, 1), speed: 15, maxSwing: 0.2 })
                 .add(MeshRenderer, {
-                    mesh: new JumperCube.Models.Mesh.TexturedCube(1, 1, 1, context, Goomba.FrontUV, Goomba.BackUV, Goomba.LeftUV, Goomba.RightUV, Goomba.TopUV, Goomba.BottomUV),
+                    mesh: new JumperCube.Mesh.TexturedCube(1, 1, 1, context, Goomba.FrontUV, Goomba.BackUV, Goomba.LeftUV, Goomba.RightUV, Goomba.TopUV, Goomba.BottomUV),
                     material: new Jv.Games.WebGL.Materials.TextureMaterial(context, texture)
                 });
 
             var deathHitbox = this.add(new GameObject())
                 .add(JumperCube.Behaviors.Bouncy, { tags: ["player"] })
             //  .add(JumperCube.Behaviors.DebugPosition)
-            //  .add(MeshRenderer, { mesh: new JumperCube.Models.Mesh.Cube(0.98, 0.2, 0.98, context) })
+            //  .add(MeshRenderer, { mesh: new JumperCube.Mesh.Cube(0.98, 0.2, 0.98, context) })
                 .add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { isTrigger: true, radiusWidth: 0.49, radiusHeight: 0.1, radiusDepth: 0.49 })
                 .add(JumperCube.Behaviors.DieOnTrigger, { object: this, tags: ["player"] });
             deathHitbox.transform.y = 0.6;
 
             var collisionHitbox = this.add(new GameObject())
             //  .add(JumperCube.Behaviors.DebugPosition)
-            //  .add(MeshRenderer, { mesh: new JumperCube.Models.Mesh.Cube(1.25, 0.8, 1.25, context) })
+            //  .add(MeshRenderer, { mesh: new JumperCube.Mesh.Cube(1.25, 0.8, 1.25, context) })
                 .add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { isTrigger: true, radiusWidth: 1.25/2, radiusHeight: 0.8/2, radiusDepth: 1.25/2 })
                 .add(JumperCube.Behaviors.HitOnTrigger, { object: this, tags: ["player"] });
             //deathHitbox.transform.y = 0.6;

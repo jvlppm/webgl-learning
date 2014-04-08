@@ -21,6 +21,9 @@
   <ItemGroup>
     <Content Include="app.css" />
     <Content Include="default.htm" />
+    <Content Include="Textures\block_empty.png" />
+    <Content Include="Textures\block_question.png" />
+    <Content Include="Textures\block_solid.png" />
     <Content Include="Textures\cyan_platform.png" />
     <Content Include="Textures\goomba.png" />
     <Content Include="Textures\grass.png" />
@@ -44,9 +47,9 @@
     <TypeScriptCompile Include="JumperCube\Behaviors\Controller.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\Mover.ts" />
     <TypeScriptCompile Include="JumperCube\Models\Goomba.ts" />
-    <TypeScriptCompile Include="JumperCube\Models\Mesh\TexturedCube.ts" />
-    <TypeScriptCompile Include="JumperCube\Models\Mesh\MarioHead.ts" />
-    <TypeScriptCompile Include="JumperCube\Models\Mesh\Cube.ts" />
+    <TypeScriptCompile Include="JumperCube\Mesh\TexturedCube.ts" />
+    <TypeScriptCompile Include="JumperCube\Mesh\MarioHead.ts" />
+    <TypeScriptCompile Include="JumperCube\Mesh\Cube.ts" />
     <TypeScriptCompile Include="JumperCube\Models\Mario.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Components\Component.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Components\MeshRenderer.ts" />

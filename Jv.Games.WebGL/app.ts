@@ -69,7 +69,7 @@ module JumperCube {
                 this.scene = new Jv.Games.WebGL.Scene(this.webgl);
 
                 var marioHeadMesh = {
-                    mesh: new JumperCube.Models.Mesh.MarioHead(this.webgl.context),
+                    mesh: new JumperCube.Mesh.MarioHead(this.webgl.context),
                     material: new Jv.Games.WebGL.Materials.TextureMaterial(this.webgl.context, this.marioTexture)
                 };
 
@@ -128,7 +128,7 @@ module JumperCube {
 
             var platform = this.scene.add(new GameObject())
                 .add(MeshRenderer, {
-                    mesh: new JumperCube.Models.Mesh.TexturedCube(w, h, d, this.webgl.context, zUV, zUV, xUV, xUV, yUV, yUV),
+                    mesh: new JumperCube.Mesh.TexturedCube(w, h, d, this.webgl.context, zUV, zUV, xUV, xUV, yUV, yUV),
                     material: new Jv.Games.WebGL.Materials.TextureMaterial(this.webgl.context, texture)
                 })
                 .add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { radiusWidth: w / 2, radiusHeight: h / 2, radiusDepth: d / 2 })

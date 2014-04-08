@@ -1,6 +1,6 @@
-﻿///<reference path="../../references.ts" />
+﻿///<reference path="../references.ts" />
 
-module JumperCube.Models.Mesh {
+module JumperCube.Mesh {
     import WebGL = Jv.Games.WebGL;
     import BufferAttribute = Jv.Games.WebGL.Core.BufferAttribute;
     import DataType = Jv.Games.WebGL.Core.DataType;
