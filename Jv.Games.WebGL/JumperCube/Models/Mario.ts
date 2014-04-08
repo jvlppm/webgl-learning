@@ -35,6 +35,7 @@ module JumperCube.Models {
         body: GameObject;
         sizeContainer: GameObject;
         private _small: boolean;
+        blink: JumperCube.Behaviors.Blink;
 
         constructor(public context: WebGLRenderingContext, public texture: Jv.Games.WebGL.Materials.Texture) {
             super();
@@ -48,6 +49,8 @@ module JumperCube.Models {
         loadBehaviors() {
             this.add(Components.RigidBody, { friction: new Vector3(8, 0, 8),  maxSpeed: 2 });
             this.add(Behaviors.Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
+            this.blink = new Behaviors.Blink(this);
+            this.add(this.blink);
         }
 
         set isSmall(value: boolean) {
@@ -173,7 +176,8 @@ module JumperCube.Models {
         }
 
         onHit() {
-            this.isSmall = true;
+            if(!this.blink.isActive)
+                this.isSmall = true;
         }
     }
 }

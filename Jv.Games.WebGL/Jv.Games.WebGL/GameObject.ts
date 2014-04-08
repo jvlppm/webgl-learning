@@ -12,6 +12,7 @@ module Jv.Games.WebGL {
         children: GameObject[];
         parent: GameObject;
         tag: string;
+        visible: boolean = true;
 
         constructor()
         {
@@ -30,11 +31,14 @@ module Jv.Games.WebGL {
             this.children.forEach(c => c.update(deltaTime));
         }
 
-        add<Type extends GameObject>(child: Type) : Type;
+        add<Type extends GameObject>(child: Type): Type;
+        add<Type extends Components.Component<GameObject>>(component: Type): GameObject;
         add<Type extends Components.Component<GameObject>>(componentType: { new (object: GameObject, args?: { [prop: string]: any }): Type }, args?: { [prop: string]: any }): GameObject;
         add(item, args?) {
-            if (typeof item === "function")
-                return super.add(item, args);
+            if (typeof item === "function" || item instanceof Components.Component) {
+                super.add(item, args);
+                return this;
+            }
 
             this.children.push(item);
             item.parent = this;
@@ -42,6 +46,9 @@ module Jv.Games.WebGL {
         }
 
         draw(baseTransform: Matrix4) {
+            if (!this.visible)
+                return;
+
             baseTransform = baseTransform.multiply(this.transform);
             super.draw(baseTransform);
             this.children.forEach(c => c.draw(baseTransform));
@@ -117,7 +124,7 @@ module Jv.Games.WebGL {
 
             super.getComponents(Components.Component).forEach(c => {
                 var m = <Function>c[name];
-                if (typeof c === "function")
+                if (typeof m === "function")
                     m.apply(c, args);
             });
 

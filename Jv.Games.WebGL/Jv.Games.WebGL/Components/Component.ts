@@ -4,7 +4,7 @@ module Jv.Games.WebGL.Components {
     export class Component<ObjectType> {
         constructor(public object: ObjectType) { }
 
-        loadArgs(args: { [prop: string]: any }) {
+        loadArgs(args?: { [prop: string]: any }) {
             if (typeof args === "undefined")
                 return;
             for (var propName in args)
@@ -31,11 +31,11 @@ module Jv.Games.WebGL.Components {
         constructor() {
             this.components = [];
         }
-
-        add<Type extends Component<T>, Arguments>(componentType: { new (object: T, args?: Arguments): Type }, args?: Arguments) {
-            var instance = new componentType(<any>this, args);
+        add<Type extends Component<T>, Arguments>(componentType: { new (object: T, args?: Arguments): Type }, args?: Arguments);
+        add<Type extends Component<T>, Arguments>(component: Component<T>, args?: Arguments);
+        add<Type extends Component<T>, Arguments>(item, args?: Arguments) {
+            var instance = typeof item === "function" ? new item(<any>this, args) : item;
             this.components.push(instance);
-            return this;
         }
 
         getComponent<Type extends Component<T>>(componentType: { new (object: T, args?): Type }, failIfNotFound = true): Type {
