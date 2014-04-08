@@ -22,6 +22,7 @@
     <Content Include="app.css" />
     <Content Include="default.htm" />
     <Content Include="goomba.png" />
+    <Content Include="grass.png" />
     <Content Include="luigi.jpg" />
     <Content Include="new-mario.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
