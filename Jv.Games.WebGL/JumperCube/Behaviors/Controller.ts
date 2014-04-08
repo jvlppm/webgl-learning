@@ -26,7 +26,7 @@ module JumperCube.Behaviors {
         }
 
         update(deltaTime: number) {
-            if (Math.abs(this.rigidBody.momentum.y) < 0.001 && this.spareJumpForce == 0) {
+            if (Math.abs(this.rigidBody.momentum.y) < 0.001 && this.spareJumpForce === 0) {
                 if (Keyboard.isKeyDown(Key.Space)) {
                     this.rigidBody.push(new Vector3(0, this.minJumpForce, 0), true, true);
                     if (this.maxJumpForce > this.minJumpForce)

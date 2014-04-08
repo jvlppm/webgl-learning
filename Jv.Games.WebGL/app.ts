@@ -35,6 +35,10 @@ module JumperCube {
         cyanPlatform: Texture;
         pinkPlatform: Texture;
 
+        blockEmpty: Texture;
+        blockQuestion: Texture;
+        blockSolid: Texture;
+
         camera: Camera;
         scene: Scene;
 
@@ -43,10 +47,16 @@ module JumperCube {
                 { url: "Textures/new-mario.png", attribute: "marioTexture" },
                 { url: "Textures/goomba.png", attribute: "goombaTexture" },
                 { url: "Textures/grass.png", attribute: "grassTexture" },
+
                 { url: "Textures/white_platform.png", attribute: "whitePlatform" },
                 { url: "Textures/yellow_platform.png", attribute: "yellowPlatform" },
                 { url: "Textures/cyan_platform.png", attribute: "cyanPlatform" },
                 { url: "Textures/pink_platform.png", attribute: "pinkPlatform" },
+
+                { url: "Textures/block_empty.png", attribute: "blockEmpty", density: 128 },
+                { url: "Textures/block_question.png", attribute: "blockQuestion", density: 128 },
+                { url: "Textures/block_solid.png", attribute: "blockSolid", density: 128 },
+
             ];
             this.camera = new Camera();
             this.updateCameraProjection();
@@ -78,10 +88,13 @@ module JumperCube {
                 player.transform.y = 1.5;
                 player.transform.z = 60;
 
-                var goomba = this.scene.add(new JumperCube.Models.Goomba(this.webgl.context, this.goombaTexture))
-                    .add(Behaviors.Follow, { target: player, minDistance: 0, maxDistance: 0, viewDistance: 4, speed: 0.5, stopSpeed: 1 });
-                goomba.transform.z = 40;
-                goomba.transform.y = 1;
+                for (var i = 0; i < 10; i++) {
+                    var goomba = this.scene.add(new JumperCube.Models.Goomba(this.webgl.context, this.goombaTexture))
+                        .add(Behaviors.Follow, { target: player, minDistance: 0, maxDistance: 0, viewDistance: 4, speed: 0.5, stopSpeed: 1 });
+                    goomba.transform.x = Math.random() * 80;
+                    goomba.transform.z = Math.random() * 80;
+                    goomba.transform.y = 1;
+                }
 
                 this.scene.add(this.camera);
                 this.camera.transform.position.z = 65;
@@ -105,6 +118,8 @@ module JumperCube {
             this.createPlatform(this.yellowPlatform, -10, 40, 3, 5, 10, 0.5, false);
             this.createPlatform(this.cyanPlatform, -10, 30, 0, 5, 10, 5);
             this.createPlatform(this.pinkPlatform, 10, 40, 0, 5, 20, 10);
+
+            this.createPlatform(this.blockSolid, 0, 40, 4, 2, 2, 1);
         }
 
         createUV(texture: Texture, w: number, h: number) {
