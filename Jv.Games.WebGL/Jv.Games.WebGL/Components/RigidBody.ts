@@ -100,11 +100,13 @@ module Jv.Games.WebGL.Components {
                     continue;
 
                 if (this.collider.intersects(other)) {
-                    if (!other.isTrigger)
-                        return false;
+                    if (this.collider.isTrigger || other.isTrigger) {
+                        this.object.sendMessage("onTrigger", true, other);
+                        other.object.sendMessage("onTrigger", true, this.collider);
+                    }
 
-                    this.object.getComponents(Component, true).forEach(c => c.onTrigger(other));
-                    other.object.getComponents(Component, true).forEach(c => c.onTrigger(this.collider));
+                    if (!this.collider.isTrigger && !other.isTrigger)
+                        return false;
                 }
             }
 

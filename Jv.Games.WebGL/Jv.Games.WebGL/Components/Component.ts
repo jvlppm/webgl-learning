@@ -15,8 +15,6 @@ module Jv.Games.WebGL.Components {
         update(deltaTime: number) { }
         draw(baseTransform: Matrix4) { }
 
-        onTrigger(collider: Collider) { }
-
         static GetName<Type extends Component<any>>(type: { new (o, args?) }) {
             var ret = type.toString();
             ret = ret.substr('function '.length);

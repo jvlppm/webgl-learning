@@ -129,7 +129,7 @@ module Jv.Games.WebGL {
             });
 
             if(recursively)
-                this.children.forEach(c => c.sendMessage(name, recursively, args));
+                this.children.forEach(c => c.sendMessage.apply(c, [name, recursively].concat(args)));
         }
     }
 }
