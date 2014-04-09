@@ -27,6 +27,7 @@
     <Content Include="Textures\cyan_platform.png" />
     <Content Include="Textures\goomba.png" />
     <Content Include="Textures\grass.png" />
+    <Content Include="Textures\item_mushroom.png" />
     <Content Include="Textures\luigi.jpg" />
     <Content Include="Textures\new-mario.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -52,6 +53,7 @@
     <TypeScriptCompile Include="JumperCube\Mesh\Cube.ts" />
     <TypeScriptCompile Include="JumperCube\Models\ItemBlock.ts" />
     <TypeScriptCompile Include="JumperCube\Models\Mario.ts" />
+    <TypeScriptCompile Include="JumperCube\Models\Mushroom.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Components\Component.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Components\MeshRenderer.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Components\RigidBody.ts" />

@@ -1,6 +1,6 @@
 ﻿///<reference path="../references.ts" />
 
-module JummperCube.Models {
+module JumperCube.Models {
     import MeshRenderer = Jv.Games.WebGL.Components.MeshRenderer;
     import Texture = Jv.Games.WebGL.Materials.Texture;
     import TextureMaterial = Jv.Games.WebGL.Materials.TextureMaterial;

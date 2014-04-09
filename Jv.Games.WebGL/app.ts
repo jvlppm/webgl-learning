@@ -39,6 +39,8 @@ module JumperCube {
         blockQuestion: Texture;
         blockSolid: Texture;
 
+        itemMushroom: Texture;
+
         camera: Camera;
         scene: Scene;
 
@@ -56,6 +58,8 @@ module JumperCube {
                 { url: "Textures/block_empty.png", attribute: "blockEmpty", density: 128 },
                 { url: "Textures/block_question.png", attribute: "blockQuestion", density: 128 },
                 { url: "Textures/block_solid.png", attribute: "blockSolid", density: 128 },
+
+                { url: "Textures/item_mushroom.png", attribute: "itemMushroom" },
 
             ];
             this.camera = new Camera();
@@ -88,7 +92,9 @@ module JumperCube {
                 player.transform.y = 1.5;
                 player.transform.z = 55;
 
-                var goombas: Vector3[] = [new Vector3(-20, 63, 0)];
+                var goombas: Vector3[] = [
+                    new Vector3(-20, 63, 0)
+                ];
 
                 goombas.forEach(g => {
                     var goomba = this.scene.add(new JumperCube.Models.Goomba(this.webgl.context, this.goombaTexture))
@@ -120,18 +126,24 @@ module JumperCube {
             this.createPlatform(this.pinkPlatform, 5, 50, 0, 10, 4, 8);
             this.createPlatform(this.yellowPlatform, 10, 60, 0, 5, 20, 10);
 
-            this.createPlatform(this.whitePlatform, -5, 58, 0, 4, 8, 1, { debug: true });
+            this.createPlatform(this.whitePlatform, -5, 58, 0, 4, 8, 1);
             this.createPlatform(this.whitePlatform, 5, 62, 0, 14, 4, 1);
 
             this.createQuestionBlock(-30, 60);
             this.createQuestionBlock(-30, 63);
             this.createQuestionBlock(-30, 66);
 
+            var item = this.scene.add(new JumperCube.Models.Mushroom(this.webgl.context, this.itemMushroom));
+            item.add(Behaviors.DebugPosition)
+            item.transform.x = -20;
+            item.transform.z = 63;
+            item.transform.y = 0.5;
+
             this.createStairX(this.blockSolid, 0, 10, 0, 8, 2);
         }
 
         createQuestionBlock(x: number, z: number, y: number = 4) {
-            var question = this.scene.add(new JummperCube.Models.ItemBlock(this.webgl.context, this.blockQuestion, this.blockEmpty));
+            var question = this.scene.add(new JumperCube.Models.ItemBlock(this.webgl.context, this.blockQuestion, this.blockEmpty));
             question.transform.x = x;
             question.transform.y = y;
             question.transform.z = z;

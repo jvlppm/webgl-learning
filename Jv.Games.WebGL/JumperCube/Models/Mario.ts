@@ -68,6 +68,9 @@ module JumperCube.Models {
                 collider.radiusHeight = 1 * scale;
                 collider.radiusDepth = 0.4 * scale;
             }
+
+            if (!value)
+                this.transform.y += 0.5;
         }
 
         private createBody() {
@@ -178,6 +181,13 @@ module JumperCube.Models {
         onHit() {
             if(!this.blink.isActive)
                 this.isSmall = true;
+        }
+
+        onTrigger(collider: Components.Collider) {
+            if (collider.object instanceof Mushroom) {
+                this.isSmall = false;
+                //collider.object.destroy();
+            }
         }
     }
 }

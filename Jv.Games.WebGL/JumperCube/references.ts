@@ -17,3 +17,8 @@
 
 ///<reference path="Mesh/Cube.ts" />
 ///<reference path="Mesh/MarioHead.ts" />
+
+///<reference path="Models/Goomba.ts" />
+///<reference path="Models/ItemBlock.ts" />
+///<reference path="Models/Mario.ts" />
+///<reference path="Models/Mushroom.ts" />
