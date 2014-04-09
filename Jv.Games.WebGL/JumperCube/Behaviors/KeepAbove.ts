@@ -28,26 +28,19 @@ module JumperCube.Behaviors {
 
             if (target - this.maxDistance > 0.001) {
                 this.rigidBody.push(new Vector3(0, -this.speed, 0));
-                document.title = "cima - " + target;
             }
             else if (target - this.minDistance < -0.001) {
                 this.rigidBody.push(new Vector3(0, this.speed, 0));
-                document.title = "baixo - " + target;
             }
             else {
                 var mid = (this.minDistance + this.maxDistance) / 2;
                 var dir = (target < mid)? 1 : -1;
 
                 if (Math.abs(target - mid) > 0.5) {
-                    if (target > mid)
-                        document.title = "pouco cima - " + target;
-                    else
-                        document.title = "pouco baixo - " + target;
                     this.rigidBody.push(new Vector3(0, Math.abs(target) * this.speed * dir, 0));
                 }
                 else {
                     this.rigidBody.momentum._multiply(new Vector3(1, this.stopSpeed, 1));
-                    document.title = "parando - " + target;
                 }
             }
         }

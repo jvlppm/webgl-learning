@@ -65,9 +65,6 @@ module Jv.Games.WebGL.Components {
             var accellSecs = addedAccel.scale(deltaTime).add(addedInstantAccel);
             //this.momentum._add(addedInstantAccel);
 
-            if (this.object.tag === "player")
-                document.title = this.momentum.y.toString();
-
             if (!this.tryMove(deltaTime, accellSecs)) {
                 if (!this.tryMove(deltaTime, accellSecs, 1))
                     this.momentum.y = 0;

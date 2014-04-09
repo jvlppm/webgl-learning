@@ -17,8 +17,6 @@ module JumperCube.Behaviors {
         }
 
         update(deltaTime: number) {
-            document.title = "x: " + this.object.transform.x + ", y: " + this.object.transform.y + ", z: " + this.object.transform.z;
-
             var toMove = new Vector3(0, 0, 0);
 
             if (Keyboard.isKeyDown(Key.E))
@@ -38,6 +36,9 @@ module JumperCube.Behaviors {
 
             if (Keyboard.isKeyDown(Key.S))
                 toMove._add(new Vector3(0, 0, -this.speed));
+
+            if (toMove.length() != 0)
+                document.title = "x: " + this.object.transform.x + ", y: " + this.object.transform.y + ", z: " + this.object.transform.z;
 
             this.object.transform = this.object.transform.translate(toMove.scale(deltaTime));
         }

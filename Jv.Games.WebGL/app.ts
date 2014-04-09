@@ -66,7 +66,7 @@ module JumperCube {
             var waiting: JQueryPromise<Texture>[] = [];
             this.textures.forEach(tD => {
                 waiting.push(Game.LoadTexture(this.webgl.context, tD.url, tD.tile, tD.density)
-                       .promise().then(t => this[tD.attribute] = t));
+                    .promise().then(t => this[tD.attribute] = t));
             });
             return <JQueryPromise<any>>$.when.apply(this, waiting);
         }
@@ -86,15 +86,17 @@ module JumperCube {
                 var player = this.scene.add(new JumperCube.Models.Mario(this.webgl.context, this.marioTexture));
                 player.add(Behaviors.Controller, { minJumpForce: 2.0, maxJumpForce: 4.91, moveForce: 20, camera: this.camera });
                 player.transform.y = 1.5;
-                player.transform.z = 60;
+                player.transform.z = 55;
 
-                for (var i = 0; i < 10; i++) {
+                var goombas: Vector3[] = [new Vector3(-16, 63, 0)];
+
+                goombas.forEach(g => {
                     var goomba = this.scene.add(new JumperCube.Models.Goomba(this.webgl.context, this.goombaTexture))
                         .add(Behaviors.Follow, { target: player, minDistance: 0, maxDistance: 0, viewDistance: 4, speed: 0.5, stopSpeed: 1 });
-                    goomba.transform.x = Math.random() * 80;
-                    goomba.transform.z = Math.random() * 80;
-                    goomba.transform.y = 1;
-                }
+                    goomba.transform.x = g.x;
+                    goomba.transform.z = g.y;
+                    goomba.transform.y = g.z + 0.6;
+                });
 
                 this.scene.add(this.camera);
                 this.camera.transform.position.z = 65;
@@ -112,14 +114,16 @@ module JumperCube {
         }
 
         createMap() {
-            this.createPlatform(this.grassTexture, 0, 40, 0, 80, 80, 10, false);
+            this.createPlatform(this.grassTexture, -0.0001, 40, 0, 80, 80, 10, { xAlign: 0.5, zAlign: 0.5, yAlign: 0 });
 
-            this.createPlatform(this.whitePlatform, -10, 50, 0, 5, 10, 3);
-            this.createPlatform(this.yellowPlatform, -10, 40, 3, 5, 10, 0.5, false);
-            this.createPlatform(this.cyanPlatform, -10, 30, 0, 5, 10, 5);
-            this.createPlatform(this.pinkPlatform, 10, 40, 0, 5, 20, 10);
+            this.createPlatform(this.cyanPlatform, -5, 50, 0, 5, 10, 5);
+            this.createPlatform(this.pinkPlatform, 5, 50, 0, 10, 4, 8);
+            this.createPlatform(this.yellowPlatform, 10, 60, 0, 5, 20, 10);
 
-            this.createPlatform(this.blockSolid, 0, 40, 4, 2, 2, 1);
+            this.createPlatform(this.whitePlatform, -5, 58, 0, 4, 8, 1, { debug: true });
+            this.createPlatform(this.whitePlatform, 5, 62, 0, 14, 4, 1);
+
+            this.createStairX(this.blockSolid, 0, 10, 0, 8, 2);
         }
 
         createUV(texture: Texture, w: number, h: number) {
@@ -135,13 +139,32 @@ module JumperCube {
             return [0, 0, u, 0, u, v, 0, v];
         }
 
-        createPlatform(texture: Texture, x: number, z: number, y: number, w: number, d: number, h: number, alignBottom = true) {
+        createStairZ(texture: Texture, x: number, z: number, y: number, w: number, d: number) {
+            for (var i = 0; i < d; i++) {
+                this.createPlatform(texture, x, z - i * 0.5, y + i, w, d - i, 1);
+            }
+        }
 
-            var xUV = this.createUV(texture, w, h);
+        createStairX(texture: Texture, x: number, z: number, y: number, w: number, d: number) {
+            for (var i = 0; i < w; i++) {
+                this.createPlatform(texture, x + i * 0.5, z, y + i, w - i, d, 1);
+            }
+        }
+
+        createPlatform(texture: Texture, x: number, z: number, y: number, w: number, d: number, h: number, args?: { debug?: boolean; xAlign?: number; yAlign?: number; zAlign?: number }) {
+            args = args || {};
+            var defaultArgs = { debug: false, xAlign: 0, yAlign: 1, zAlign: 0 };
+            for (var prop in defaultArgs)
+                if (typeof args[prop] === "undefined")
+                    args[prop] = defaultArgs[prop];
+
+            var xUV = this.createUV(texture, d, h);
             var yUV = this.createUV(texture, w, d);
-            var zUV = this.createUV(texture, d, h);
+            var zUV = this.createUV(texture, w, h);
 
-            var platform = this.scene.add(new GameObject())
+            var platform = this.scene.add(new GameObject());
+
+            var align = platform.add(new GameObject())
                 .add(MeshRenderer, {
                     mesh: new JumperCube.Mesh.TexturedCube(w, h, d, this.webgl.context, zUV, zUV, xUV, xUV, yUV, yUV),
                     material: new Jv.Games.WebGL.Materials.TextureMaterial(this.webgl.context, texture)
@@ -149,9 +172,17 @@ module JumperCube {
                 .add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { radiusWidth: w / 2, radiusHeight: h / 2, radiusDepth: d / 2 })
             ;
 
+            align.transform.x = - w / 2 + w * args.xAlign;
+            align.transform.z = - d / 2 + d * args.zAlign;
+            align.transform.y = - h / 2 + h * args.yAlign;
+
             platform.transform.x = x;
             platform.transform.z = z;
-            platform.transform.y = h / 2 + (alignBottom ? y : y - h);
+            platform.transform.y = y;
+
+            if (args.debug) {
+                platform.add(Behaviors.DebugPosition, { speed: new Vector3(w, h, d).length() * 0.1 });
+            }
         }
 
         run() {
