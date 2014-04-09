@@ -123,7 +123,18 @@ module JumperCube {
             this.createPlatform(this.whitePlatform, -5, 58, 0, 4, 8, 1, { debug: true });
             this.createPlatform(this.whitePlatform, 5, 62, 0, 14, 4, 1);
 
+            this.createQuestionBlock(-30, 60);
+            this.createQuestionBlock(-30, 63);
+            this.createQuestionBlock(-30, 66);
+
             this.createStairX(this.blockSolid, 0, 10, 0, 8, 2);
+        }
+
+        createQuestionBlock(x: number, z: number, y: number = 4) {
+            var question = this.scene.add(new JummperCube.Models.ItemBlock(this.webgl.context, this.blockQuestion, this.blockEmpty));
+            question.transform.x = x;
+            question.transform.y = y;
+            question.transform.z = z;
         }
 
         createUV(texture: Texture, w: number, h: number) {

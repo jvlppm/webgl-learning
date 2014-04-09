@@ -50,6 +50,7 @@
     <TypeScriptCompile Include="JumperCube\Mesh\TexturedCube.ts" />
     <TypeScriptCompile Include="JumperCube\Mesh\MarioHead.ts" />
     <TypeScriptCompile Include="JumperCube\Mesh\Cube.ts" />
+    <TypeScriptCompile Include="JumperCube\Models\ItemBlock.ts" />
     <TypeScriptCompile Include="JumperCube\Models\Mario.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Components\Component.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Components\MeshRenderer.ts" />
