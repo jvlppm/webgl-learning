@@ -88,11 +88,11 @@ module JumperCube {
                 player.transform.y = 1.5;
                 player.transform.z = 55;
 
-                var goombas: Vector3[] = [new Vector3(-16, 63, 0)];
+                var goombas: Vector3[] = [new Vector3(-20, 63, 0)];
 
                 goombas.forEach(g => {
                     var goomba = this.scene.add(new JumperCube.Models.Goomba(this.webgl.context, this.goombaTexture))
-                        .add(Behaviors.Follow, { target: player, minDistance: 0, maxDistance: 0, viewDistance: 4, speed: 0.5, stopSpeed: 1 });
+                        .add(Behaviors.Follow, { target: player, minDistance: 0, maxDistance: 0, viewDistance: 8, speed: 0.5, stopSpeed: 1 });
                     goomba.transform.x = g.x;
                     goomba.transform.z = g.y;
                     goomba.transform.y = g.z + 0.6;
@@ -116,7 +116,7 @@ module JumperCube {
         createMap() {
             this.createPlatform(this.grassTexture, -0.0001, 40, 0, 80, 80, 10, { xAlign: 0.5, zAlign: 0.5, yAlign: 0 });
 
-            this.createPlatform(this.cyanPlatform, -5, 50, 0, 5, 10, 5);
+            this.createPlatform(this.cyanPlatform, -5, 50, 0, 15, 10, 5);
             this.createPlatform(this.pinkPlatform, 5, 50, 0, 10, 4, 8);
             this.createPlatform(this.yellowPlatform, 10, 60, 0, 5, 20, 10);
 
@@ -141,13 +141,13 @@ module JumperCube {
 
         createStairZ(texture: Texture, x: number, z: number, y: number, w: number, d: number) {
             for (var i = 0; i < d; i++) {
-                this.createPlatform(texture, x, z - i * 0.5, y + i, w, d - i, 1);
+                this.createPlatform(texture, x, z, y + i, w, d - i, 1);
             }
         }
 
         createStairX(texture: Texture, x: number, z: number, y: number, w: number, d: number) {
             for (var i = 0; i < w; i++) {
-                this.createPlatform(texture, x + i * 0.5, z, y + i, w - i, d, 1);
+                this.createPlatform(texture, x, z, y + i, w - i, d, 1);
             }
         }
 

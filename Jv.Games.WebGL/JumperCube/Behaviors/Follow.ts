@@ -18,6 +18,7 @@ module JumperCube.Behaviors {
         viewDistance: number;
         rigidBody: RigidBody;
         private lastRandomTargetTime: number;
+        private originalPosition: Vector3;
 
         constructor(public object: Jv.Games.WebGL.Camera, args) {
             super(object);
@@ -28,12 +29,20 @@ module JumperCube.Behaviors {
         }
 
         update(deltaTime: number) {
+            if (typeof this.originalPosition === "undefined")
+                this.originalPosition = this.object.transform.position;
+
             var target = this.object.globalTransform.invert().multiply(this.target.globalTransform).position;
 
             this.lastRandomTargetTime -= deltaTime;
 
             if (typeof this.viewDistance == "number") {
                 if (target.length() > this.viewDistance) {
+                    var distFromOrig = this.object.transform.position.sub(this.originalPosition);
+                    if (distFromOrig.length() > (this.maxDistance + this.viewDistance) / 2) {
+                        this.lastRandomTargetTime = 1;
+                        this.targetPosition = new Vector3(-distFromOrig.x, 0, -distFromOrig.z);
+                    }
                     if (this.lastRandomTargetTime <= 0) {
                         this.lastRandomTargetTime = 1;
                         this.targetPosition = new Vector3(Math.random() - 0.5, 0, Math.random() - 0.5);
