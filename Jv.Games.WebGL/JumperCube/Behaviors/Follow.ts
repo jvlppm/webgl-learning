@@ -32,12 +32,14 @@ module JumperCube.Behaviors {
             if (typeof this.originalPosition === "undefined")
                 this.originalPosition = this.object.transform.position;
 
-            var target = this.object.globalTransform.invert().multiply(this.target.globalTransform).position;
+            var target;
+            if(typeof this.target !== "undefined")
+                target = this.object.globalTransform.invert().multiply(this.target.globalTransform).position;
 
             this.lastRandomTargetTime -= deltaTime;
 
-            if (typeof this.viewDistance == "number") {
-                if (target.length() > this.viewDistance) {
+            if (typeof this.viewDistance === "number" || typeof target === "undefined") {
+                if (typeof target === "undefined" || target.length() > this.viewDistance) {
                     var distFromOrig = this.object.transform.position.sub(this.originalPosition);
                     if (distFromOrig.length() > (this.maxDistance + this.viewDistance) / 2) {
                         this.lastRandomTargetTime = 1;

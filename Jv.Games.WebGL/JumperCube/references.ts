@@ -22,3 +22,5 @@
 ///<reference path="Models/ItemBlock.ts" />
 ///<reference path="Models/Mario.ts" />
 ///<reference path="Models/Mushroom.ts" />
+
+///<reference path="Trigger.ts" />

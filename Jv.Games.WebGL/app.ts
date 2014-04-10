@@ -120,33 +120,31 @@ module JumperCube {
         }
 
         createMap() {
-            this.createPlatform(this.grassTexture, -0.0001, 40, 0, 80, 80, 10, { xAlign: 0.5, zAlign: 0.5, yAlign: 0 });
+            this.createPlatform(this.grassTexture, 0, 40, -0.0001, 80, 80, 10, { xAlign: 0.5, zAlign: 0.5, yAlign: 0 });
 
-            this.createPlatform(this.cyanPlatform, -5, 50, 0, 15, 10, 5);
+            this.createPlatform(this.cyanPlatform, -5, 50, 0, 15, 10, 8);
             this.createPlatform(this.pinkPlatform, 5, 50, 0, 10, 4, 8);
             this.createPlatform(this.yellowPlatform, 10, 60, 0, 5, 20, 10);
 
             this.createPlatform(this.whitePlatform, -5, 58, 0, 4, 8, 1);
             this.createPlatform(this.whitePlatform, 5, 62, 0, 14, 4, 1);
 
-            this.createQuestionBlock(-30, 60);
-            this.createQuestionBlock(-30, 63);
-            this.createQuestionBlock(-30, 66);
+            this.createPlatform(this.yellowPlatform, -35, 80, 0, 5, 20, 10);
+            this.createPlatform(this.whitePlatform, -35, 60, 0, 5, 20, 10, { debug: true });
 
-            var item = this.scene.add(new JumperCube.Models.Mushroom(this.webgl.context, this.itemMushroom));
-            item.add(Behaviors.DebugPosition)
-            item.transform.x = -20;
-            item.transform.z = 63;
-            item.transform.y = 0.5;
+            this.createQuestionBlock(-30, 60, 4, new JumperCube.Models.Mushroom(this.webgl.context, this.itemMushroom));
+            this.createQuestionBlock(-30, 63, 4);
+            this.createQuestionBlock(-30, 66, 4);
 
             this.createStairX(this.blockSolid, 0, 10, 0, 8, 2);
         }
 
-        createQuestionBlock(x: number, z: number, y: number = 4) {
+        createQuestionBlock(x: number, z: number, y: number, item?: GameObject) {
             var question = this.scene.add(new JumperCube.Models.ItemBlock(this.webgl.context, this.blockQuestion, this.blockEmpty));
             question.transform.x = x;
             question.transform.y = y;
             question.transform.z = z;
+            question.item = item;
         }
 
         createUV(texture: Texture, w: number, h: number) {

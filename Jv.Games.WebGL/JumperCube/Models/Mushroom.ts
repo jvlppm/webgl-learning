@@ -5,6 +5,7 @@ module JumperCube.Models {
     import MeshRenderer = Jv.Games.WebGL.Components.MeshRenderer;
     import Texture = Jv.Games.WebGL.Materials.Texture;
     import TextureMaterial = Jv.Games.WebGL.Materials.TextureMaterial;
+    import Vector3 = Jv.Games.WebGL.Vector3;
 
     export class Mushroom extends GameObject {
 
@@ -46,7 +47,13 @@ module JumperCube.Models {
             body.transform.y = -0.2;
 
             this.add(Jv.Games.WebGL.Components.RigidBody);
-            this.add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { isTrigger: true, radiusWidth: 0.5, radiusHeight: 0.4, radiusDepth: 0.5 });
+            this.add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { radiusWidth: 0.3, radiusHeight: 0.4, radiusDepth: 0.3 });
+            this.add(JumperCube.Behaviors.Follow, { viewDistance: 8, speed: 0.5, stopSpeed: 1 });
+            this.add(Behaviors.Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
+
+            var trigger = new Trigger(t => { }, 1.2, 0.9, 1.2, new Vector3());
+            trigger.collider.object = this;
+            this.add(trigger);
         }
     }
 }

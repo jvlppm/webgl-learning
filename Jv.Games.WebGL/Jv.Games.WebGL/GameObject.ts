@@ -13,9 +13,9 @@ module Jv.Games.WebGL {
         parent: GameObject;
         tag: string;
         visible: boolean = true;
+        enabled: boolean = true;
 
-        constructor()
-        {
+        constructor() {
             super();
             this.children = [];
             this.transform = Matrix4.Identity();
@@ -27,8 +27,11 @@ module Jv.Games.WebGL {
         }
 
         update(deltaTime: number) {
+            if (!this.enabled)
+                return;
+
             super.update(deltaTime);
-            this.children.forEach(c => c.update(deltaTime));
+            this.children.forEach(c => { if (c.enabled) c.update(deltaTime); });
         }
 
         add<Type extends GameObject>(child: Type): Type;
@@ -51,7 +54,7 @@ module Jv.Games.WebGL {
 
             baseTransform = baseTransform.multiply(this.transform);
             super.draw(baseTransform);
-            this.children.forEach(c => c.draw(baseTransform));
+            this.children.forEach(c => { if (c.visible) c.draw(baseTransform); });
         }
 
         get transform() {
@@ -74,7 +77,7 @@ module Jv.Games.WebGL {
             return this._globalTransform;
         }
 
-        getComponents<Type extends Components.Component<GameObject>>(componentType: { new (object: GameObject, args?): Type }, recursively?: boolean): Type[]{
+        getComponents<Type extends Components.Component<GameObject>>(componentType: { new (object: GameObject, args?): Type }, recursively?: boolean): Type[] {
             var result: Type[] = super.getComponents(componentType);
 
             if (recursively) {
@@ -128,8 +131,12 @@ module Jv.Games.WebGL {
                     m.apply(c, args);
             });
 
-            if(recursively)
+            if (recursively)
                 this.children.forEach(c => c.sendMessage.apply(c, [name, recursively].concat(args)));
+        }
+
+        destroy() {
+            this.parent.children.splice(this.parent.children.indexOf(this), 1);
         }
     }
 }

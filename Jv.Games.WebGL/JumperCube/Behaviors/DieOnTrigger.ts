@@ -23,7 +23,7 @@
                 this.scaleY *= 0.8;
 
                 if (this.scaleY < 0.1) {
-                    this.object.parent.children.splice(this.object.parent.children.indexOf(this.object), 1);
+                    this.object.destroy();
                 }
             }
         }

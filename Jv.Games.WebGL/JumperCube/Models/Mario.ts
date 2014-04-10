@@ -32,6 +32,7 @@ module JumperCube.Models {
 
         static CapUV = [0.850683275812094, 0.749094291589151, 0.697622619518418, 0.555713306570058, 0.733465937764405, 0.510427886027612, 0.89330776237489, 0.696465289337119];
 
+        rigidBody: Components.RigidBody;
         body: GameObject;
         sizeContainer: GameObject;
         private _small: boolean;
@@ -47,7 +48,8 @@ module JumperCube.Models {
         }
 
         loadBehaviors() {
-            this.add(Components.RigidBody, { friction: new Vector3(8, 0, 8),  maxSpeed: 2 });
+            this.rigidBody = new Components.RigidBody(this, { friction: new Vector3(8, 0, 8), maxSpeed: 2 });
+            this.add(this.rigidBody);
             this.add(Behaviors.Mover, { direction: new Vector3(0, -9.8, 0), acceleration: true, continuous: true });
             this.blink = new Behaviors.Blink(this);
             this.add(this.blink);
@@ -69,8 +71,10 @@ module JumperCube.Models {
                 collider.radiusDepth = 0.4 * scale;
             }
 
-            if (!value)
-                this.transform.y += 0.5;
+            while (!this.rigidBody.validPosition()) {
+                this.transform.y += 0.5 * (this.rigidBody.momentum.y > 0 ? -1 : 1);
+                this.transform = this.transform;
+            }
         }
 
         private createBody() {
@@ -186,7 +190,7 @@ module JumperCube.Models {
         onTrigger(collider: Components.Collider) {
             if (collider.object instanceof Mushroom) {
                 this.isSmall = false;
-                //collider.object.destroy();
+                collider.object.destroy();
             }
         }
     }
