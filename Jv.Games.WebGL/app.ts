@@ -38,6 +38,7 @@ module JumperCube {
         blockEmpty: Texture;
         blockQuestion: Texture;
         blockSolid: Texture;
+        blockBrick: Texture;
 
         itemMushroom: Texture;
 
@@ -58,6 +59,7 @@ module JumperCube {
                 { url: "Textures/block_empty.png", attribute: "blockEmpty", density: 128 },
                 { url: "Textures/block_question.png", attribute: "blockQuestion", density: 128 },
                 { url: "Textures/block_solid.png", attribute: "blockSolid", density: 128 },
+                { url: "Textures/block_brick.png", attribute: "blockBrick" },
 
                 { url: "Textures/item_mushroom.png", attribute: "itemMushroom" },
 
@@ -109,6 +111,7 @@ module JumperCube {
                 this.camera.transform.position.y = 5;
 
                 this.camera.add(Components.RigidBody, { friction: new Vector3(1, 0, 1) });
+                this.camera.add(Components.AxisAlignedBoxCollider);
                 this.camera.add(JumperCube.Behaviors.Follow, { target: player, minDistance: 4, maxDistance: 10, speed: 5 });
                 this.camera.add(JumperCube.Behaviors.KeepAbove, { target: player, minDistance: 3, maxDistance: 7, speed: 1 });
                 this.camera.add(JumperCube.Behaviors.LookAtObject, { target: player });
@@ -124,17 +127,30 @@ module JumperCube {
 
             this.createPlatform(this.cyanPlatform, -5, 50, 0, 15, 10, 8);
             this.createPlatform(this.pinkPlatform, 5, 50, 0, 10, 4, 8);
-            this.createPlatform(this.yellowPlatform, 10, 60, 0, 5, 20, 10);
+            this.createPlatform(this.yellowPlatform, 10, 60, 0, 5, 10, 10);
 
             this.createPlatform(this.whitePlatform, -5, 58, 0, 4, 8, 1);
             this.createPlatform(this.whitePlatform, 5, 62, 0, 14, 4, 1);
 
             this.createPlatform(this.yellowPlatform, -35, 80, 0, 5, 20, 10);
-            this.createPlatform(this.whitePlatform, -35, 60, 0, 5, 20, 10, { debug: true });
+            this.createPlatform(this.whitePlatform, -35, 60, 0, 5, 20, 10);
 
             this.createQuestionBlock(-30, 60, 4, new JumperCube.Models.Mushroom(this.webgl.context, this.itemMushroom));
+            this.createBrickBlock(-30, 61, 4);
+            this.createBrickBlock(-30, 62, 4);
             this.createQuestionBlock(-30, 63, 4);
+            this.createBrickBlock(-30, 64, 4);
+            this.createBrickBlock(-30, 65, 4);
             this.createQuestionBlock(-30, 66, 4);
+
+            this.createStairZm(this.blockSolid, -25, 56, 0, 4, 4);
+            this.createPlatform(this.blockSolid, -25, 52, 3, 4, 8, 1);
+
+            this.createPlatform(this.pinkPlatform, -40, 40, 0, 10, 4, 4, { xAlign: 1 });
+            this.createPlatform(this.pinkPlatform, -30, 40, 0, 5, 4, 4, { xAlign: 1 });
+            this.createPlatform(this.pinkPlatform, -25, 40, 0, 10, 4, 4, { xAlign: 1 });
+
+            this.createPlatform(this.whitePlatform, -40, 36, 0, 40, 4, 15, { xAlign: 1 });
 
             this.createStairX(this.blockSolid, 0, 10, 0, 8, 2);
         }
@@ -145,6 +161,13 @@ module JumperCube {
             question.transform.y = y;
             question.transform.z = z;
             question.item = item;
+        }
+
+        createBrickBlock(x: number, z: number, y: number) {
+            var question = this.scene.add(new JumperCube.Models.BrickBlock(this.webgl.context, this.blockBrick));
+            question.transform.x = x;
+            question.transform.y = y;
+            question.transform.z = z;
         }
 
         createUV(texture: Texture, w: number, h: number) {
@@ -158,6 +181,12 @@ module JumperCube {
             var v = h / (th / texture.density);
 
             return [0, 0, u, 0, u, v, 0, v];
+        }
+
+        createStairZm(texture: Texture, x: number, z: number, y: number, w: number, d: number) {
+            for (var i = 0; i < d; i++) {
+                this.createPlatform(texture, x, z - i, y + i, w, d - i, 1);
+            }
         }
 
         createStairZ(texture: Texture, x: number, z: number, y: number, w: number, d: number) {

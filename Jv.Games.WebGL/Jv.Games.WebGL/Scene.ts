@@ -27,6 +27,7 @@ module Jv.Games.WebGL {
         add(item, args?) {
             if (item instanceof Camera) {
                 this.cameras.push(item);
+                (<Camera>item).parent = this;
                 return item;
             }
             else return super.add(item);
