@@ -62,9 +62,19 @@ module Jv.Games.WebGL {
         }
 
         set transform(value: Matrix4) {
+            if (typeof this._transform !== "undefined") {
+                delete this._transform.modified;
+                delete this._transform.position.modified;
+            }
+
             this._transform = value;
+            (this._transform.modified = this._transform.position.modified =
+                () => this.clearGlobalTransform())();
+        }
+
+        private clearGlobalTransform() {
             delete this._globalTransform;
-            this.children.forEach(c => c.transform = c._transform);
+            this.children.forEach(c => c.clearGlobalTransform());
         }
 
         get globalTransform() {

@@ -38,7 +38,7 @@ module JumperCube.Models {
             if (typeof this.toMove === "undefined")
                 return;
 
-            this.transform = this.transform.translate(new Vector3(0, deltaTime * 2, 0));
+            this.transform._translate(new Vector3(0, deltaTime * 2, 0));
             this.toMove -= deltaTime * 2;
 
             if (this.toMove < 0) {

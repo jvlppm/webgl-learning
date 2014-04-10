@@ -47,7 +47,7 @@ module JumperCube.Models {
             if (typeof this.item !== "undefined" && typeof this.toMove === "undefined") {
                 this.item.visible = true;
                 this.toMove = 1;
-                this.item.transform = this.transform;
+                this.item.transform = this.transform.clone();
                 this.parent.add(this._item);
                 this.item.init();
             }
@@ -57,7 +57,7 @@ module JumperCube.Models {
             if (typeof this._item === "undefined" || typeof this.toMove === "undefined")
                 return;
 
-            this.item.transform = this.item.transform.translate(new Vector3(0, deltaTime, 0));
+            this.item.transform._translate(new Vector3(0, deltaTime, 0));
             this.toMove -= deltaTime;
 
             if (this.toMove < 0) {

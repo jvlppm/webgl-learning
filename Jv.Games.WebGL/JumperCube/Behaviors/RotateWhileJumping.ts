@@ -26,7 +26,7 @@ module JumperCube.Behaviors {
                 this.resetTransform = true;
             }
             else if (this.resetTransform) {
-                this.object.transform = Matrix4.Identity().translate(this.object.transform.position)
+                this.object.transform = Matrix4.Translate(this.object.transform.position);
                 this.resetTransform = false;
             }
         }

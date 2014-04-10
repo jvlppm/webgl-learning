@@ -62,7 +62,7 @@ module JumperCube.Models {
             this._small = value;
 
             var scale = value ? 0.5 : 1;
-            this.sizeContainer.transform = Jv.Games.WebGL.Matrix4.Scale(scale, scale, scale);
+            this.sizeContainer.transform = Jv.Games.WebGL.Matrix4.Scale(scale);
 
             var collider = this.searchComponent(Components.AxisAlignedBoxCollider);
             if (typeof collider !== "undefined") {
@@ -73,7 +73,6 @@ module JumperCube.Models {
 
             while (!this.rigidBody.validPosition()) {
                 this.transform.y += 0.05 * (this.rigidBody.momentum.y > 0 ? -1 : 1);
-                this.transform = this.transform;
             }
         }
 

@@ -2,8 +2,8 @@
 
 module Jv.Games.WebGL {
     export class Matrix4 {
-
         position: Vector3;
+        modified: () => void;
 
         constructor(public data?: Float32Array) {
             if (typeof data === "undefined")
@@ -21,7 +21,24 @@ module Jv.Games.WebGL {
                     0, 0, 0, 1]));
         }
 
-        static Scale(x: number, y: number, z: number) {
+        static Scale(value: Vector3);
+        static Scale(value: number);
+        static Scale(x: number, y: number, z: number);
+        static Scale(arg, y?: number, z?: number) {
+            var x;
+            if (typeof arg === "number") {
+                x = <number>arg;
+                if (typeof y === "undefined")
+                    y = x;
+                if (typeof z === "undefined")
+                    z = x;
+            }
+            else {
+                x = (<Vector3>arg).x;
+                y = (<Vector3>arg).y;
+                z = (<Vector3>arg).z;
+            }
+
             return new Matrix4(new Float32Array(
                 [x, 0, 0, 0,
                     0, y, 0, 0,
@@ -29,7 +46,18 @@ module Jv.Games.WebGL {
                     0, 0, 0, 1]));
         }
 
-        static Translate(x: number, y: number, z: number) {
+        static Translate(value: Vector3);
+        static Translate(x: number, y: number, z: number);
+        static Translate(arg, y?: number, z?: number) {
+            var x;
+            if (typeof arg === "number")
+                x = <number>arg;
+            else {
+                x = (<Vector3>arg).x;
+                y = (<Vector3>arg).y;
+                z = (<Vector3>arg).z;
+            }
+
             return new Matrix4(new Float32Array(
                 [1, 0, 0, 0,
                     0, 1, 0, 0,
@@ -83,14 +111,20 @@ module Jv.Games.WebGL {
 
         set x(value: number) {
             this.data[12] = value;
+            if (typeof this.modified !== "undefined")
+                this.modified();
         }
 
         set y(value: number) {
             this.data[13] = value;
+            if (typeof this.modified !== "undefined")
+                this.modified();
         }
 
         set z(value: number) {
             this.data[14] = value;
+            if (typeof this.modified !== "undefined")
+                this.modified();
         }
 
         get scaleX() {
@@ -113,6 +147,8 @@ module Jv.Games.WebGL {
                 0, 1, 0, 0,
                 -s, 0, c, 0,
                 x, y, z, 1]);
+            if (typeof this.modified !== "undefined")
+                this.modified();
         }
 
         transform(vector: Vector3) {
@@ -138,6 +174,9 @@ module Jv.Games.WebGL {
             m[2] = m[2] * c + mv1 * s;
             m[6] = m[6] * c + mv5 * s;
             m[10] = m[10] * c + mv9 * s;
+
+            if (typeof this.modified !== "undefined")
+                this.modified();
         }
 
         _rotateY(angle: number) {
@@ -153,6 +192,9 @@ module Jv.Games.WebGL {
             m[2] = c * m[2] - s * mv0;
             m[6] = c * m[6] - s * mv4;
             m[10] = c * m[10] - s * mv8;
+
+            if (typeof this.modified !== "undefined")
+                this.modified();
         }
 
         _rotateZ(angle: number) {
@@ -168,6 +210,9 @@ module Jv.Games.WebGL {
             m[1] = c * m[1] + s * mv0;
             m[5] = c * m[5] + s * mv4;
             m[9] = c * m[9] + s * mv8;
+
+            if (typeof this.modified !== "undefined")
+                this.modified();
         }
 
         // Deprecated source from three.js
@@ -227,6 +272,9 @@ module Jv.Games.WebGL {
             te[9] = r13 * m21 + r23 * m22 + r33 * m23;
             te[10] = r13 * m31 + r23 * m32 + r33 * m33;
             te[11] = r13 * m41 + r23 * m42 + r33 * m43;
+
+            if (typeof this.modified !== "undefined")
+                this.modified();
         }
 
         // Source from Three.js
@@ -248,6 +296,9 @@ module Jv.Games.WebGL {
             this.data[6] = m.data[6] * scaleZ;
             this.data[10] = m.data[10] * scaleZ;
 
+            if (typeof this.modified !== "undefined")
+                this.modified();
+
             return this;
 
         }
@@ -261,6 +312,9 @@ module Jv.Games.WebGL {
             m[13] = m[1] * t.x + m[5] * t.y + m[9] * t.z + m[13];
             m[14] = m[2] * t.x + m[6] * t.y + m[10] * t.z + m[14];
             m[15] = m[3] * t.x + m[7] * t.y + m[11] * t.z + m[15];
+
+            if (typeof this.modified !== "undefined")
+                this.modified();
 
             return this;
         }

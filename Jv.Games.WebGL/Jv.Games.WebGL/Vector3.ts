@@ -4,6 +4,7 @@ module Jv.Games.WebGL {
     export class Vector3 {
         private data: Float32Array;
         private startIndex: number;
+        modified: () => void;
 
         constructor();
         constructor(xyz: number);
@@ -69,21 +70,32 @@ module Jv.Games.WebGL {
         }
 
         set x(value: number) {
+            if (value === this.x) return;
             this.data[this.startIndex + 0] = value;
+            if (typeof this.modified !== "undefined")
+                this.modified();
         }
 
         set y(value: number) {
+            if (value === this.y) return;
             this.data[this.startIndex + 1] = value;
+            if (typeof this.modified !== "undefined")
+                this.modified();
         }
 
         set z(value: number) {
+            if (value === this.z) return;
             this.data[this.startIndex + 2] = value;
+            if (typeof this.modified !== "undefined")
+                this.modified();
         }
 
         _add(vector: Vector3) {
             this.x += vector.x;
             this.y += vector.y;
             this.z += vector.z;
+            if (typeof this.modified !== "undefined")
+                this.modified();
         }
 
         add(vector: Vector3): Vector3 {
@@ -94,9 +106,11 @@ module Jv.Games.WebGL {
         }
 
         _multiply(vector: Vector3) {
-            this.x *= vector.x;
-            this.y *= vector.y;
-            this.z *= vector.z;
+            this.data[this.startIndex + 0] *= vector.x;
+            this.data[this.startIndex + 1] *= vector.y;
+            this.data[this.startIndex + 2] *= vector.z;
+            if (typeof this.modified !== "undefined")
+                this.modified();
         }
 
         sub(vector: Vector3): Vector3 {

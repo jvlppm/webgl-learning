@@ -40,7 +40,7 @@ module JumperCube.Behaviors {
             if (toMove.length() != 0)
                 document.title = "x: " + this.object.transform.x + ", y: " + this.object.transform.y + ", z: " + this.object.transform.z;
 
-            this.object.transform = this.object.transform.translate(toMove.scale(deltaTime));
+            this.object.transform._translate(toMove.scale(deltaTime));
         }
     }
 }
