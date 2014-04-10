@@ -39,6 +39,7 @@ module JumperCube {
         blockQuestion: Texture;
         blockSolid: Texture;
         blockBrick: Texture;
+        blockFloor: Texture;
 
         itemMushroom: Texture;
 
@@ -59,6 +60,7 @@ module JumperCube {
                 { url: "Textures/block_empty.png", attribute: "blockEmpty", density: 128 },
                 { url: "Textures/block_question.png", attribute: "blockQuestion", density: 128 },
                 { url: "Textures/block_solid.png", attribute: "blockSolid", density: 128 },
+                { url: "Textures/block_floor.png", attribute: "blockFloor", density: 128 },
                 { url: "Textures/block_brick.png", attribute: "blockBrick" },
 
                 { url: "Textures/item_mushroom.png", attribute: "itemMushroom" },
@@ -149,6 +151,8 @@ module JumperCube {
             this.createPlatform(this.pinkPlatform, -40, 40, 0, 10, 4, 4, { xAlign: 1 });
             this.createPlatform(this.pinkPlatform, -30, 40, 0, 5, 4, 4, { xAlign: 1 });
             this.createPlatform(this.pinkPlatform, -25, 40, 0, 10, 4, 4, { xAlign: 1 });
+            this.createPlatform(this.pinkPlatform, -15, 40, 0, 10, 4, 4, { xAlign: 1 });
+            this.createPlatform(this.blockFloor, -5, 46, 0, 10, 10, 1, { xAlign: 1 });
 
             this.createPlatform(this.whitePlatform, -40, 36, 0, 40, 4, 15, { xAlign: 1 });
 

@@ -22,6 +22,7 @@
     <Content Include="app.css" />
     <Content Include="default.htm" />
     <Content Include="Textures\block_empty.png" />
+    <Content Include="Textures\block_floor.png" />
     <Content Include="Textures\block_question.png" />
     <Content Include="Textures\block_solid.png" />
     <Content Include="Textures\block_brick.png" />

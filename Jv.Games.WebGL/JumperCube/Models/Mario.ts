@@ -72,7 +72,7 @@ module JumperCube.Models {
             }
 
             while (!this.rigidBody.validPosition()) {
-                this.transform.y += 0.5 * (this.rigidBody.momentum.y > 0 ? -1 : 1);
+                this.transform.y += 0.05 * (this.rigidBody.momentum.y > 0 ? -1 : 1);
                 this.transform = this.transform;
             }
         }
