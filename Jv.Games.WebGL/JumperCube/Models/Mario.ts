@@ -123,7 +123,7 @@ module JumperCube.Models {
 
         private addCap() {
             var marioCapMesh = <{ [prop: string]: any }>{
-                mesh: new JumperCube.Mesh.TexturedCube(0.95, 0.01, 0.3, this.context, Mario.CapUV, Mario.CapUV, Mario.CapUV, Mario.CapUV, Mario.CapUV, Mario.CapUV),
+                mesh: new JumperCube.Mesh.Cube(0.95, 0.01, 0.3, this.context, Mario.CapUV, Mario.CapUV, Mario.CapUV, Mario.CapUV, Mario.CapUV, Mario.CapUV),
                 material: new Jv.Games.WebGL.Materials.TextureMaterial(this.context, this.texture)
             };
 
@@ -136,7 +136,7 @@ module JumperCube.Models {
 
         private addChest() {
             var marioChestMesh = <{ [prop: string]: any }>{
-                mesh: new JumperCube.Mesh.TexturedCube(0.5, 0.5, 0.5, this.context,
+                mesh: new JumperCube.Mesh.Cube(0.5, 0.5, 0.5, this.context,
                     Mario.BodyFrontUV, Mario.BodyBackUV,
                     Mario.BodyLeftUV, Mario.BodyRightUV,
                     Mario.BodyTopUV, Mario.BodyBottomUV),
@@ -150,7 +150,7 @@ module JumperCube.Models {
 
         private addArm(location: Vector3) {
             var marioArmMesh = <{ [prop: string]: any }>{
-                mesh: new JumperCube.Mesh.TexturedCube(0.2, 0.5, 0.2, this.context,
+                mesh: new JumperCube.Mesh.Cube(0.2, 0.5, 0.2, this.context,
                     Mario.ArmFrontUV, Mario.ArmBackUV,
                     Mario.ArmLeftUV, Mario.ArmRightUV,
                     Mario.ArmTopUV, Mario.ArmBottomUV),
@@ -167,7 +167,7 @@ module JumperCube.Models {
 
         private addLeg(location: Vector3) {
             var marioLegMesh = <{ [prop: string]: any }>{
-                mesh: new JumperCube.Mesh.TexturedCube(0.24, 0.24, 0.3, this.context,
+                mesh: new JumperCube.Mesh.Cube(0.24, 0.24, 0.3, this.context,
                     Mario.LegFrontUV, Mario.LegBackUV,
                     Mario.LegLeftUV, Mario.LegRightUV,
                     Mario.LegTopUV, Mario.LegBottomUV),

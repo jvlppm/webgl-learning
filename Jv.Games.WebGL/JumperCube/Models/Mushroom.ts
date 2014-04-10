@@ -28,7 +28,7 @@ module JumperCube.Models {
 
             var head = this.add(new GameObject());
             head.add(MeshRenderer, {
-                mesh: new JumperCube.Mesh.TexturedCube(0.5, 0.4, 0.5, context,
+                mesh: new JumperCube.Mesh.Cube(0.5, 0.4, 0.5, context,
                     Mushroom.HeadFrontUV, Mushroom.HeadBackUV,
                     Mushroom.HeadLeftUV, Mushroom.HeadRightUV,
                     Mushroom.HeadTopUV, Mushroom.HeadBottomUV),
@@ -38,7 +38,7 @@ module JumperCube.Models {
 
             var body = this.add(new GameObject());
             body.add(MeshRenderer, {
-                mesh: new JumperCube.Mesh.TexturedCube(0.35, 0.2, 0.35, context,
+                mesh: new JumperCube.Mesh.Cube(0.35, 0.2, 0.35, context,
                     Mushroom.BodyFrontUV, Mushroom.BodyBackUV,
                     Mushroom.BodyLeftUV, Mushroom.BodyRightUV,
                     Mushroom.BodyTopUV, Mushroom.BodyBottomUV),

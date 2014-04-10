@@ -30,7 +30,7 @@ module JumperCube.Models {
             super();
 
             this.renderer = new MeshRenderer(this, {
-                mesh: new JumperCube.Mesh.TexturedCube(1, 1, 1, context, ItemBlock.UV, ItemBlock.UV, ItemBlock.UV, ItemBlock.UV, ItemBlock.UV, ItemBlock.UV),
+                mesh: new JumperCube.Mesh.Cube(1, 1, 1, context, ItemBlock.UV, ItemBlock.UV, ItemBlock.UV, ItemBlock.UV, ItemBlock.UV, ItemBlock.UV),
                 material: new TextureMaterial(context, activeTexture)
             });
             this.collider = new AxisAlignedBoxCollider(this, { radiusWidth: 0.5, radiusHeight: 0.5, radiusDepth: 0.5 });

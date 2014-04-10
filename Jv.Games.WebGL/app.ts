@@ -220,7 +220,7 @@ module JumperCube {
 
             var align = platform.add(new GameObject())
                 .add(MeshRenderer, {
-                    mesh: new JumperCube.Mesh.TexturedCube(w, h, d, this.webgl.context, zUV, zUV, xUV, xUV, yUV, yUV),
+                    mesh: new JumperCube.Mesh.Cube(w, h, d, this.webgl.context, zUV, zUV, xUV, xUV, yUV, yUV),
                     material: new Jv.Games.WebGL.Materials.TextureMaterial(this.webgl.context, texture)
                 })
                 .add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { radiusWidth: w / 2, radiusHeight: h / 2, radiusDepth: d / 2 })

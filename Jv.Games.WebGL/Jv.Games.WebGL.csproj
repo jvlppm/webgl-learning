@@ -50,9 +50,8 @@
     <TypeScriptCompile Include="JumperCube\Behaviors\Controller.ts" />
     <TypeScriptCompile Include="JumperCube\Behaviors\Mover.ts" />
     <TypeScriptCompile Include="JumperCube\Models\Goomba.ts" />
-    <TypeScriptCompile Include="JumperCube\Mesh\TexturedCube.ts" />
-    <TypeScriptCompile Include="JumperCube\Mesh\MarioHead.ts" />
     <TypeScriptCompile Include="JumperCube\Mesh\Cube.ts" />
+    <TypeScriptCompile Include="JumperCube\Mesh\MarioHead.ts" />
     <TypeScriptCompile Include="JumperCube\Models\BrickBlock.ts" />
     <TypeScriptCompile Include="JumperCube\Models\ItemBlock.ts" />
     <TypeScriptCompile Include="JumperCube\Models\Mario.ts" />
