@@ -25,13 +25,15 @@ module JumperCube.Behaviors {
             if (this.currentBlinkDuration > 0) {
                 this.currentBlinkDuration -= deltaTime;
                 this.currentBlinkInterval -= deltaTime;
-                if (this.currentBlinkInterval < 0) {
+                if (this.currentBlinkInterval <= 0) {
                     this.currentBlinkInterval = this.blinkInterval;
                     this.object.visible = !this.object.visible;
                 }
+                if (this.currentBlinkDuration <= 0) {
+                    this.object.visible = this.originalVisibility;
+                    delete this.originalVisibility;
+                }
             }
-            else if (typeof this.originalVisibility !== "undefined")
-                this.object.visible = this.originalVisibility;
         }
 
         onHit() {
