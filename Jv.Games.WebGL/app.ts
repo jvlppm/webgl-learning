@@ -23,6 +23,14 @@ module JumperCube {
         attribute: string;
     }
 
+    export interface PlatformDefinition {
+        debug?: boolean;
+        xAlign?: number;
+        yAlign?: number;
+        zAlign?: number
+        collide?: boolean;
+    }
+
     export class Game {
         // -- Assets --
         textures: TextureDescription[];
@@ -30,10 +38,11 @@ module JumperCube {
         goombaTexture: Texture;
         grassTexture: Texture;
 
-        whitePlatform: Texture;
-        yellowPlatform: Texture;
-        cyanPlatform: Texture;
-        pinkPlatform: Texture;
+        platformWhite: Texture;
+        platformYellow: Texture;
+        platformCyan: Texture;
+        platformPink: Texture;
+        platformGreen: Texture;
 
         blockEmpty: Texture;
         blockQuestion: Texture;
@@ -52,10 +61,11 @@ module JumperCube {
                 { url: "Textures/goomba.png", attribute: "goombaTexture" },
                 { url: "Textures/grass.png", attribute: "grassTexture" },
 
-                { url: "Textures/white_platform.png", attribute: "whitePlatform" },
-                { url: "Textures/yellow_platform.png", attribute: "yellowPlatform" },
-                { url: "Textures/cyan_platform.png", attribute: "cyanPlatform" },
-                { url: "Textures/pink_platform.png", attribute: "pinkPlatform" },
+                { url: "Textures/platform_white.png", attribute: "platformWhite" },
+                { url: "Textures/platform_yellow.png", attribute: "platformYellow" },
+                { url: "Textures/platform_cyan.png", attribute: "platformCyan" },
+                { url: "Textures/platform_pink.png", attribute: "platformPink" },
+                { url: "Textures/platform_green.png", attribute: "platformGreen" },
 
                 { url: "Textures/block_empty.png", attribute: "blockEmpty", density: 128 },
                 { url: "Textures/block_question.png", attribute: "blockQuestion", density: 128 },
@@ -127,15 +137,15 @@ module JumperCube {
         createMap() {
             this.createPlatform(this.grassTexture, 0, 40, -0.0001, 80, 80, 10, { xAlign: 0.5, zAlign: 0.5, yAlign: 0 });
 
-            this.createPlatform(this.cyanPlatform, -5, 50, 0, 15, 10, 8);
-            this.createPlatform(this.pinkPlatform, 5, 50, 0, 10, 4, 8);
-            this.createPlatform(this.yellowPlatform, 10, 60, 0, 5, 10, 10);
+            this.createPlatform(this.platformCyan, -5, 50, 0, 15, 10, 8);
+            this.createPlatform(this.platformPink, 5, 50, 0, 10, 4, 8);
+            this.createPlatform(this.platformYellow, 10, 60, 0, 5, 10, 10);
 
-            this.createPlatform(this.whitePlatform, -5, 58, 0, 4, 8, 1);
-            this.createPlatform(this.whitePlatform, 5, 62, 0, 14, 4, 1);
+            this.createPlatform(this.platformWhite, -5, 58, 0, 4, 8, 1);
+            this.createPlatform(this.platformWhite, 5, 62, 0, 14, 4, 1);
 
-            this.createPlatform(this.yellowPlatform, -35, 80, 0, 5, 20, 10);
-            this.createPlatform(this.whitePlatform, -35, 60, 0, 5, 20, 10);
+            this.createPlatform(this.platformYellow, -35, 80, 0, 5, 20, 10);
+            this.createPlatform(this.platformWhite, -35, 60, 0, 5, 20, 10);
 
             this.createQuestionBlock(-30, 60, 4, new JumperCube.Models.Mushroom(this.webgl.context, this.itemMushroom));
             this.createBrickBlock(-30, 61, 4);
@@ -148,13 +158,17 @@ module JumperCube {
             this.createStairZm(this.blockSolid, -25, 56, 0, 4, 4);
             this.createPlatform(this.blockSolid, -25, 52, 3, 4, 8, 1);
 
-            this.createPlatform(this.pinkPlatform, -40, 40, 0, 10, 4, 4, { xAlign: 1 });
-            this.createPlatform(this.pinkPlatform, -30, 40, 0, 5, 4, 4, { xAlign: 1 });
-            this.createPlatform(this.pinkPlatform, -25, 40, 0, 10, 4, 4, { xAlign: 1 });
-            this.createPlatform(this.pinkPlatform, -15, 40, 0, 10, 4, 4, { xAlign: 1 });
+            this.createPlatform(this.platformPink, -40, 40, 0, 10, 4, 4, { xAlign: 1 });
+            this.createPlatform(this.platformGreen, -30, 40, 0, 5, 4, 4, { xAlign: 1 });
+            this.createPlatform(this.platformPink, -25, 40, 0, 10, 4, 4, { xAlign: 1 });
+            this.createPlatform(this.platformPink, -15, 40, 0, 10, 4, 4, { xAlign: 1 });
             this.createPlatform(this.blockFloor, -5, 46, 0, 10, 10, 1, { xAlign: 1 });
 
-            this.createPlatform(this.whitePlatform, -40, 36, 0, 40, 4, 15, { xAlign: 1 });
+            var genius = this.scene.add(new Models.Genius(this.webgl.context, this.platformWhite, this.platformYellow, this.platformCyan, this.platformPink, this.platformGreen));
+            genius.transform.x = 23;
+            genius.transform.z = 60;
+
+            this.createPlatform(this.platformWhite, -40, 36, 0, 40, 4, 15, { xAlign: 1 });
 
             this.createStairX(this.blockSolid, 0, 10, 0, 8, 2);
         }
@@ -174,7 +188,7 @@ module JumperCube {
             question.transform.z = z;
         }
 
-        createUV(texture: Texture, w: number, h: number) {
+        static createUV(texture: Texture, w: number, h: number) {
             if (!texture.tile)
                 return [0, 0, 1, 0, 1, 1, 0, 1];
 
@@ -205,26 +219,33 @@ module JumperCube {
             }
         }
 
-        createPlatform(texture: Texture, x: number, z: number, y: number, w: number, d: number, h: number, args?: { debug?: boolean; xAlign?: number; yAlign?: number; zAlign?: number }) {
-            args = args || {};
-            var defaultArgs = { debug: false, xAlign: 0, yAlign: 1, zAlign: 0 };
-            for (var prop in defaultArgs)
-                if (typeof args[prop] === "undefined")
-                    args[prop] = defaultArgs[prop];
+        static loadDefaults<Type>(current: Type, defaults: Type) {
+            if (typeof current === "undefined")
+                return defaults;
+
+            for (var prop in defaults)
+                if (typeof current[prop] === "undefined")
+                    current[prop] = defaults[prop];
+
+            return current;
+        }
+
+        static createPlatform(context: WebGLRenderingContext, texture: Texture, x: number, z: number, y: number, w: number, d: number, h: number, args?: PlatformDefinition) {
+            args = Game.loadDefaults(args, { debug: false, xAlign: 0, yAlign: 1, zAlign: 0, collide: true });
 
             var xUV = this.createUV(texture, d, h);
             var yUV = this.createUV(texture, w, d);
             var zUV = this.createUV(texture, w, h);
 
-            var platform = this.scene.add(new GameObject());
+            var platform = new GameObject();
 
             var align = platform.add(new GameObject())
                 .add(MeshRenderer, {
-                    mesh: new JumperCube.Mesh.Cube(w, h, d, this.webgl.context, zUV, zUV, xUV, xUV, yUV, yUV),
-                    material: new Jv.Games.WebGL.Materials.TextureMaterial(this.webgl.context, texture)
-                })
-                .add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { radiusWidth: w / 2, radiusHeight: h / 2, radiusDepth: d / 2 })
-            ;
+                    mesh: new JumperCube.Mesh.Cube(w, h, d, context, zUV, zUV, xUV, xUV, yUV, yUV),
+                    material: new Jv.Games.WebGL.Materials.TextureMaterial(context, texture)
+                });
+            if (args.collide)
+                align.add(Jv.Games.WebGL.Components.AxisAlignedBoxCollider, { radiusWidth: w / 2, radiusHeight: h / 2, radiusDepth: d / 2 });
 
             align.transform.x = - w / 2 + w * args.xAlign;
             align.transform.z = - d / 2 + d * args.zAlign;
@@ -237,6 +258,11 @@ module JumperCube {
             if (args.debug) {
                 platform.add(Behaviors.DebugPosition, { speed: new Vector3(w, h, d).length() * 0.1 });
             }
+            return platform;
+        }
+
+        createPlatform(texture: Texture, x: number, z: number, y: number, w: number, d: number, h: number, args?: PlatformDefinition) {
+            this.scene.add(Game.createPlatform(this.webgl.context, texture, x, z, y, w, d, h, args));
         }
 
         run() {

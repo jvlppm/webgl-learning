@@ -138,6 +138,10 @@ module Jv.Games.WebGL.Materials {
             this.texture = texture;
         }
 
+        get texture() {
+            return this.uniforms.uSampler;
+        }
+
         set texture(value: Texture) {
             if (typeof value === "undefined")
                 throw new Error("Texture cannot be undefined");
