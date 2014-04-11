@@ -2,6 +2,8 @@
 
 module Jv.Games.WebGL.Core {
     export class BufferAttribute {
+        vertexAttribute: VertexAttribute;
+
         constructor(public name: string, public size: number, public type: Jv.Games.WebGL.Core.DataType, public normalized: boolean, public stride: number, public offset: number) {
         }
     }
@@ -43,7 +45,10 @@ module Jv.Games.WebGL.Core {
 
             for (var index in this.attributes) {
                 var bufferAttribute = this.attributes[index];
-                var materialAttribute = material.program.getVertexAttribute(bufferAttribute.name);
+                var materialAttribute = bufferAttribute.vertexAttribute || (bufferAttribute.vertexAttribute = material.program.getVertexAttribute(bufferAttribute.name));
+
+                if (typeof materialAttribute === "undefined")
+                    bufferAttribute.vertexAttribute = null;
 
                 if (typeof materialAttribute !== "undefined") {
                     materialAttribute.enable();

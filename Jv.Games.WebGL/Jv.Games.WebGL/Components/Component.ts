@@ -13,7 +13,6 @@ module Jv.Games.WebGL.Components {
 
         init() { }
         update(deltaTime: number) { }
-        draw(baseTransform: Matrix4) { }
 
         static GetName<Type extends Component<any>>(type: { new (o, args?) }) {
             var ret = type.toString();
@@ -31,9 +30,10 @@ module Jv.Games.WebGL.Components {
         }
         add<Type extends Component<T>, Arguments>(componentType: { new (object: T, args?: Arguments): Type }, args?: Arguments);
         add<Type extends Component<T>, Arguments>(component: Component<T>, args?: Arguments);
-        add<Type extends Component<T>, Arguments>(item, args?: Arguments) {
+        add<Type extends Component<T>, Arguments>(item, args?: Arguments) : Component<T> {
             var instance = typeof item === "function" ? new item(<any>this, args) : item;
             this.components.push(instance);
+            return instance;
         }
 
         getComponent<Type extends Component<T>>(componentType: { new (object: T, args?): Type }, failIfNotFound = true): Type {
@@ -53,10 +53,6 @@ module Jv.Games.WebGL.Components {
 
         update(deltaTime: number) {
             this.components.forEach(c => c.update(deltaTime));
-        }
-
-        draw(baseTransform: Matrix4) {
-            this.components.forEach(c => c.draw(baseTransform));
         }
     }
 }

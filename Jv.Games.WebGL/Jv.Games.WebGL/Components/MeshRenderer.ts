@@ -1,7 +1,7 @@
 ﻿///<reference path="../references.ts" />
 
 module Jv.Games.WebGL.Components {
-    export class MeshRenderer extends Component<GameObject> {
+    export class MeshRenderer extends Component<GameObject> implements IDrawable {
         mesh: Mesh;
         material: Jv.Games.WebGL.Materials.Material;
 
@@ -14,9 +14,9 @@ module Jv.Games.WebGL.Components {
             this.material = this.material || new Jv.Games.WebGL.Materials.VertexColorMaterial(this.mesh.context);
         }
 
-        draw(baseTransform: Matrix4) {
+        draw() {
             this.material.program.use();
-            this.material.setUniform("Mmatrix", baseTransform);
+            this.material.setUniform("Mmatrix", this.object.globalTransform);
             this.material.setUniforms();
             this.mesh.draw(this.material);
         }

@@ -50,7 +50,8 @@ module Jv.Games.WebGL {
 
         draw(material: Materials.Material) {
             var gl = this.context;
-            this.buffers.forEach(buffer => buffer.setAttributes(material));
+            for (var i = 0; i < this.buffers.length; i++)
+                this.buffers[i].setAttributes(material);
 
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
             gl.drawElements(this.renderModeId, this.elementCount, gl.UNSIGNED_SHORT, 0);

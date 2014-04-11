@@ -3,13 +3,19 @@
 module Jv.Games.WebGL {
     import MeshRenderer = Jv.Games.WebGL.Components.MeshRenderer;
 
+    export interface IDrawable {
+        draw();
+    }
+
     export class Scene extends GameObject {
         cameras: Camera[];
         clearColor: Color;
+        drawables: GameObject[];
 
         constructor(public webgl: Jv.Games.WebGL.Core.WebGL) {
             super();
             this.cameras = [];
+            this.drawables = [];
             this.clearColor = Color.Rgb(0, 0, 0);
         }
 
@@ -21,7 +27,7 @@ module Jv.Games.WebGL {
             });
         }
 
-        add<Type extends GameObject>(child: Type) : Type;
+        add<Type extends GameObject>(child: Type): Type;
         add(camera: Camera): Camera;
         add<Type extends Components.Component<GameObject>, Arguments>(behaviorType: { new (object: GameObject, args?: Arguments): Type }, args?: Arguments);
         add(item, args?) {
@@ -30,7 +36,30 @@ module Jv.Games.WebGL {
                 (<Camera>item).parent = this;
                 return item;
             }
-            else return super.add(item);
+            else {
+                var res = super.add(item);
+                if (item instanceof GameObject)
+                    this.registerDrawable(<GameObject>item);
+                return res;
+            }
+        }
+
+        registerDrawable(item: GameObject) {
+            if (this.drawables.indexOf(item) < 0) {
+                var components = item.getComponents(Components.Component, false);
+                for (var i in components) {
+                    if (typeof (<any>components[i]).draw === "function")
+                        this.drawables.push(item);
+                }
+            }
+            item.children.forEach(c => this.registerDrawable(c));
+        }
+
+        unregisterDrawable(item: GameObject) {
+            var idx = this.drawables.indexOf(item);
+            if (idx >= 0)
+                this.drawables.splice(idx, 1);
+            item.children.forEach(c => this.unregisterDrawable(c));
         }
 
         init() {
@@ -44,25 +73,45 @@ module Jv.Games.WebGL {
             this.cameras.forEach(c => c.init());
         }
 
-        draw(baseTransform?: Matrix4) {
-            baseTransform = baseTransform ? baseTransform.multiply(this.transform) : this.transform;
-
+        draw() {
             var gl = this.webgl.context;
             var canvas = this.webgl.canvas;
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-            this.cameras.forEach(cam => {
+            for (var ic = 0; ic < this.cameras.length; ic++) {
+                var cam = this.cameras[ic];
                 gl.viewport(canvas.width * cam.viewport.left, canvas.height * cam.viewport.top, canvas.width * cam.viewport.width, canvas.height * cam.viewport.height);
 
-                Scene.unique(this.getComponents<MeshRenderer>(MeshRenderer, true).map(c => c.material)).forEach(material => {
-                    material.setUniform("Pmatrix", cam.projection)
-                    material.setUniform("Vmatrix", cam.view);
-                });
+                var materials = [];
 
-                this.children.forEach(obj => {
-                    obj.draw(baseTransform);
-                });
-            });
+                for (var id = 0; id < this.drawables.length; id++) {
+                    var obj = this.drawables[id];
+                    var viewCheck = obj;
+                    while (typeof viewCheck !== "undefined") {
+                        if (!viewCheck.visible)
+                            break;
+                        viewCheck = viewCheck.parent;
+                    }
+                    if (typeof viewCheck !== "undefined")
+                        continue;
+
+                    var components = obj.getComponents(Components.Component, false);
+                    for (var i = 0; i < components.length; i++) {
+
+                        if (typeof (<any>components[i]).draw === "function") {
+
+                            var material = (<MeshRenderer>components[i]).material;
+                            if (typeof material !== "undefined" && materials.indexOf(material) < 0) {
+                                material.setUniform("Pmatrix", cam.projection);
+                                material.setUniform("Vmatrix", cam.view);
+                                materials.push(material);
+                            }
+
+                            (<any>components[i]).draw();
+                        }
+                    }
+                };
+            };
 
             gl.flush();
         }

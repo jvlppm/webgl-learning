@@ -39,22 +39,20 @@ module Jv.Games.WebGL {
         add<Type extends Components.Component<GameObject>>(componentType: { new (object: GameObject, args?: { [prop: string]: any }): Type }, args?: { [prop: string]: any }): GameObject;
         add(item, args?) {
             if (typeof item === "function" || item instanceof Components.Component) {
-                super.add(item, args);
+                var it = super.add(item, args);
+                if (typeof it.draw === "function") {
+                    var current = this;
+                    while (typeof current.parent !== "undefined")
+                        current = current.parent;
+                    if (current instanceof Scene)
+                        (<Scene>current).registerDrawable(this);
+                }
                 return this;
             }
 
             this.children.push(item);
             item.parent = this;
             return item;
-        }
-
-        draw(baseTransform: Matrix4) {
-            if (!this.visible)
-                return;
-
-            baseTransform = baseTransform.multiply(this.transform);
-            super.draw(baseTransform);
-            this.children.forEach(c => { if (c.visible) c.draw(baseTransform); });
         }
 
         get transform() {
@@ -146,6 +144,12 @@ module Jv.Games.WebGL {
         }
 
         destroy() {
+            var current = this;
+            while (typeof current.parent !== "undefined")
+                current = current.parent;
+            if (current instanceof Scene)
+                (<Scene>current).unregisterDrawable(this);
+
             this.parent.children.splice(this.parent.children.indexOf(this), 1);
         }
     }
