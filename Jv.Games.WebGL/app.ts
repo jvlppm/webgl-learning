@@ -137,12 +137,12 @@ module JumperCube {
         createMap() {
             this.createPlatform(this.grassTexture, 0, 40, -0.0001, 80, 80, 10, { xAlign: 0.5, zAlign: 0.5, yAlign: 0 });
 
-            this.createPlatform(this.platformCyan, -5, 50, 0, 15, 10, 8);
+            this.createPlatform(this.platformCyan, -5, 50, 0, 15, 10, 4);
             this.createPlatform(this.platformPink, 5, 50, 0, 10, 4, 8);
             this.createPlatform(this.platformYellow, 10, 60, 0, 5, 10, 10);
 
-            this.createPlatform(this.platformWhite, -5, 58, 0, 4, 8, 1);
-            this.createPlatform(this.platformWhite, 5, 62, 0, 14, 4, 1);
+            this.createPlatform(this.platformWhite, -5, 58, 0, 4, 8, 0.5);
+            this.createPlatform(this.platformWhite, 5, 62, 0, 14, 4, 0.5);
 
             this.createPlatform(this.platformYellow, -35, 80, 0, 5, 20, 10);
             this.createPlatform(this.platformWhite, -35, 60, 0, 5, 20, 10);
@@ -161,14 +161,15 @@ module JumperCube {
             this.createPlatform(this.platformPink, -40, 40, 0, 10, 4, 4, { xAlign: 1 });
             this.createPlatform(this.platformGreen, -30, 40, 0, 5, 4, 4, { xAlign: 1 });
             this.createPlatform(this.platformPink, -25, 40, 0, 10, 4, 4, { xAlign: 1 });
-            this.createPlatform(this.platformPink, -15, 40, 0, 10, 4, 4, { xAlign: 1 });
-            this.createPlatform(this.blockFloor, -5, 46, 0, 10, 10, 1, { xAlign: 1 });
+            this.createPlatform(this.platformPink, -15, 40, 0, 10, 4, 2, { xAlign: 1 });
+            this.createPlatform(this.blockFloor, -5, 46, 0, 12, 14, 1, { xAlign: 1 });
 
             var genius = this.scene.add(new Models.Genius(this.webgl.context, this.platformWhite, this.platformYellow, this.platformCyan, this.platformPink, this.platformGreen));
-            genius.transform.x = 23;
-            genius.transform.z = 60;
+            genius.transform.x = 1;
+            genius.transform.y = 1;
+            genius.transform.z = 39;
 
-            this.createPlatform(this.platformWhite, -40, 36, 0, 40, 4, 15, { xAlign: 1 });
+            this.createPlatform(this.platformWhite, -40, 36, 0, 35, 4, 15, { xAlign: 1 });
 
             this.createStairX(this.blockSolid, 0, 10, 0, 8, 2);
         }
