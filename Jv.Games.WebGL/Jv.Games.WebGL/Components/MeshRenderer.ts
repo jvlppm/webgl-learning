@@ -17,6 +17,7 @@ module Jv.Games.WebGL.Components {
         draw() {
             this.material.program.use();
             this.material.setUniform("Mmatrix", this.object.globalTransform);
+            this.material.setUniform("Nmatrix", this.object.globalTransform.invert().transpose());
             this.material.setUniforms();
             this.mesh.draw(this.material);
         }

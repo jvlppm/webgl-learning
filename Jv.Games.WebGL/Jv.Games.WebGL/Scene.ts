@@ -11,6 +11,10 @@ module Jv.Games.WebGL {
         cameras: Camera[];
         clearColor: Color;
         drawables: GameObject[];
+        ambientLight = Color.Rgb(1, 1, 1);
+        mainLight: Materials.DirectionalLight;
+
+        directionalLight: Materials.DirectionalLight;
 
         constructor(public webgl: Jv.Games.WebGL.Core.WebGL) {
             super();
@@ -102,8 +106,17 @@ module Jv.Games.WebGL {
 
                             var material = (<MeshRenderer>components[i]).material;
                             if (typeof material !== "undefined" && materials.indexOf(material) < 0) {
+
                                 material.setUniform("Pmatrix", cam.projection);
                                 material.setUniform("Vmatrix", cam.view);
+
+                                if (typeof this.ambientLight !== "undefined")
+                                    material.setUniform("ambientLight", this.ambientLight);
+                                if (typeof this.mainLight !== "undefined") {
+                                    material.setUniform("directionalLightColor", this.mainLight.color);
+                                    material.setUniform("directionalVector", this.mainLight.direction);
+                                }
+
                                 materials.push(material);
                             }
 

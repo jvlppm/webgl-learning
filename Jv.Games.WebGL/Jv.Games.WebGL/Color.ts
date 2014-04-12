@@ -2,13 +2,23 @@
 
 module Jv.Games.WebGL {
     export class Color {
+        hasAlphaChannel: boolean;
+
         constructor(public data: Float32Array, public startIndex: number = 0) {
             if (startIndex + 4 > data.length)
                 throw new Error("Invalid color data");
         }
 
-        static Rgb(red: number, green: number, blue: number, alpha: number = 1) {
-            return new Color(new Float32Array([red, green, blue, alpha]));
+        static Rgb(red: number, green: number, blue: number, alpha?: number) {
+            var hasAlpha = true;
+            if (typeof alpha === "undefined") {
+                hasAlpha = false;
+                alpha = 1;
+            }
+
+            var color = new Color(new Float32Array([red, green, blue, alpha]));
+            color.hasAlphaChannel = hasAlpha;
+            return color;
         }
 
         get red() {
@@ -36,11 +46,19 @@ module Jv.Games.WebGL {
         }
 
         get alpha() {
-            return this.data[this.startIndex + 3];
+            if (this.hasAlphaChannel)
+                return this.data[this.startIndex + 3];
         }
 
         set alpha(value: number) {
+            var hasAlpha = true;
+            if (typeof value === "undefined") {
+                hasAlpha = false;
+                value = 1;
+            }
+
             this.data[this.startIndex + 3] = value;
+            this.hasAlphaChannel = hasAlpha;
         }
     }
 }

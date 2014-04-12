@@ -23,7 +23,14 @@ module Jv.Games.WebGL.Core {
         }
 
         setColor(color: Color) {
-            this.context.uniform4f(this.location, color.red, color.green, color.blue, color.alpha);
+            if(color.hasAlphaChannel)
+                this.context.uniform4f(this.location, color.red, color.green, color.blue, color.alpha);
+            else
+                this.context.uniform3f(this.location, color.red, color.green, color.blue);
+        }
+
+        setVector(vector: Vector3) {
+            this.context.uniform3f(this.location, vector.x, vector.y, vector.z);
         }
 
         setMatrix4(value: Matrix4, transpose: boolean = false) {

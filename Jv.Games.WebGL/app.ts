@@ -95,6 +95,11 @@ module JumperCube {
                 Jv.Games.WebGL.Keyboard.init();
 
                 this.scene = new Jv.Games.WebGL.Scene(this.webgl);
+                this.scene.ambientLight = Jv.Games.WebGL.Color.Rgb(0.6, 0.6, 0.6);
+                this.scene.mainLight = new Jv.Games.WebGL.Materials.DirectionalLight(
+                    Jv.Games.WebGL.Color.Rgb(0.55, 0.55, 0.5),
+                    new Vector3(0.85, 0.8, 0.75)
+                );
 
                 var marioHeadMesh = {
                     mesh: new JumperCube.Mesh.MarioHead(this.webgl.context),

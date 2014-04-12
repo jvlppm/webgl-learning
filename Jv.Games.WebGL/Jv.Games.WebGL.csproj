@@ -68,6 +68,7 @@
     <TypeScriptCompile Include="Jv.Games.WebGL\Core\DataBuffer.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\GameObject.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Keyboard.ts" />
+    <TypeScriptCompile Include="Jv.Games.WebGL\Materials\DirectionalLight.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Materials\Material.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\Materials\Texture.ts" />
     <TypeScriptCompile Include="Jv.Games.WebGL\references.ts" />

@@ -16,6 +16,7 @@ module Jv.Games.WebGL.Materials {
         setUniform(name: string, value: Color);
         setUniform(name: string, value: Matrix4);
         setUniform(name: string, value: Texture);
+        setUniform(name: string, value: Vector3);
         setUniform(name: string, value) {
             this.program.use();
             if (value instanceof Matrix4) {
@@ -28,6 +29,10 @@ module Jv.Games.WebGL.Materials {
             }
             if (value instanceof Texture) {
                 this.program.getUniform(name).setTexture(value);
+                return;
+            }
+            if (value instanceof Vector3) {
+                this.program.getUniform(name).setVector(value);
                 return;
             }
 
@@ -156,26 +161,41 @@ module Jv.Games.WebGL.Materials {
                     [
                         "attribute vec3 position;",
                         "attribute vec2 textureCoord;",
+                        "attribute highp vec3 normal;",
 
                         "uniform mat4 Pmatrix;",
                         "uniform mat4 Vmatrix;",
+
+                        "uniform vec3 ambientLight;",
+                        "uniform vec3 directionalLightColor;",
+                        "uniform vec3 directionalVector;",
+
                         "uniform mat4 Mmatrix;",
+                        "uniform mat4 Nmatrix;",
 
                         "varying highp vec2 vTextureCoord;",
+                        "varying highp vec3 vLighting;",
 
                         "void main(void)", [ //pre-built function
                             "gl_Position = Pmatrix * Vmatrix * Mmatrix * vec4(position, 1.);",
-                            "vTextureCoord = textureCoord;"
+                            "vTextureCoord = textureCoord;",
+
+                        // Apply lighting effect
+                            "highp vec4 transformedNormal = Nmatrix * vec4(normal, 1.0);",
+                            "highp float directional = max(dot(transformedNormal.xyz, directionalVector), 0.0);",
+                            "vLighting = ambientLight + (directionalLightColor * directional);",
                         ]
                     ]);
 
                 TextureMaterial.materialProgram.addShader(Core.ShaderType.Fragment,
                     [
                         "varying highp vec2 vTextureCoord;",
+                        "varying highp vec3 vLighting;",
                         "uniform sampler2D uSampler;",
 
                         "void main(void)", [
-                            "gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));"
+                            "mediump vec4 texelColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));",
+                            "gl_FragColor = vec4(texelColor.rgb * vLighting, texelColor.a);"
                         ]
                     ]);
                 TextureMaterial.materialProgram.link();

@@ -87,6 +87,45 @@ module JumperCube.Mesh {
             data.attrib("position", 3, false, 0);
             data.attrib("color", 3, false, 3);
 
+            var normalData = this.addBuffer([
+            // Front
+                0.0, 0.0, 1.0,
+                0.0, 0.0, 1.0,
+                0.0, 0.0, 1.0,
+                0.0, 0.0, 1.0,
+
+            // Back
+                0.0, 0.0, -1.0,
+                0.0, 0.0, -1.0,
+                0.0, 0.0, -1.0,
+                0.0, 0.0, -1.0,
+
+            // Top
+                0.0, 1.0, 0.0,
+                0.0, 1.0, 0.0,
+                0.0, 1.0, 0.0,
+                0.0, 1.0, 0.0,
+
+            // Bottom
+                0.0, -1.0, 0.0,
+                0.0, -1.0, 0.0,
+                0.0, -1.0, 0.0,
+                0.0, -1.0, 0.0,
+
+            // Right
+                1.0, 0.0, 0.0,
+                1.0, 0.0, 0.0,
+                1.0, 0.0, 0.0,
+                1.0, 0.0, 0.0,
+
+                // Left
+                -1.0, 0.0, 0.0,
+                -1.0, 0.0, 0.0,
+                -1.0, 0.0, 0.0,
+                -1.0, 0.0, 0.0
+            ], Jv.Games.WebGL.Core.DataType.Float, 3 * 4);
+            normalData.attrib("normal", 3, false, 0);
+
             var textureData = this.addBuffer([
                 // Front face
                 frontUV[0], frontUV[1],
