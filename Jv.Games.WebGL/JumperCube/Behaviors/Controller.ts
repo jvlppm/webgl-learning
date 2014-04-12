@@ -29,7 +29,7 @@ module JumperCube.Behaviors {
             if (Math.abs(this.rigidBody.momentum.y) < 0.001 && this.spareJumpForce === 0) {
                 if (Keyboard.isKeyDown(Key.Space)) {
                     this.rigidBody.push(new Vector3(0, this.minJumpForce, 0), true, true);
-                    document.title = "x: " + this.object.globalTransform.x + " z: " + this.object.globalTransform.z + " y: " + this.object.globalTransform.y;
+                    //document.title = "x: " + this.object.globalTransform.x + " z: " + this.object.globalTransform.z + " y: " + this.object.globalTransform.y;
                     if (this.maxJumpForce > this.minJumpForce)
                         this.spareJumpForce = this.maxJumpForce - this.minJumpForce;
                 }

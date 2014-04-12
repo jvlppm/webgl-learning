@@ -121,7 +121,7 @@ module JumperCube {
 
                 goombas.forEach(g => {
                     var goomba = this.scene.add(new JumperCube.Models.Goomba(this.webgl.context, this.goombaTexture))
-                        .add(Behaviors.Follow, { target: player, minDistance: 0, maxDistance: 0, viewDistance: 8, speed: 0.5, stopSpeed: 1 });
+                        .add(Behaviors.Follow, { target: player, minDistance: 0, maxDistance: 0, viewDistance: 6, speed: 0.5, stopSpeed: 1 });
                     goomba.transform.x = g.x;
                     goomba.transform.z = g.y;
                     goomba.transform.y = g.z + 0.6;
