@@ -107,7 +107,11 @@ module JumperCube {
                 player.transform.z = 55;
 
                 var goombas: Vector3[] = [
-                    new Vector3(-20, 63, 0)
+                    new Vector3(-20, 63, 0),
+                    new Vector3(-12, 44, 5),
+                    new Vector3(-25, -7, 1),
+                    new Vector3(-26, -8, 1),
+                    new Vector3(-27, -6, 1),
                 ];
 
                 goombas.forEach(g => {
@@ -162,16 +166,27 @@ module JumperCube {
             this.createPlatform(this.platformGreen, -30, 40, 0, 5, 4, 4, { xAlign: 1 });
             this.createPlatform(this.platformPink, -25, 40, 0, 10, 4, 4, { xAlign: 1 });
             this.createPlatform(this.platformPink, -15, 40, 0, 10, 4, 2, { xAlign: 1 });
-            this.createPlatform(this.blockFloor, -5, 46, 0, 12, 14, 1, { xAlign: 1 });
+            this.createPlatform(this.blockFloor, -40, 0, 0, 80, 20, 1, { xAlign: 1 });
+
+            this.createBrickBlock(-8, 42, 6.5);
+            this.createQuestionBlock(-8, 47, 6.5);
+            this.createQuestionBlock(-12, 47, 6.5, new JumperCube.Models.Mushroom(this.webgl.context, this.itemMushroom));
+            this.createBrickBlock(-12, 42, 6.5);
 
             var genius = this.scene.add(new Models.Genius(this.webgl.context, this.platformWhite, this.platformYellow, this.platformCyan, this.platformPink, this.platformGreen));
-            genius.transform.x = 1;
-            genius.transform.y = 1;
-            genius.transform.z = 39;
+            genius.transform.x = 25;
+            genius.transform.y = 0;
+            genius.transform.z = 60;
+
+            for (var x = -10; x < 0; x += 2) {
+                for (var z = -9; z > -13; z -= 2) {
+                    this.createBrickBlock(x, z, 4);
+                }
+            }
 
             this.createPlatform(this.platformWhite, -40, 36, 0, 35, 4, 15, { xAlign: 1 });
 
-            this.createStairX(this.blockSolid, 0, 10, 0, 8, 2);
+            this.createStairX(this.blockSolid, 21, -8, 1, 8, 4);
         }
 
         createQuestionBlock(x: number, z: number, y: number, item?: GameObject) {
