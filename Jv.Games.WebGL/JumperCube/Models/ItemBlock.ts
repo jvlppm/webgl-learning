@@ -2,6 +2,7 @@
 
 module JumperCube.Models {
     import MeshRenderer = Jv.Games.WebGL.Components.MeshRenderer;
+    import RigidBody = Jv.Games.WebGL.Components.RigidBody;
     import Texture = Jv.Games.WebGL.Materials.Texture;
     import TextureMaterial = Jv.Games.WebGL.Materials.TextureMaterial;
     import AxisAlignedBoxCollider = Jv.Games.WebGL.Components.AxisAlignedBoxCollider;
@@ -42,12 +43,18 @@ module JumperCube.Models {
         }
 
         onTrigger(collider: Jv.Games.WebGL.Components.Collider) {
+            var body = <RigidBody>collider.object.searchComponent(RigidBody);
+            if (body.momentum.y < 0)
+                return;
+
             (<TextureMaterial>this.renderer.material).texture = this.usedTexture;
 
             if (typeof this.item !== "undefined" && typeof this.toMove === "undefined") {
                 this.item.visible = true;
                 this.toMove = 1;
-                this.item.transform = this.transform.clone();
+                this.item.transform.x = this.transform.x;
+                this.item.transform.y = this.transform.y;
+                this.item.transform.z = this.transform.z;
                 this.parent.add(this._item);
                 this.item.init();
             }

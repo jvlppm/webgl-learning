@@ -3,6 +3,7 @@
 module JumperCube.Models {
     import MeshRenderer = Jv.Games.WebGL.Components.MeshRenderer;
     import Texture = Jv.Games.WebGL.Materials.Texture;
+    import RigidBody = Jv.Games.WebGL.Components.RigidBody;
     import TextureMaterial = Jv.Games.WebGL.Materials.TextureMaterial;
     import AxisAlignedBoxCollider = Jv.Games.WebGL.Components.AxisAlignedBoxCollider;
     import GameObject = Jv.Games.WebGL.GameObject;
@@ -26,6 +27,10 @@ module JumperCube.Models {
             this.collider = new AxisAlignedBoxCollider(this, { radiusWidth: 0.5, radiusHeight: 0.5, radiusDepth: 0.5 });
 
             this.add(new Trigger(c => {
+                var body = <RigidBody>c.object.searchComponent(RigidBody);
+                if (body.momentum.y < 0)
+                    return;
+
                 if (typeof this.toMove === "undefined")
                     this.toMove = 0.3;
             }, 1, 0.5, 1, new Vector3(0, -0.5, 0)));
