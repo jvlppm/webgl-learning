@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "static-server": "^2.2.1"
+  },
+  "devDependencies": {
+    "typescript": "^3.5.2"
+  }
+}

@@ -41,7 +41,7 @@ module Jv.Games.WebGL {
             if (typeof item === "function" || item instanceof Components.Component) {
                 var it = super.add(item, args);
                 if (typeof it.draw === "function") {
-                    var current = this;
+                    var current: GameObject = this;
                     while (typeof current.parent !== "undefined")
                         current = current.parent;
                     if (current instanceof Scene)
@@ -98,7 +98,7 @@ module Jv.Games.WebGL {
         }
 
         searchComponent<Type extends Components.Component<GameObject>>(componentType: { new (object: GameObject, args?): Type }, ignoreObjects?: GameObject[]): Type {
-            var toProcess = [this];
+            var toProcess: [GameObject] = [this];
 
             ignoreObjects = ignoreObjects || [];
 
@@ -117,7 +117,7 @@ module Jv.Games.WebGL {
                 current.children.forEach(c => toProcess.push(c));
             }
 
-            var current = this;
+            var current: GameObject = this;
             while (typeof current.parent !== "undefined") {
                 current = current.parent;
 
@@ -144,7 +144,7 @@ module Jv.Games.WebGL {
         }
 
         destroy() {
-            var current = this;
+            var current: GameObject = this;
             while (typeof current.parent !== "undefined")
                 current = current.parent;
             if (current instanceof Scene)

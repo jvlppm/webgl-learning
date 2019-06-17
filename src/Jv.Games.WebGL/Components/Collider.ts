@@ -9,7 +9,7 @@ module Jv.Games.WebGL.Components {
             super.loadArgs(args);
         }
 
-        intersects(collider: Collider) { }
+        intersects(collider: Collider): boolean { return false }
     }
 
     export class AxisAlignedBoxCollider extends Collider {
